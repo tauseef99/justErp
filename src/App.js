@@ -10,6 +10,7 @@ import BuyerLayout from "./Pages/layouts/BuyerLayout";
 import PerformanceDashboard from "./Components/seller/SellerPerformance";
 import SellerProfile from "./Components/seller/SellerProfile";
 import BuyerMessages from "./Components/buyer/BuyerMessages";
+import AdminDashboard from "./Pages/Admin/AdminDashboard";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/seller/Performance" element={<PerformanceDashboard/>}/>
         <Route path="/seller/Profile" element={<SellerProfile/>}/>
         <Route path="/buyer/messages" element={<BuyerMessages/>}/>
+        <Route path="/admin/dashboard" element={<AdminDashboard/>}/>
 
       </Routes>
     </Router>
