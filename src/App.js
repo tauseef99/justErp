@@ -11,6 +11,7 @@ import PerformanceDashboard from "./Components/seller/SellerPerformance";
 import SellerProfile from "./Components/seller/SellerProfile";
 import BuyerMessages from "./Components/buyer/BuyerMessages";
 import AdminDashboard from "./Pages/Admin/AdminDashboard";
+import AdminLogin from "./Pages/Admin/AdminLogin";
 
 function App() {
   return (
@@ -25,6 +26,8 @@ function App() {
         <Route path="/seller/Profile" element={<SellerProfile/>}/>
         <Route path="/buyer/messages" element={<BuyerMessages/>}/>
         <Route path="/admin/dashboard" element={<AdminDashboard/>}/>
+        <Route path="/admin/login" element={<AdminLogin/>}/>
+
 
       </Routes>
     </Router>
