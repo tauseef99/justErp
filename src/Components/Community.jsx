@@ -1,26 +1,31 @@
 import React from "react";
 import { MdApps } from "react-icons/md";
 import { FaProjectDiagram, FaLanguage, FaGlobeAmericas } from "react-icons/fa";
+import CountUp from "react-countup";
 
 const statsData = [
   {
     icon: <MdApps size={40} className="mx-auto text-[#C44251]" />,
-    number: "47",
+    number: 47,
+    suffix: "+", // optional suffix
     description: "More than 200 + ERPS",
   },
   {
     icon: <FaProjectDiagram size={40} className="mx-auto text-[#C44251]" />,
-    number: "1,200 +",
+    number: 1200,
+    suffix: "+",
     description: "Consulting Categories",
   },
   {
     icon: <FaLanguage size={40} className="mx-auto text-[#C44251]" />,
-    number: "49",
+    number: 49,
+    suffix: "",
     description: "Languages known by consultants",
   },
   {
     icon: <FaGlobeAmericas size={40} className="mx-auto text-[#C44251]" />,
-    number: "450 +",
+    number: 450,
+    suffix: "+",
     description: "Worldwide consultants",
   },
 ];
@@ -36,7 +41,13 @@ function Community() {
           >
             <p>{item.icon}</p>
             <h6 className="py-6 text-[#315F6F] text-5xl font-bold">
-              {item.number}
+              <CountUp
+                start={0}
+                end={item.number}
+                duration={2}
+                separator=","
+                suffix={item.suffix}
+              />
             </h6>
             <p className="font-semibold text-lg italic">{item.description}</p>
           </div>
