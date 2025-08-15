@@ -74,14 +74,14 @@ function Navbar() {
            <FaChevronDown className="text-sm" />
             </div>
             <div className="flex items-center gap-2">
-              <p>Explore</p>
-              <FaChevronDown className="text-sm" />
+              <p>About</p>
+              {/* <FaChevronDown className="text-sm" /> */}
             </div>
             <div className="flex items-center gap-2">
               <TfiWorld className="text-md" />
               <p>EN</p>
             </div>
-            <p>Become a seller</p>
+            <p>Want to be a Seller</p>
             <p
               onClick={() => setShowSignInModal(true)}
               className="cursor-pointer"
@@ -89,9 +89,13 @@ function Navbar() {
               Sign in
             </p>
 
-            <button className="text-black border border-black rounded-md px-5 py-2" onClick={() => setShowSignInModal(true)}>
-              Join
-            </button>
+            <button
+  className="text-black border border-black rounded-md px-5 py-2 hover:bg-orange-500 hover:text-white transition-colors duration-300"
+  onClick={() => setShowSignInModal(true)}
+>
+  Join
+</button>
+
           </div>
 
           {/* Mobile Menu */}
@@ -102,8 +106,8 @@ function Navbar() {
                 <FaChevronDown className="text-sm" />
               </div>
               <div className="flex items-center gap-2">
-                <p>Explore</p>
-                <FaChevronDown className="text-sm" />
+                <p>About</p>
+                {/* <FaChevronDown className="text-sm" /> */}
               </div>
               <div className="flex items-center gap-2">
                 <TfiWorld className="text-md" />

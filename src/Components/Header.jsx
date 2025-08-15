@@ -54,47 +54,48 @@ const HeroHeader = () => {
           will take it from here
         </h1>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 w-[80%] flex-wrap gap-4 items-end my-8 text-gray-500 shadow-md rounded-lg">
-          {/* ERP System Dropdown */}
-          <div>
-            <p className="pb-3 text-white">Select ERP</p>
-          <select className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4ACC8F]">
-            <option value="">Choose ERP System</option>
-            <option value="sap">SAP</option>
-            <option value="oracle">Oracle</option>
-            <option value="microsoft">Microsoft Dynamics</option>
-          </select>
-          </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 w-[80%] flex-wrap gap-4 items-end my-8 text-gray-500 shadow-md rounded-lg border border-white p-4">
+  {/* ERP System Dropdown */}
+  <div>
+    <p className="pb-3 text-white">Select ERP</p>
+    <select className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4ACC8F]">
+      <option value="">Choose ERP System</option>
+      <option value="sap">SAP</option>
+      <option value="oracle">Oracle</option>
+      <option value="microsoft">Microsoft Dynamics</option>
+    </select>
+  </div>
 
-<div>
-     <p className="pb-3 text-white">Select Module</p>
-          {/* Module Dropdown */}
-          <select className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4ACC8F]">
-            <option value="">Choose Module</option>
-            <option value="finance">Finance</option>
-            <option value="hr">Human Resources</option>
-            <option value="inventory">Inventory</option>
-          </select>
-          </div>
+  {/* Module Dropdown */}
+  <div>
+    <p className="pb-3 text-white">Select Module</p>
+    <select className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4ACC8F]">
+      <option value="">Choose Module</option>
+      <option value="finance">Finance</option>
+      <option value="hr">Human Resources</option>
+      <option value="inventory">Inventory</option>
+    </select>
+  </div>
 
-          {/* Experience Dropdown */}
-          <div>
-               <p className="pb-3 text-white">Consultant Experience</p>
-          <select className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4ACC8F]">
-            <option value="">Experience Level</option>
-            <option value="0-1">0-1 Year</option>
-            <option value="2-4">2-4 Years</option>
-            <option value="5+">5+ Years</option>
-          </select>
-          </div>
+  {/* Experience Dropdown */}
+  <div>
+    <p className="pb-3 text-white">Consultant Experience</p>
+    <select className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4ACC8F]">
+      <option value="">Experience Level</option>
+      <option value="0-1">0-1 Year</option>
+      <option value="2-4">2-4 Years</option>
+      <option value="5+">5+ Years</option>
+    </select>
+  </div>
 
-          {/* Search Button */}
-          <div>
-          <button className="flex justify-center items-center gap-2 bg-[#2563EA] hover:bg-[#003912] text-white px-5 py-2 rounded-lg transition-all duration-200">
-          Find Consultants 
-          </button>
-          </div>
-        </div>
+  {/* Search Button */}
+  <div>
+    <button className="flex justify-center items-center gap-2 bg-[#2563EA] hover:bg-[#003912] text-white px-5 py-2 rounded-lg transition-all duration-200">
+      Find Consultants
+    </button>
+  </div>
+</div>
+
 
         {/* Popular Tags */}
         <div className="mt-4 text-sm flex gap-4 flex-wrap">

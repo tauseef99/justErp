@@ -5,25 +5,25 @@ import CountUp from "react-countup";
 
 const statsData = [
   {
-    icon: <MdApps size={40} className="mx-auto text-[#C44251]" />,
+    icon: <MdApps size={40} className="mx-auto text-[#C44251] transition-colors duration-300" />,
     number: 47,
-    suffix: "+", // optional suffix
+    suffix: "+",
     description: "More than 200 + ERPS",
   },
   {
-    icon: <FaProjectDiagram size={40} className="mx-auto text-[#C44251]" />,
+    icon: <FaProjectDiagram size={40} className="mx-auto text-[#C44251] transition-colors duration-300" />,
     number: 1200,
     suffix: "+",
     description: "Consulting Categories",
   },
   {
-    icon: <FaLanguage size={40} className="mx-auto text-[#C44251]" />,
+    icon: <FaLanguage size={40} className="mx-auto text-[#C44251] transition-colors duration-300" />,
     number: 49,
     suffix: "",
     description: "Languages known by consultants",
   },
   {
-    icon: <FaGlobeAmericas size={40} className="mx-auto text-[#C44251]" />,
+    icon: <FaGlobeAmericas size={40} className="mx-auto text-[#C44251] transition-colors duration-300" />,
     number: 450,
     suffix: "+",
     description: "Worldwide consultants",
@@ -37,10 +37,11 @@ function Community() {
         {statsData.map((item, index) => (
           <div
             key={index}
-            className="py-12 px-4 demand-services rounded-2xl text-center shadow-md cursor-pointer transition-shadow duration-300"
+            className="py-12 px-4 demand-services rounded-2xl text-center shadow-md cursor-pointer 
+                       transition-colors duration-300 hover:bg-[#ED7014] hover:text-white"
           >
-            <p>{item.icon}</p>
-            <h6 className="py-6 text-[#315F6F] text-5xl font-bold">
+            <p className="transition-colors duration-300">{item.icon}</p>
+            <h6 className="py-6 text-[#315F6F] text-5xl font-bold transition-colors duration-300">
               <CountUp
                 start={0}
                 end={item.number}
@@ -49,7 +50,9 @@ function Community() {
                 suffix={item.suffix}
               />
             </h6>
-            <p className="font-semibold text-lg italic">{item.description}</p>
+            <p className="font-semibold text-lg italic transition-colors duration-300">
+              {item.description}
+            </p>
           </div>
         ))}
       </div>

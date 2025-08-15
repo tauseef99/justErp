@@ -4,7 +4,6 @@ import {
   FaCloud,
   FaAws,
   FaCogs,
-  FaCube,
   FaLightbulb,
   FaExchangeAlt,
 } from "react-icons/fa";
@@ -14,44 +13,44 @@ import { MdOutlineAnalytics, MdOutlineDesignServices } from "react-icons/md";
 const services = [
   {
     name: "Business Intelligence",
-    icon: <MdOutlineAnalytics size={40} className="mx-auto text-blue-600" />,
+    icon: <MdOutlineAnalytics size={40} className="mx-auto text-blue-600 transition-colors duration-300" />,
   },
   {
     name: "Data Migration",
-    icon: <FaExchangeAlt size={40} className="mx-auto text-green-600" />,
+    icon: <FaExchangeAlt size={40} className="mx-auto text-green-600 transition-colors duration-300" />,
   },
   {
     name: "Reporting",
-    icon: <FaLightbulb size={40} className="mx-auto text-yellow-600" />,
+    icon: <FaLightbulb size={40} className="mx-auto text-yellow-600 transition-colors duration-300" />,
   },
   {
     name: "Cloud Services",
-    icon: <FaCloud size={40} className="mx-auto text-purple-600" />,
+    icon: <FaCloud size={40} className="mx-auto text-purple-600 transition-colors duration-300" />,
   },
   {
     name: "S/4HANA",
-    icon: <SiSap size={40} className="mx-auto text-gray-700" />,
+    icon: <SiSap size={40} className="mx-auto text-gray-700 transition-colors duration-300" />,
   },
   {
     name: "SAP ABAP",
-    icon: <FaCogs size={40} className="mx-auto text-indigo-600" />,
+    icon: <FaCogs size={40} className="mx-auto text-indigo-600 transition-colors duration-300" />,
   },
   {
     name: "SAP Basis",
-    icon: <SiApacheairflow size={40} className="mx-auto text-pink-600" />,
+    icon: <SiApacheairflow size={40} className="mx-auto text-pink-600 transition-colors duration-300" />,
   },
   {
     name: "AWS",
-    icon: <FaAws size={40} className="mx-auto text-orange-500" />,
+    icon: <FaAws size={40} className="mx-auto text-orange-500 transition-colors duration-300" />,
   },
   {
     name: "Project Management",
-    icon: <FaProjectDiagram size={40} className="mx-auto text-red-500" />,
+    icon: <FaProjectDiagram size={40} className="mx-auto text-red-500 transition-colors duration-300" />,
   },
   {
     name: "3D Industrial Design",
     icon: (
-      <MdOutlineDesignServices size={40} className="mx-auto text-teal-600" />
+      <MdOutlineDesignServices size={40} className="mx-auto text-teal-600 transition-colors duration-300" />
     ),
   },
 ];
@@ -64,10 +63,11 @@ function Demandservices() {
         {services.map((service, index) => (
           <div
             key={index}
-            className="py-12 px-4 demand-services rounded-2xl text-center shadow-md cursor-pointer transition-shadow duration-300"
+            className="py-12 px-4 demand-services rounded-2xl text-center shadow-md cursor-pointer 
+                       transition-colors duration-300 hover:bg-[#708238] hover:text-white"
           >
-            <div className="pb-4">{service.icon}</div>
-            <p className="text-lg font-semibold">{service.name}</p>
+            <div className="pb-4 transition-colors duration-300">{service.icon}</div>
+            <p className="text-lg font-semibold transition-colors duration-300">{service.name}</p>
           </div>
         ))}
       </div>
