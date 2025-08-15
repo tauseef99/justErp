@@ -56,7 +56,7 @@ function Navbar() {
         <nav className="max-w-7xl px-4 pb-4 mx-auto flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3">
           {/* Logo + Hamburger */}
           <div className="w-full lg:w-max flex items-center justify-between lg:justify-start">
-            <img src={logo} className="h-10 rounded-lg" />
+            <img src={logo} className="w-48 rounded-lg" />
             <button
               className="text-2xl lg:hidden text-gray-700"
               onClick={toggleMenu}
@@ -66,23 +66,12 @@ function Navbar() {
             </button>
           </div>
 
-          {/* Search Input */}
-          <div className="w-full xl:w-[40%] lg:w-[35%] flex items-center mt-2 md:mt-0">
-            <input
-              type="search"
-              placeholder="What Services are you looking?"
-              className="w-full p-2 rounded-tl-md rounded-bl-md border border-[#E1E2E3] outline-none text-sm"
-            />
-            <button className="bg-black h-full text-white px-5 py-[11px] flex items-center rounded-br-md rounded-tr-md">
-              <FaSearch />
-            </button>
-          </div>
-
+      
           {/* Desktop Nav Items */}
           <div className="hidden lg:flex gap-2 xl:gap-6 font-semibold items-center text-[#62646A] text-sm xl:text-[15px]">
             <div className="flex items-center gap-2">
-              <p className="text-black">justERPs Pro</p>
-              <FaChevronDown className="text-sm" />
+              <p className="text-[#62646A]">Our Story</p>
+           <FaChevronDown className="text-sm" />
             </div>
             <div className="flex items-center gap-2">
               <p>Explore</p>

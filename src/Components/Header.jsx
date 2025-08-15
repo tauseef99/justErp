@@ -54,35 +54,46 @@ const HeroHeader = () => {
           will take it from here
         </h1>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 w-[80%] flex-wrap gap-4 items-center my-8 text-gray-500 shadow-md rounded-lg">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 w-[80%] flex-wrap gap-4 items-end my-8 text-gray-500 shadow-md rounded-lg">
           {/* ERP System Dropdown */}
+          <div>
+            <p className="pb-3 text-white">Select ERP</p>
           <select className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4ACC8F]">
-            <option value="">ERP System</option>
+            <option value="">Choose ERP System</option>
             <option value="sap">SAP</option>
             <option value="oracle">Oracle</option>
             <option value="microsoft">Microsoft Dynamics</option>
           </select>
+          </div>
 
+<div>
+     <p className="pb-3 text-white">Select Module</p>
           {/* Module Dropdown */}
           <select className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4ACC8F]">
-            <option value="">Module</option>
+            <option value="">Choose Module</option>
             <option value="finance">Finance</option>
             <option value="hr">Human Resources</option>
             <option value="inventory">Inventory</option>
           </select>
+          </div>
 
           {/* Experience Dropdown */}
+          <div>
+               <p className="pb-3 text-white">Consultant Experience</p>
           <select className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4ACC8F]">
-            <option value="">Experience</option>
+            <option value="">Experience Level</option>
             <option value="0-1">0-1 Year</option>
             <option value="2-4">2-4 Years</option>
             <option value="5+">5+ Years</option>
           </select>
+          </div>
 
           {/* Search Button */}
-          <button className="flex justify-between items-center gap-2 bg-[#1DBF73] border-white border hover:bg-[#003912] text-white px-5 py-2 rounded-lg transition-all duration-200">
-            Search <FaSearch className="text-white mr-2" />
+          <div>
+          <button className="flex justify-center items-center gap-2 bg-[#2563EA] hover:bg-[#003912] text-white px-5 py-2 rounded-lg transition-all duration-200">
+          Find Consultants 
           </button>
+          </div>
         </div>
 
         {/* Popular Tags */}

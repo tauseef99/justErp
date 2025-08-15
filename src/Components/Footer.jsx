@@ -10,48 +10,52 @@ import { TfiWorld, TfiLayoutAccordionSeparated } from "react-icons/tfi";
 
 const footerData = [
   {
+    heading: "For Business Users",
+    links: [
+      { name: "How to hire ERP Consultant", href: "/categories/erp-solutions" },
+      { name: "How JustERPs work?", href: "/categories/crm-services" },
+      { name: "FAQ’s", href: "/categories/hr-management" },
+    ],
+  },
+  {
+    heading: "For ERP Freelancers",
+    links: [
+      { name: "How to become a JustERPs Freelancer ERP Consultant", href: "/services" },
+      { name: "JustERPs ProjectTeams", href: "/projects" },
+    ],
+  },
+  {
     heading: "Categories",
     links: [
-      { name: "ERP Solutions", href: "/categories/erp-solutions" },
-      { name: "CRM Services", href: "/categories/crm-services" },
-      { name: "HR Management", href: "/categories/hr-management" },
-      { name: "Accounting Tools", href: "/categories/accounting" },
+      { name: "ERP Consultant", href: "/join" },
+      { name: "Data Migration", href: "/join" },
+      { name: "Business Intelligence (BI)", href: "/join" },
+      { name: "Change Management", href: "/join" },
+      { name: "End-User Trainers", href: "/join" },
+      { name: "Reporting", href: "/join" },
+      { name: "GRC", href: "/join" },
+      { name: "BA (Business Analyst)", href: "/join" },
+      { name: "Data Entry", href: "/join" },
+      { name: "Data Migration", href: "/join" },
+        { name: "Technical Consultant", href: "/join" },
+          { name: "Functional Consultant", href: "/join" },
+            { name: "Techno-Functional Consultant", href: "/join" },
+        { name: "Project Manager", href: "/join" },
+          { name: "Team Lead", href: "/join" },
+
     ],
   },
+ 
   {
-    heading: "For Clients",
+    heading: "About JustERPs",
     links: [
-      { name: "Explore Services", href: "/services" },
-      { name: "Post a Project", href: "/projects" },
-      { name: "Community Hub", href: "/community" },
-      { name: "Client Success", href: "/success-stories" },
-    ],
-  },
-  {
-    heading: "For Freelancers",
-    links: [
-      { name: "Join as Partner", href: "/join" },
-      { name: "Freelancer Guide", href: "/freelancers-guide" },
-      { name: "Help & Support", href: "/help" },
-      { name: "Contact Support", href: "/contact" },
-    ],
-  },
-  {
-    heading: "Business Solutions",
-    links: [
-      { name: "justERPs for Teams", href: "/business" },
-      { name: "Enterprise ERP", href: "/enterprise" },
-      { name: "Integration Services", href: "/integrations" },
-      { name: "Dedicated Managers", href: "/managers" },
-    ],
-  },
-  {
-    heading: "Company",
-    links: [
-      { name: "About justERPs", href: "/about" },
-      { name: "Careers", href: "/careers" },
-      { name: "Press & News", href: "/press" },
-      { name: "Investor Relations", href: "/investors" },
+      { name: "JustERPs", href: "/about" },
+      { name: "Customer Support", href: "/about" },
+      { name: "Privacy Policy & Term of Services", href: "/about" },
+      { name: "Society Payback", href: "/about" },
+      { name: "Refer to Friend Bonus", href: "/about" },
+      { name: "Personal Data Protection", href: "/about" },
+
     ],
   },
 ];
@@ -60,7 +64,7 @@ const Footer = () => {
   return (
     <footer className="bg-white border-t border-gray-200 text-sm text-gray-600">
       <div className="max-w-7xl mx-auto px-4 py-10 md:pt-14">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {footerData.map((section, index) => (
             <div key={index}>
               <h4 className="text-gray-800 font-semibold mb-4">
@@ -81,7 +85,7 @@ const Footer = () => {
 
         <div className="mt-10 border-t border-gray-200 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex flex-wrap gap-3 items-center">
-                    <img src={logo} className="h-10 rounded-lg"/>
+                    <img src={logo} className="w-48 rounded-lg"/>
             <p className="text-black text-sm">
               © {new Date().getFullYear()} justERPs International Ltd.
             </p>
