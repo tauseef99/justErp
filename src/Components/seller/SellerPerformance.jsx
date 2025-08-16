@@ -17,7 +17,7 @@ export default function PerformanceDashboard() {
                   alt="profile"
                   className="w-20 h-20 rounded-full object-cover border-4 border-white shadow-lg"
                 />
-                <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-fiverr-green text-white text-xs font-bold px-2 py-1 rounded-full">
+                <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-[#708238] text-white text-xs font-bold px-2 py-1 rounded-full">
                   Level 2
                 </div>
               </div>
@@ -29,7 +29,7 @@ export default function PerformanceDashboard() {
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div 
-                    className="bg-fiverr-green h-2 rounded-full" 
+                    className="bg-[#708238] h-2 rounded-full" 
                     style={{ width: '66%' }}
                   ></div>
                 </div>
@@ -39,7 +39,7 @@ export default function PerformanceDashboard() {
                 {[...Array(5)].map((_, i) => (
                   <svg 
                     key={i} 
-                    className={`w-5 h-5 ${i < 4 ? 'text-yellow-400' : 'text-gray-300'}`} 
+                    className={`w-5 h-5 ${i < 4 ? 'text-[#FFA500]' : 'text-gray-300'}`} 
                     fill="currentColor" 
                     viewBox="0 0 20 20"
                   >
@@ -141,7 +141,7 @@ function MetricCard({ icon, title, value, max, progress, status }) {
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 transition-all hover:shadow-md">
       <div className="flex items-start">
-        <div className="flex items-center justify-center bg-green-50 text-fiverr-green p-2 rounded-lg">
+        <div className="flex items-center justify-center bg-[#708238]/10 text-[#708238] p-2 rounded-lg">
           {icon}
         </div>
         
@@ -156,7 +156,7 @@ function MetricCard({ icon, title, value, max, progress, status }) {
             <div className="flex-1 bg-gray-100 h-2 rounded-full overflow-hidden">
               <div 
                 className={`h-2 rounded-full ${
-                  status === "positive" ? "bg-fiverr-green" : "bg-orange-500"
+                  status === "positive" ? "bg-[#708238]" : "bg-[#FFA500]"
                 }`}
                 style={{ width: `${progress}%` }}
               ></div>
@@ -166,7 +166,7 @@ function MetricCard({ icon, title, value, max, progress, status }) {
           
           <div className="mt-3 flex items-center">
             <div className={`w-2 h-2 rounded-full ${
-              status === "positive" ? "bg-green-500" : "bg-orange-500"
+              status === "positive" ? "bg-[#708238]" : "bg-[#FFA500]"
             }`}></div>
             <span className="text-xs font-medium text-gray-600 ml-2">
               {status === "positive" 
@@ -184,7 +184,7 @@ function StatCard({ icon, title, value, target, trend }) {
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 transition-all hover:shadow-md">
       <div className="flex items-start">
-        <div className="flex items-center justify-center bg-blue-50 text-blue-500 p-2 rounded-lg">
+        <div className="flex items-center justify-center bg-[#708238]/10 text-[#708238] p-2 rounded-lg">
           {icon}
         </div>
         
@@ -196,7 +196,7 @@ function StatCard({ icon, title, value, target, trend }) {
           
           <div className="mt-2 flex items-center">
             <span className={`flex items-center text-sm font-medium ${
-              trend === "up" ? "text-green-600" : "text-red-600"
+              trend === "up" ? "text-[#708238]" : "text-[#FFA500]"
             }`}>
               {trend === "up" ? (
                 <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -212,8 +212,8 @@ function StatCard({ icon, title, value, target, trend }) {
           </div>
           
           <div className="mt-3">
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-              <svg className="-ml-0.5 mr-1.5 h-2 w-2 text-green-400" fill="currentColor" viewBox="0 0 8 8">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#708238]/10 text-[#708238]">
+              <svg className="-ml-0.5 mr-1.5 h-2 w-2 text-[#708238]" fill="currentColor" viewBox="0 0 8 8">
                 <circle cx="4" cy="4" r="3" />
               </svg>
               On track

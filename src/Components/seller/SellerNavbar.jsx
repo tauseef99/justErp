@@ -1,43 +1,58 @@
 import React, { useState } from 'react';
-import { FiBell, FiHelpCircle, FiMail } from 'react-icons/fi';
+import { FiBell, FiHelpCircle, FiMail, FiMenu, FiX } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
-import logo from '../../Assets/images/logo.jpeg';
+import logo from '../../Assets/images/logo-2.jpeg';
 
 export default function SellerNavbar() {
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   const toggleDropdown = () => {
     setShowNotifications(!showNotifications);
   };
 
+  const toggleMobileMenu = () => {
+    setShowMobileMenu(!showMobileMenu);
+  };
+
   return (
-    <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 px-6 py-3 shadow-sm flex justify-between items-center">
+    <nav className="sticky top-0 z-50 bg-white border-b border-[#5a6a2d] px-4 py-3 shadow-sm flex justify-between items-center"
+         style={{ backgroundColor: '#708238' }}>
+      
+      {/* Left - Logo and Mobile Menu Button */}
+      <div className="flex items-center">
+        <button 
+          className="md:hidden text-white mr-3"
+          onClick={toggleMobileMenu}
+        >
+          {showMobileMenu ? <FiX size={24} /> : <FiMenu size={24} />}
+        </button>
+        
+        <Link to="/seller/dashboard" className="min-w-[100px]">
+          <img src={logo} alt="Logo" className="h-10 w-auto rounded object-cover" />
+        </Link>
+      </div>
 
-      {/* Left - Logo */}
-      <Link to="/seller/dashboard" className="min-w-[100px]">
-  <img src={logo} alt="Logo" className="h-10 w-auto rounded object-cover" />
-</Link>
-
-      {/* Center - Navigation */}
-      <ul className="flex gap-6 text-gray-500">
+      {/* Center - Navigation (Desktop) */}
+      <ul className="hidden md:flex gap-6 text-white">
         <Link to="/seller/dashboard">
-          <li className="hover:text-black cursor-pointer">Dashboard</li>
+          <li className="hover:text-[#FFA500] cursor-pointer transition-colors">Dashboard</li>
         </Link>
         <Link to="#">
-          <li className="hover:text-black cursor-pointer">My Business</li>
+          <li className="hover:text-[#FFA500] cursor-pointer transition-colors">My Business</li>
         </Link>
         <Link to="#">
-          <li className="hover:text-black cursor-pointer">Orders</li>
+          <li className="hover:text-[#FFA500] cursor-pointer transition-colors">Orders</li>
         </Link>
         <Link to="#">
-          <li className="hover:text-black cursor-pointer">Settings</li>
+          <li className="hover:text-[#FFA500] cursor-pointer transition-colors">Settings</li>
         </Link>
       </ul>
 
       {/* Right - Icons */}
-      <div className="flex items-center gap-5 relative">
+      <div className="flex items-center gap-3 md:gap-5 relative">
         {/* Balance */}
-        <span className="text-sm font-semibold px-3 py-1 rounded-md border bg-gray-100 text-gray-800">
+        <span className="text-sm font-semibold px-3 py-1 rounded-md border border-[#FFA500] bg-[#FFA500] text-white hidden md:block">
           $114.40
         </span>
 
@@ -45,10 +60,10 @@ export default function SellerNavbar() {
         <div className="relative">
           <button
             onClick={toggleDropdown}
-            className="relative focus:outline-none"
+            className="relative focus:outline-none p-2 hover:bg-[#5a6a2d] rounded-full"
           >
-            <FiBell className="w-5 h-5 text-gray-600 hover:text-black" />
-            <span className="absolute top-0 right-0 w-2 h-2 bg-pink-500 rounded-full"></span>
+            <FiBell className="w-5 h-5 text-white hover:text-[#FFA500]" />
+            <span className="absolute top-1 right-1 w-2 h-2 bg-[#FFA500] rounded-full"></span>
           </button>
 
           {showNotifications && (
@@ -59,13 +74,13 @@ export default function SellerNavbar() {
                   🎉 New order received!
                 </li>
                 <li className="px-4 py-2 hover:bg-gray-50 text-sm text-gray-700 cursor-pointer">
-                  💬 You’ve got a new message.
+                  💬 You've got a new message.
                 </li>
                 <li className="px-4 py-2 hover:bg-gray-50 text-sm text-gray-700 cursor-pointer">
                   📈 Your gig performance has improved.
                 </li>
               </ul>
-              <div className="px-4 py-2 text-center text-sm text-blue-600 hover:underline cursor-pointer">
+              <div className="px-4 py-2 text-center text-sm text-[#FFA500] hover:underline cursor-pointer">
                 View All Notifications
               </div>
             </div>
@@ -74,22 +89,73 @@ export default function SellerNavbar() {
 
         {/* Mail */}
         <Link to="/seller/messages">
-          <button className="relative group">
-            <FiMail className="w-5 h-5 text-gray-600 group-hover:text-black" />
-            <span className="absolute top-0 right-0 w-2 h-2 bg-pink-500 rounded-full"></span>
+          <button className="relative group p-2 hover:bg-[#5a6a2d] rounded-full">
+            <FiMail className="w-5 h-5 text-white group-hover:text-[#FFA500]" />
+            <span className="absolute top-1 right-1 w-2 h-2 bg-[#FFA500] rounded-full"></span>
           </button>
         </Link>
 
         {/* Help Icon */}
-        <FiHelpCircle className="w-5 h-5 text-gray-600 hover:text-black cursor-pointer" />
+        <FiHelpCircle className="w-5 h-5 text-white hover:text-[#FFA500] cursor-pointer hidden md:block" />
 
         {/* Profile Image */}
         <img
           src="https://static.vecteezy.com/system/resources/thumbnails/005/346/410/small_2x/close-up-portrait-of-smiling-handsome-young-caucasian-man-face-looking-at-camera-on-isolated-light-gray-studio-background-photo.jpg"
           alt="User"
-          className="w-8 h-8 rounded-full object-cover border border-gray-200"
+          className="w-8 h-8 rounded-full object-cover border border-white hidden md:block"
         />
       </div>
+
+      {/* Mobile Menu */}
+      {showMobileMenu && (
+        <div className="md:hidden fixed inset-0 bg-[#708238] z-40 pt-16 px-4">
+          <div className="flex flex-col gap-6 py-6">
+            <Link 
+              to="/seller/dashboard" 
+              className="text-white hover:text-[#FFA500] text-lg py-2 border-b border-[#5a6a2d]"
+              onClick={toggleMobileMenu}
+            >
+              Dashboard
+            </Link>
+            <Link 
+              to="#" 
+              className="text-white hover:text-[#FFA500] text-lg py-2 border-b border-[#5a6a2d]"
+              onClick={toggleMobileMenu}
+            >
+              My Business
+            </Link>
+            <Link 
+              to="#" 
+              className="text-white hover:text-[#FFA500] text-lg py-2 border-b border-[#5a6a2d]"
+              onClick={toggleMobileMenu}
+            >
+              Orders
+            </Link>
+            <Link 
+              to="#" 
+              className="text-white hover:text-[#FFA500] text-lg py-2 border-b border-[#5a6a2d]"
+              onClick={toggleMobileMenu}
+            >
+              Settings
+            </Link>
+            
+            <div className="flex items-center justify-between mt-4">
+              <span className="text-sm font-semibold px-3 py-1 rounded-md border border-[#FFA500] bg-[#FFA500] text-white">
+                $114.40
+              </span>
+              
+              <div className="flex gap-4">
+                <FiHelpCircle className="w-5 h-5 text-white hover:text-[#FFA500] cursor-pointer" />
+                <img
+                  src="https://static.vecteezy.com/system/resources/thumbnails/005/346/410/small_2x/close-up-portrait-of-smiling-handsome-young-caucasian-man-face-looking-at-camera-on-isolated-light-gray-studio-background-photo.jpg"
+                  alt="User"
+                  className="w-8 h-8 rounded-full object-cover border border-white"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }

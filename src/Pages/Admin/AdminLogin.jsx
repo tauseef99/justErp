@@ -36,20 +36,20 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 to-blue-100">
-      <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-[#f9faf5]">
+      <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-xl w-full max-w-md mx-4">
         <div className="text-center mb-8">
-          <div className="mx-auto bg-indigo-600 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+          <div className="mx-auto bg-[#708238] w-16 h-16 rounded-full flex items-center justify-center mb-4">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
           </div>
-          <h1 className="text-3xl font-bold text-gray-800">Admin Portal</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">Admin Portal</h1>
           <p className="text-gray-600 mt-2">Sign in to your JustERPs account</p>
         </div>
 
         {error && (
-          <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-center">
+          <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-center">
             {error}
           </div>
         )}
@@ -62,7 +62,7 @@ const AdminLogin = () => {
             <input
               type="email"
               id="email"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#708238] focus:border-[#708238] transition-colors"
               placeholder="admin@company.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -79,7 +79,7 @@ const AdminLogin = () => {
             <input
               type="password"
               id="password"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#708238] focus:border-[#708238] transition-colors"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -90,7 +90,7 @@ const AdminLogin = () => {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full bg-indigo-600 text-white py-3 px-4 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
+            className={`w-full bg-[#708238] text-white py-3 px-4 rounded-lg hover:bg-[#5a6a2c] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#708238] transition-colors ${
               loading ? 'opacity-75 cursor-not-allowed' : ''
             }`}
           >
@@ -109,11 +109,16 @@ const AdminLogin = () => {
         </form>
 
         <div className="mt-8 pt-6 border-t border-gray-200 text-center">
-          <p className="text-gray-600">
-            Demo credentials: admin@justerps.com / admin123
-          </p>
-          <p className="text-gray-600 mt-2">
-            &copy; {new Date().getFullYear()} JustERPs
+          <div className="inline-flex items-center bg-[#fff8e6] px-4 py-2 rounded-lg mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#FFA500] mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+            </svg>
+            <p className="text-gray-600 text-sm">
+              Demo: admin@justerps.com / admin123
+            </p>
+          </div>
+          <p className="text-gray-500 text-sm mt-4">
+            &copy; {new Date().getFullYear()} JustERPs • Enterprise Solutions
           </p>
         </div>
       </div>

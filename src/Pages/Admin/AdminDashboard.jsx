@@ -1,7 +1,7 @@
 // src/Pages/Admin/AdminDashboard.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import logo from '../../Assets/images/logo.jpeg'
+import logo from '../../Assets/images/logo-2.jpeg'
 import { 
   FiHome, FiUsers, FiPackage, FiStar, FiLogOut, FiSettings, 
   FiBarChart2, FiBell, FiSearch, FiMessageSquare, FiDollarSign 
@@ -12,7 +12,15 @@ const AdminDashboard = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
   
-  // Sample data with more realistic metrics
+  // Color constants
+  const primaryColor = '#708238';  // Olive green
+  const secondaryColor = '#FFA500'; // Orange
+  const primaryHover = '#5a6a2c';  // Darker olive green
+  const secondaryHover = '#e69500'; // Darker orange
+  const lightPrimary = 'rgba(112, 130, 56, 0.1)';
+  const lightSecondary = 'rgba(255, 165, 0, 0.1)';
+
+  // Sample data
   const users = [
     { id: 1, name: 'Abdul Raziq', type: 'Seller', status: 'Verified', location: 'Karachi', joinDate: '2025-01-15', revenue: '$8,420' },
     { id: 2, name: 'Sarah Johnson', type: 'Buyer', status: 'Verified', location: 'New York', joinDate: '2025-03-22', revenue: '$2,150' },
@@ -47,14 +55,26 @@ const AdminDashboard = () => {
     commissionRate: '15%'
   };
 
-  // Status badge component with icons
+  // Status badge component with updated colors
   const StatusBadge = ({ status }) => {
     const statusStyles = {
       Verified: { bg: 'bg-green-100', text: 'text-green-800', icon: '✓' },
-      Pending: { bg: 'bg-yellow-100', text: 'text-yellow-800', icon: '⏱' },
+      Pending: { 
+        bg: `bg-[${lightSecondary}]`, 
+        text: `text-[${secondaryColor}]`, 
+        icon: '⏱' 
+      },
       Completed: { bg: 'bg-blue-100', text: 'text-blue-800', icon: '✓' },
-      'In Progress': { bg: 'bg-purple-100', text: 'text-purple-800', icon: '🔄' },
-      'Top Rated': { bg: 'bg-indigo-100', text: 'text-indigo-800', icon: '⭐' },
+      'In Progress': { 
+        bg: `bg-[${lightPrimary}]`, 
+        text: `text-[${primaryColor}]`, 
+        icon: '🔄' 
+      },
+      'Top Rated': { 
+        bg: `bg-[${lightSecondary}]`, 
+        text: `text-[${secondaryColor}]`, 
+        icon: '⭐' 
+      },
       'Level 3': { bg: 'bg-green-100', text: 'text-green-800', icon: '🏆' },
       'Level 2': { bg: 'bg-yellow-100', text: 'text-yellow-800', icon: '🔹' }
     };
@@ -89,14 +109,14 @@ const AdminDashboard = () => {
       case 'users':
         return (
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mt-6">
-            <div className="p-5 border-b border-gray-100 flex justify-between items-center">
+            <div className="p-5 border-b border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <h2 className="text-xl font-bold text-gray-800">User Management</h2>
-              <div className="relative w-64">
+              <div className="relative w-full md:w-64">
                 <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <input
                   type="text"
                   placeholder="Search users..."
-                  className="pl-10 pr-4 py-2 w-full border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="pl-10 pr-4 py-2 w-full border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#708238] focus:border-transparent"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
@@ -120,7 +140,7 @@ const AdminDashboard = () => {
                     <tr key={user.id} className="hover:bg-gray-50 transition-colors">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
-                          <div className="flex-shrink-0 h-10 w-10 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 font-medium">
+                          <div className="flex-shrink-0 h-10 w-10 bg-[#f0f4e4] rounded-full flex items-center justify-center text-[#708238] font-medium">
                             {user.name.charAt(0)}
                           </div>
                           <div className="ml-4">
@@ -130,7 +150,7 @@ const AdminDashboard = () => {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className={`text-sm px-3 py-1 rounded-full ${user.type === 'Seller' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'}`}>
+                        <div className={`text-sm px-3 py-1 rounded-full ${user.type === 'Seller' ? 'bg-[#f0f4e4] text-[#708238]' : 'bg-blue-100 text-blue-800'}`}>
                           {user.type}
                         </div>
                       </td>
@@ -151,7 +171,7 @@ const AdminDashboard = () => {
                 </tbody>
               </table>
             </div>
-            <div className="px-5 py-3 border-t border-gray-100 flex items-center justify-between bg-gray-50">
+            <div className="px-5 py-3 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-3 bg-gray-50">
               <div className="text-sm text-gray-500">
                 Showing <span className="font-medium">1</span> to <span className="font-medium">5</span> of <span className="font-medium">248</span> users
               </div>
@@ -170,20 +190,20 @@ const AdminDashboard = () => {
       case 'orders':
         return (
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mt-6">
-            <div className="p-5 border-b border-gray-100 flex justify-between items-center">
+            <div className="p-5 border-b border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <h2 className="text-xl font-bold text-gray-800">Orders & Projects</h2>
-              <div className="flex space-x-3">
-                <div className="relative">
+              <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                <div className="relative w-full sm:w-64">
                   <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                   <input
                     type="text"
                     placeholder="Search orders..."
-                    className="pl-10 pr-4 py-2 w-64 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className="pl-10 pr-4 py-2 w-full border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#708238] focus:border-transparent"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
                 </div>
-                <select className="border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                <select className="border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#708238] focus:border-transparent">
                   <option>All Status</option>
                   <option>Pending</option>
                   <option>In Progress</option>
@@ -207,7 +227,7 @@ const AdminDashboard = () => {
                 <tbody className="bg-white divide-y divide-gray-200">
                   {filteredOrders.map(order => (
                     <tr key={order.id} className="hover:bg-gray-50 transition-colors">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-indigo-600 hover:text-indigo-800 cursor-pointer">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-[#708238] hover:text-[#5a6a2c] cursor-pointer">
                         {order.id}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -231,7 +251,7 @@ const AdminDashboard = () => {
                 </tbody>
               </table>
             </div>
-            <div className="px-5 py-3 border-t border-gray-100 flex items-center justify-between bg-gray-50">
+            <div className="px-5 py-3 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-3 bg-gray-50">
               <div className="text-sm text-gray-500">
                 Showing <span className="font-medium">1</span> to <span className="font-medium">5</span> of <span className="font-medium">42</span> orders
               </div>
@@ -272,7 +292,7 @@ const AdminDashboard = () => {
                       <tr key={perf.name} className="hover:bg-gray-50 transition-colors">
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">
-                            <div className="flex-shrink-0 h-10 w-10 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 font-medium">
+                            <div className="flex-shrink-0 h-10 w-10 bg-[#f0f4e4] rounded-full flex items-center justify-center text-[#708238] font-medium">
                               {perf.name.charAt(0)}
                             </div>
                             <div className="ml-4">
@@ -324,8 +344,8 @@ const AdminDashboard = () => {
                       <p className="text-gray-600 text-sm">Average Seller Rating</p>
                       <p className="text-2xl font-bold">4.7/5</p>
                     </div>
-                    <div className="bg-indigo-100 p-3 rounded-full">
-                      <FiStar className="text-indigo-600 text-xl" />
+                    <div className="bg-[#f0f4e4] p-3 rounded-full">
+                      <FiStar className="text-[#708238] text-xl" />
                     </div>
                   </div>
                   
@@ -381,8 +401,8 @@ const AdminDashboard = () => {
                     <p className="text-2xl font-bold">{stats.totalUsers}</p>
                     <p className="text-xs text-green-500 mt-1">↑ 12% from last month</p>
                   </div>
-                  <div className="bg-indigo-100 p-3 rounded-full h-fit">
-                    <FiUsers className="text-indigo-600 text-xl" />
+                  <div className="bg-[#f0f4e4] p-3 rounded-full h-fit">
+                    <FiUsers className="text-[#708238] text-xl" />
                   </div>
                 </div>
               </div>
@@ -394,8 +414,8 @@ const AdminDashboard = () => {
                     <p className="text-2xl font-bold">{stats.activeOrders}</p>
                     <p className="text-xs text-green-500 mt-1">↑ 8% from last week</p>
                   </div>
-                  <div className="bg-green-100 p-3 rounded-full h-fit">
-                    <FiPackage className="text-green-600 text-xl" />
+                  <div className="bg-[#fff0cc] p-3 rounded-full h-fit">
+                    <FiPackage className="text-[#FFA500] text-xl" />
                   </div>
                 </div>
               </div>
@@ -420,8 +440,8 @@ const AdminDashboard = () => {
                     <p className="text-2xl font-bold">{stats.commissionRate}</p>
                     <p className="text-xs text-gray-500 mt-1">Current rate</p>
                   </div>
-                  <div className="bg-purple-100 p-3 rounded-full h-fit">
-                    <FiMessageSquare className="text-purple-600 text-xl" />
+                  <div className="bg-[#f0f4e4] p-3 rounded-full h-fit">
+                    <FiMessageSquare className="text-[#708238] text-xl" />
                   </div>
                 </div>
               </div>
@@ -434,9 +454,9 @@ const AdminDashboard = () => {
                 <div className="bg-gray-50 rounded-lg p-4 flex items-center justify-center h-64">
                   <p className="text-gray-400">Order volume chart would be displayed here</p>
                 </div>
-                <div className="grid grid-cols-3 gap-4 mt-4">
-                  <div className="bg-indigo-50 p-3 rounded-lg text-center">
-                    <p className="text-sm text-indigo-600">Active Sellers</p>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
+                  <div className="bg-[#f0f4e4] p-3 rounded-lg text-center">
+                    <p className="text-sm text-[#708238]">Active Sellers</p>
                     <p className="font-bold text-lg">{stats.activeSellers}</p>
                   </div>
                   <div className="bg-green-50 p-3 rounded-lg text-center">
@@ -454,8 +474,8 @@ const AdminDashboard = () => {
                 <h3 className="font-bold text-lg mb-4">Recent Activity</h3>
                 <div className="space-y-4">
                   <div className="flex items-start">
-                    <div className="bg-indigo-100 p-2 rounded-full mr-3">
-                      <FiPackage className="text-indigo-600" />
+                    <div className="bg-[#f0f4e4] p-2 rounded-full mr-3">
+                      <FiPackage className="text-[#708238]" />
                     </div>
                     <div>
                       <p className="font-medium text-sm">New order placed</p>
@@ -465,8 +485,8 @@ const AdminDashboard = () => {
                   </div>
                   
                   <div className="flex items-start">
-                    <div className="bg-green-100 p-2 rounded-full mr-3">
-                      <FiStar className="text-green-600" />
+                    <div className="bg-[#fff0cc] p-2 rounded-full mr-3">
+                      <FiStar className="text-[#FFA500]" />
                     </div>
                     <div>
                       <p className="font-medium text-sm">Seller level upgraded</p>
@@ -487,8 +507,8 @@ const AdminDashboard = () => {
                   </div>
                   
                   <div className="flex items-start">
-                    <div className="bg-purple-100 p-2 rounded-full mr-3">
-                      <FiMessageSquare className="text-purple-600" />
+                    <div className="bg-[#f0f4e4] p-2 rounded-full mr-3">
+                      <FiMessageSquare className="text-[#708238]" />
                     </div>
                     <div>
                       <p className="font-medium text-sm">New review received</p>
@@ -517,7 +537,7 @@ const AdminDashboard = () => {
                   <tbody className="bg-white divide-y divide-gray-200">
                     {orders.slice(0, 3).map(order => (
                       <tr key={order.id} className="hover:bg-gray-50 transition-colors">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-indigo-600">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-[#708238]">
                           {order.id}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
@@ -547,38 +567,32 @@ const AdminDashboard = () => {
     <div className="flex flex-col h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-gray-200">
-      <div className="flex justify-between items-center px-6 py-4">
-  <div className="flex items-center">
-    {/* Logo image */}
-    <img
-      src={logo}
-      alt="JustERPs Logo"
-      className="h-10 w-auto mr-10 rounded"
-    />
-
-    {/* Search box */}
-    <div className="relative hidden md:block">
-      <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-      <input
-        type="text"
-        placeholder="Search..."
-        className="pl-10 pr-4 py-2 w-64 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-      />
-    </div>
-  </div>
-
-  {/* Right side: Bell and avatar */}
-  <div className="flex items-center space-x-4">
-    <button className="p-2 rounded-full hover:bg-gray-100 relative">
-      <FiBell className="text-gray-600" />
-      <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
-    </button>
-    <div className="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-medium cursor-pointer">
-      A
-    </div>
-  </div>
-</div>
-
+        <div className="flex justify-between items-center px-4 sm:px-6 py-4">
+          <div className="flex items-center">
+            <img
+              src={logo}
+              alt="JustERPs Logo"
+              className="h-10 w-auto mr-4 sm:mr-10 rounded"
+            />
+            <div className="relative hidden md:block">
+              <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search..."
+                className="pl-10 pr-4 py-2 w-64 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#708238] focus:border-transparent"
+              />
+            </div>
+          </div>
+          <div className="flex items-center space-x-3 sm:space-x-4">
+            <button className="p-2 rounded-full hover:bg-gray-100 relative">
+              <FiBell className="text-gray-600" />
+              <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
+            </button>
+            <div className="h-8 w-8 rounded-full bg-[#708238] flex items-center justify-center text-white font-medium cursor-pointer">
+              A
+            </div>
+          </div>
+        </div>
       </header>
 
       <div className="flex flex-1 overflow-hidden">
@@ -589,7 +603,11 @@ const AdminDashboard = () => {
             <ul className="space-y-1">
               <li>
                 <button
-                  className={`w-full flex items-center px-4 py-3 rounded-lg ${activeTab === 'dashboard' ? 'bg-indigo-50 text-indigo-600' : 'text-gray-600 hover:bg-gray-100'}`}
+                  className={`w-full flex items-center px-4 py-3 rounded-lg ${
+                    activeTab === 'dashboard' 
+                      ? `bg-[${lightPrimary}] text-[${primaryColor}]` 
+                      : 'text-gray-600 hover:bg-gray-100'
+                  }`}
                   onClick={() => setActiveTab('dashboard')}
                 >
                   <FiHome className="mr-3" />
@@ -598,7 +616,11 @@ const AdminDashboard = () => {
               </li>
               <li>
                 <button
-                  className={`w-full flex items-center px-4 py-3 rounded-lg ${activeTab === 'users' ? 'bg-indigo-50 text-indigo-600' : 'text-gray-600 hover:bg-gray-100'}`}
+                  className={`w-full flex items-center px-4 py-3 rounded-lg ${
+                    activeTab === 'users' 
+                      ? `bg-[${lightPrimary}] text-[${primaryColor}]` 
+                      : 'text-gray-600 hover:bg-gray-100'
+                  }`}
                   onClick={() => setActiveTab('users')}
                 >
                   <FiUsers className="mr-3" />
@@ -607,7 +629,11 @@ const AdminDashboard = () => {
               </li>
               <li>
                 <button
-                  className={`w-full flex items-center px-4 py-3 rounded-lg ${activeTab === 'orders' ? 'bg-indigo-50 text-indigo-600' : 'text-gray-600 hover:bg-gray-100'}`}
+                  className={`w-full flex items-center px-4 py-3 rounded-lg ${
+                    activeTab === 'orders' 
+                      ? `bg-[${lightPrimary}] text-[${primaryColor}]` 
+                      : 'text-gray-600 hover:bg-gray-100'
+                  }`}
                   onClick={() => setActiveTab('orders')}
                 >
                   <FiPackage className="mr-3" />
@@ -616,7 +642,11 @@ const AdminDashboard = () => {
               </li>
               <li>
                 <button
-                  className={`w-full flex items-center px-4 py-3 rounded-lg ${activeTab === 'performance' ? 'bg-indigo-50 text-indigo-600' : 'text-gray-600 hover:bg-gray-100'}`}
+                  className={`w-full flex items-center px-4 py-3 rounded-lg ${
+                    activeTab === 'performance' 
+                      ? `bg-[${lightPrimary}] text-[${primaryColor}]` 
+                      : 'text-gray-600 hover:bg-gray-100'
+                  }`}
                   onClick={() => setActiveTab('performance')}
                 >
                   <FiStar className="mr-3" />
@@ -637,7 +667,7 @@ const AdminDashboard = () => {
                 <li>
                   <button 
                     onClick={handleLogout}
-                    className="w-full flex items-center px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-100"
+                    className="w-full flex items-center px-4 py-3 rounded-lg text-gray-600 hover:text-[#FFA500] transition-colors"
                   >
                     <FiLogOut className="mr-3" />
                     Logout
@@ -661,28 +691,28 @@ const AdminDashboard = () => {
         {/* Mobile Bottom Navigation */}
         <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around py-2">
           <button
-            className={`flex flex-col items-center p-2 ${activeTab === 'dashboard' ? 'text-indigo-600' : 'text-gray-600'}`}
+            className={`flex flex-col items-center p-2 ${activeTab === 'dashboard' ? `text-[${primaryColor}]` : 'text-gray-600'}`}
             onClick={() => setActiveTab('dashboard')}
           >
             <FiHome className="text-lg" />
             <span className="text-xs mt-1">Dashboard</span>
           </button>
           <button
-            className={`flex flex-col items-center p-2 ${activeTab === 'users' ? 'text-indigo-600' : 'text-gray-600'}`}
+            className={`flex flex-col items-center p-2 ${activeTab === 'users' ? `text-[${primaryColor}]` : 'text-gray-600'}`}
             onClick={() => setActiveTab('users')}
           >
             <FiUsers className="text-lg" />
             <span className="text-xs mt-1">Users</span>
           </button>
           <button
-            className={`flex flex-col items-center p-2 ${activeTab === 'orders' ? 'text-indigo-600' : 'text-gray-600'}`}
+            className={`flex flex-col items-center p-2 ${activeTab === 'orders' ? `text-[${primaryColor}]` : 'text-gray-600'}`}
             onClick={() => setActiveTab('orders')}
           >
             <FiPackage className="text-lg" />
             <span className="text-xs mt-1">Orders</span>
           </button>
           <button
-            className={`flex flex-col items-center p-2 ${activeTab === 'performance' ? 'text-indigo-600' : 'text-gray-600'}`}
+            className={`flex flex-col items-center p-2 ${activeTab === 'performance' ? `text-[${primaryColor}]` : 'text-gray-600'}`}
             onClick={() => setActiveTab('performance')}
           >
             <FiStar className="text-lg" />
@@ -691,24 +721,26 @@ const AdminDashboard = () => {
         </nav>
 
         {/* Main Content */}
-        <main className="flex-1 overflow-y-auto p-6 pb-20 md:pb-6">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 pb-20 md:pb-6">
           <div className="mb-6">
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div>
-                <h2 className="text-2xl font-bold text-gray-800">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
                   {activeTab === 'dashboard' && 'Dashboard Overview'}
                   {activeTab === 'users' && 'User Management'}
                   {activeTab === 'orders' && 'Orders & Projects'}
                   {activeTab === 'performance' && 'Seller Performance'}
                 </h2>
-                <p className="text-gray-600">
+                <p className="text-gray-600 mt-1">
                   {activeTab === 'dashboard' && 'Summary of platform activity and metrics'}
                   {activeTab === 'users' && 'Manage all buyers and sellers on the platform'}
                   {activeTab === 'orders' && 'Track and manage all active orders and projects'}
                   {activeTab === 'performance' && 'Monitor seller ratings and performance metrics'}
                 </p>
               </div>
-              <button className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 hidden md:block">
+              <button 
+                className={`bg-[${primaryColor}] text-white px-4 py-2 rounded-lg hover:bg-[${primaryHover}] hidden md:block transition-colors`}
+              >
                 Generate Report
               </button>
             </div>

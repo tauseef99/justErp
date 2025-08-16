@@ -190,9 +190,9 @@ const BuyerMessages = () => {
   const getStatusBadge = (status) => {
     switch(status) {
       case 'active':
-        return <span className="bg-emerald-100 text-emerald-800 text-xs px-2 py-0.5 rounded-full">Active</span>;
+        return <span className="bg-[#708238]/20 text-[#708238] text-xs px-2 py-0.5 rounded-full">Active</span>;
       case 'in progress':
-        return <span className="bg-amber-100 text-amber-800 text-xs px-2 py-0.5 rounded-full">In Progress</span>;
+        return <span className="bg-[#FFA500]/20 text-[#FFA500] text-xs px-2 py-0.5 rounded-full">In Progress</span>;
       case 'delivered':
         return <span className="bg-blue-100 text-blue-800 text-xs px-2 py-0.5 rounded-full">Delivered</span>;
       case 'completed':
@@ -217,13 +217,13 @@ const BuyerMessages = () => {
               <input
                 type="text"
                 placeholder="Search messages..."
-                className="w-64 px-4 py-2 bg-gray-100 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="w-64 px-4 py-2 bg-gray-100 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-[#708238]"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
               <FaSearch className="absolute right-3 top-2.5 text-gray-400" />
             </div>
-            <button className="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-full text-sm font-medium transition">
+            <button className="bg-[#708238] hover:bg-[#5a6a2d] text-white px-4 py-2 rounded-full text-sm font-medium transition">
               New Message
             </button>
           </div>
@@ -250,7 +250,7 @@ const BuyerMessages = () => {
               <input
                 type="text"
                 placeholder="Search messages..."
-                className="w-full px-4 py-2 bg-gray-100 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="w-full px-4 py-2 bg-gray-100 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-[#708238]"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 autoFocus
@@ -258,7 +258,7 @@ const BuyerMessages = () => {
               <FaSearch className="absolute right-3 top-2.5 text-gray-400" />
             </div>
           </div>
-          <button className="bg-emerald-500 w-full hover:bg-emerald-600 text-white px-4 py-2 rounded-full text-sm font-medium transition">
+          <button className="bg-[#708238] w-full hover:bg-[#5a6a2d] text-white px-4 py-2 rounded-full text-sm font-medium transition">
             New Message
           </button>
         </div>
@@ -288,7 +288,7 @@ const BuyerMessages = () => {
                   key={conversation.id}
                   className={`p-3 rounded-lg cursor-pointer transition ${
                     activeConversation.id === conversation.id 
-                      ? 'bg-emerald-50 border border-emerald-200' 
+                      ? 'bg-[#708238]/10 border border-[#708238]/20' 
                       : 'hover:bg-gray-50'
                   }`}
                   onClick={() => {
@@ -308,7 +308,7 @@ const BuyerMessages = () => {
                         <div className="bg-gray-200 border-2 border-dashed rounded-xl w-10 h-10" />
                       )}
                       {conversation.isActive && (
-                        <div className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white"></div>
+                        <div className="absolute bottom-0 right-0 w-3 h-3 bg-[#FFA500] rounded-full border-2 border-white"></div>
                       )}
                     </div>
                     
@@ -321,7 +321,7 @@ const BuyerMessages = () => {
                       <div className="flex items-center justify-between mt-1">
                         <p className="text-sm text-gray-600 truncate">{conversation.lastMessage}</p>
                         {conversation.unread > 0 && (
-                          <span className="bg-emerald-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                          <span className="bg-[#FFA500] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                             {conversation.unread}
                           </span>
                         )}
@@ -355,7 +355,7 @@ const BuyerMessages = () => {
                   ) : (
                     <div className="bg-gray-200 border-2 border-dashed rounded-xl w-10 h-10" />
                   )}
-                  <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-white"></div>
+                  <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-[#FFA500] rounded-full border-2 border-white"></div>
                 </div>
                 <div>
                   <h2 className="font-bold text-gray-800">{activeConversation.buyerName}</h2>
@@ -363,7 +363,7 @@ const BuyerMessages = () => {
                     <span>{activeConversation.lastActive}</span>
                     <span className="mx-1">•</span>
                     <div className="flex items-center">
-                      <FaStar className="text-amber-400 mr-1" />
+                      <FaStar className="text-[#FFA500] mr-1" />
                       <span>4.9 (128 reviews)</span>
                     </div>
                   </div>
@@ -381,7 +381,7 @@ const BuyerMessages = () => {
                 {showDropdown && (
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 border border-gray-200">
                     <button 
-                      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left hover:text-[#FFA500]"
                       onClick={() => archiveConversation(activeConversation.id)}
                     >
                       <FaArchive className="mr-2 text-gray-500" /> Archive
@@ -408,14 +408,14 @@ const BuyerMessages = () => {
                   <div className="flex items-center mt-1 text-sm">
                     <span className="text-gray-600">Order #123456</span>
                     <span className="mx-2 text-gray-300">•</span>
-                    <span className="font-medium text-amber-600">Due in 2 days</span>
+                    <span className="font-medium text-[#FFA500]">Due in 2 days</span>
                   </div>
                 </div>
                 <div className="flex space-x-3">
                   <button className="text-sm font-medium text-gray-600 hover:text-gray-900 px-3 py-1 rounded-md hover:bg-gray-100">
                     View Order
                   </button>
-                  <button className="text-sm font-medium text-emerald-600 hover:text-emerald-800 px-3 py-1 rounded-md hover:bg-emerald-50">
+                  <button className="text-sm font-medium text-[#708238] hover:text-[#5a6a2d] px-3 py-1 rounded-md hover:bg-[#708238]/10">
                     Deliver Again
                   </button>
                 </div>
@@ -446,20 +446,20 @@ const BuyerMessages = () => {
                       <div 
                         className={`max-w-md rounded-2xl px-4 py-3 ${
                           message.sender === 'seller' 
-                            ? 'bg-emerald-500 text-white rounded-br-none' 
+                            ? 'bg-[#708238] text-white rounded-br-none' 
                             : 'bg-white text-gray-800 rounded-bl-none border border-gray-200'
                         }`}
                       >
                         <p className="text-sm">{message.text}</p>
                         <div className={`flex items-center text-xs mt-2 ${
-                          message.sender === 'seller' ? 'text-emerald-100' : 'text-gray-500'
+                          message.sender === 'seller' ? 'text-[#FFA500]' : 'text-gray-500'
                         }`}>
                           <span>{message.time}</span>
                           {message.sender === 'seller' && (
                             <span className="ml-2">
                               {message.status === 'sent' && <FaClock className="text-current" />}
                               {message.status === 'delivered' && <FaCheck className="text-current" />}
-                              {message.status === 'read' && <FaCheckDouble className="text-emerald-200" />}
+                              {message.status === 'read' && <FaCheckDouble className="text-[#FFA500]" />}
                             </span>
                           )}
                         </div>
@@ -500,7 +500,7 @@ const BuyerMessages = () => {
                   className={`m-2 p-3 rounded-full ${
                     newMessage.trim() === '' || isSending
                       ? 'bg-gray-200 text-gray-400' 
-                      : 'bg-emerald-500 hover:bg-emerald-600 text-white'
+                      : 'bg-[#708238] hover:bg-[#5a6a2d] text-white'
                   }`}
                 >
                   {isSending ? (
@@ -525,7 +525,7 @@ const BuyerMessages = () => {
             <div className="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16 mx-auto mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-1">No conversation selected</h3>
             <p className="text-gray-500 mb-6">Select a conversation from the list to start messaging</p>
-            <button className="bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-2 rounded-md text-sm font-medium">
+            <button className="bg-[#708238] hover:bg-[#5a6a2d] text-white px-5 py-2 rounded-md text-sm font-medium">
               Start New Chat
             </button>
           </div>

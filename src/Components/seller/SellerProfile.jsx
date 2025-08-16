@@ -10,7 +10,7 @@ export default function SellerProfile() {
           {/* Profile Header */}
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <h1 className="text-2xl md:text-3xl font-bold text-gray-800">ERP Specialist Profile</h1>
-            <button className="bg-fiverr-green hover:bg-green-600 text-white px-5 py-2 rounded-md text-sm font-medium transition-colors">
+            <button className="bg-[#708238] hover:bg-[#5a6a2d] text-white px-5 py-2 rounded-md text-sm font-medium transition-colors">
               Complete Profile
             </button>
           </div>
@@ -18,7 +18,7 @@ export default function SellerProfile() {
           {/* Profile Card */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
             {/* Profile Header */}
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6">
+            <div className="bg-gradient-to-r from-[#708238]/10 to-[#FFA500]/10 p-6">
               <div className="flex flex-col md:flex-row gap-6">
                 <div className="flex flex-col items-center">
                   <div className="relative">
@@ -27,7 +27,7 @@ export default function SellerProfile() {
                       alt="profile"
                       className="w-28 h-28 rounded-full object-cover border-4 border-white shadow-lg"
                     />
-                    <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-fiverr-green text-white text-xs font-bold px-3 py-1 rounded-full shadow">
+                    <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-[#708238] text-white text-xs font-bold px-3 py-1 rounded-full shadow">
                       Level 2 ERP Specialist
                     </div>
                   </div>
@@ -36,7 +36,7 @@ export default function SellerProfile() {
                     {[...Array(5)].map((_, i) => (
                       <svg 
                         key={i} 
-                        className={`w-5 h-5 ${i < 4 ? 'text-yellow-400' : 'text-gray-300'}`} 
+                        className={`w-5 h-5 ${i < 4 ? 'text-[#FFA500]' : 'text-gray-300'}`} 
                         fill="currentColor" 
                         viewBox="0 0 20 20"
                       >
@@ -130,7 +130,7 @@ export default function SellerProfile() {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {[1, 2, 3].map((item) => (
                   <div key={item} className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
-                    <div className="h-40 bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+                    <div className="h-40 bg-gradient-to-br from-[#708238]/10 to-[#FFA500]/10 flex items-center justify-center">
                       <div className="text-center p-4">
                         <div className="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16 mx-auto" />
                         <h3 className="font-semibold mt-2 text-gray-700">ERP Case Study #{item}</h3>
@@ -140,7 +140,7 @@ export default function SellerProfile() {
                     <div className="p-3 bg-gray-50">
                       <div className="flex justify-between items-center">
                         <span className="text-xs font-medium text-gray-500">SAP Implementation</span>
-                        <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Completed</span>
+                        <span className="text-xs bg-[#708238]/10 text-[#708238] px-2 py-1 rounded">Completed</span>
                       </div>
                     </div>
                   </div>
@@ -233,7 +233,7 @@ export default function SellerProfile() {
                 ].map((skill) => (
                   <span
                     key={skill}
-                    className="px-4 py-2 bg-blue-50 text-blue-700 text-sm font-medium rounded-full border border-blue-100 hover:bg-blue-100 transition-colors"
+                    className="px-4 py-2 bg-[#708238]/10 text-[#708238] text-sm font-medium rounded-full border border-[#708238]/20 hover:bg-[#708238]/20 transition-colors"
                   >
                     {skill}
                   </span>
@@ -263,12 +263,12 @@ function SectionHeader({ title, icon }) {
   return (
     <div className="flex items-center justify-between pb-2 border-b border-gray-100">
       <div className="flex items-center gap-3">
-        <div className="text-fiverr-green bg-green-50 p-2 rounded-lg">
+        <div className="text-[#708238] bg-[#708238]/10 p-2 rounded-lg">
           {icon}
         </div>
         <h2 className="text-lg font-semibold text-gray-800">{title}</h2>
       </div>
-      <button className="text-gray-500 hover:text-fiverr-green flex items-center gap-2 text-sm">
+      <button className="text-gray-500 hover:text-[#708238] flex items-center gap-2 text-sm">
         <FaPen className="text-xs" />
         Edit
       </button>
@@ -283,7 +283,7 @@ function SpecializationCard({ title, items }) {
       <ul className="space-y-2">
         {items.map((item, index) => (
           <li key={index} className="flex items-start">
-            <div className="text-fiverr-green mt-0.5 mr-2">•</div>
+            <div className="text-[#708238] mt-0.5 mr-2">•</div>
             <span className="text-gray-600">{item}</span>
           </li>
         ))}
@@ -295,7 +295,7 @@ function SpecializationCard({ title, items }) {
 function EducationItem({ degree, institution, year }) {
   return (
     <div className="flex items-start">
-      <div className="bg-green-50 text-fiverr-green p-2 rounded-lg mr-3">
+      <div className="bg-[#708238]/10 text-[#708238] p-2 rounded-lg mr-3">
         <FaGraduationCap />
       </div>
       <div>
@@ -310,7 +310,7 @@ function EducationItem({ degree, institution, year }) {
 function CertificationItem({ title, issuer, year }) {
   return (
     <div className="flex items-start">
-      <div className="bg-blue-50 text-blue-500 p-2 rounded-lg mr-3">
+      <div className="bg-[#708238]/10 text-[#708238] p-2 rounded-lg mr-3">
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>

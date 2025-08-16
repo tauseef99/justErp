@@ -3,8 +3,7 @@ import { Link } from "react-router-dom";
 import { FiBell, FiMail, FiSearch, FiHelpCircle } from "react-icons/fi";
 import { FaHome, FaBoxOpen, FaEnvelope, FaUser, FaStar, FaStore } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
-import logo from '../../Assets/images/logo.jpeg';
-import BuyerMessages from './BuyerMessages';
+import logo from '../../Assets/images/logo-2.jpeg';
 
 export default function BuyerNavbar() {
   const [showNotifications, setShowNotifications] = useState(false);
@@ -25,18 +24,19 @@ export default function BuyerNavbar() {
   };
 
   return (
-    <nav className="bg-white border-b border-gray-200 px-4 py-3 shadow-sm flex justify-between items-center sticky top-0 z-50">
-      
+    <nav 
+      className="border-b border-[#5a6a2d] px-4 py-3 shadow-sm flex justify-between items-center sticky top-0 z-50"
+      style={{ backgroundColor: '#708238' }}
+    >
       {/* Left - Logo and Search */}
       <div className="flex items-center gap-6 w-full max-w-6xl mx-auto">
         {/* Minimal Logo */}
         <Link to="/buyer/dashboard" className="min-w-[100px]">
-  <img src={logo} alt="Logo" className="h-10 w-auto rounded object-cover" />
-</Link>
-
+          <img src={logo} alt="Logo" className="h-10 w-auto rounded object-cover" />
+        </Link>
 
         {/* Search Bar */}
-        <div className="hidden md:flex items-center bg-gray-100 rounded-md px-4 py-2 flex-1 max-w-xl">
+        {/* <div className="hidden md:flex items-center bg-white rounded-md px-4 py-2 flex-1 max-w-xl">
           <FiSearch className="text-gray-500 mr-2" />
           <input 
             type="text" 
@@ -45,31 +45,31 @@ export default function BuyerNavbar() {
             placeholder="What service are you looking for today?" 
             className="bg-transparent border-none outline-none w-full text-sm placeholder-gray-500"
           />
-        </div>
+        </div> */}
 
         {/* Right Side Navigation */}
         <div className="flex items-center gap-4 ml-auto">
           {/* Navigation Links - Hidden on mobile */}
-          <ul className="hidden lg:flex gap-6 text-gray-600 text-sm font-medium">
+          <ul className="hidden lg:flex gap-6 text-white text-sm font-medium">
             <Link to="/buyer/dashboard">
-              <li className="hover:text-green-500 cursor-pointer transition-colors">
+              <li className="hover:text-[#FFA500] cursor-pointer transition-colors">
                 Home
               </li>
             </Link>
             <Link to="/buyer/orders">
-              <li className="hover:text-green-500 cursor-pointer transition-colors">
+              <li className="hover:text-[#FFA500] cursor-pointer transition-colors">
                 Orders
               </li>
             </Link>
             <Link to="/buyer/messages">
-              <li className="hover:text-green-500 cursor-pointer transition-colors">
+              <li className="hover:text-[#FFA500] cursor-pointer transition-colors">
                 Messages
               </li>
             </Link>
           </ul>
 
           {/* Become a Seller - Hidden on mobile */}
-          <Link to="/seller/dashboard" className="hidden md:flex items-center gap-1 text-sm font-medium text-gray-600 hover:text-green-500 transition-colors">
+          <Link to="/seller/dashboard" className="hidden md:flex items-center gap-1 text-sm font-medium text-white hover:text-[#FFA500] transition-colors">
             <FaStore className="text-sm" /> Switch to Selling
           </Link>
 
@@ -77,18 +77,18 @@ export default function BuyerNavbar() {
           <div className="relative">
             <button 
               onClick={() => toggleDropdown('notifications')} 
-              className="relative focus:outline-none p-2 hover:bg-gray-100 rounded-full"
+              className="relative focus:outline-none p-2 hover:bg-[#5a6a2d] rounded-full"
             >
-              <FiBell className="w-5 h-5 text-gray-600 hover:text-green-500" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-green-500 rounded-full"></span>
+              <FiBell className="w-5 h-5 text-white hover:text-[#FFA500]" />
+              <span className="absolute top-1 right-1 w-2 h-2 bg-[#FFA500] rounded-full"></span>
             </button>
           </div>
 
           {/* Mail Icon */}
           <Link to="/buyer/messages">
-            <button className="relative group p-2 hover:bg-gray-100 rounded-full">
-              <FiMail className="w-5 h-5 text-gray-600 group-hover:text-green-500" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-green-500 rounded-full"></span>
+            <button className="relative group p-2 hover:bg-[#5a6a2d] rounded-full">
+              <FiMail className="w-5 h-5 text-white group-hover:text-[#FFA500]" />
+              <span className="absolute top-1 right-1 w-2 h-2 bg-[#FFA500] rounded-full"></span>
             </button>
           </Link>
 
@@ -101,25 +101,25 @@ export default function BuyerNavbar() {
               <img
                 src="https://static.vecteezy.com/system/resources/thumbnails/005/346/410/small_2x/close-up-portrait-of-smiling-handsome-young-caucasian-man-face-looking-at-camera-on-isolated-light-gray-studio-background-photo.jpg"
                 alt="User"
-                className="w-8 h-8 rounded-full object-cover border border-gray-200"
+                className="w-8 h-8 rounded-full object-cover border border-white"
               />
-              <IoIosArrowDown className={`text-gray-500 text-xs transition-transform ${showProfileMenu ? 'transform rotate-180' : ''}`} />
+              <IoIosArrowDown className={`text-white text-xs transition-transform ${showProfileMenu ? 'transform rotate-180' : ''}`} />
             </button>
 
             {showProfileMenu && (
               <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50">
                 <ul className="py-1">
-                  <li className="px-4 py-2 hover:bg-gray-50 text-sm text-gray-700 cursor-pointer flex items-center gap-2">
+                  <li className="px-4 py-2 hover:bg-gray-50 text-sm text-gray-700 cursor-pointer flex items-center gap-2 hover:text-[#FFA500]">
                     <FaUser className="text-gray-500" /> Profile
                   </li>
-                  <li className="px-4 py-2 hover:bg-gray-50 text-sm text-gray-700 cursor-pointer flex items-center gap-2">
+                  <li className="px-4 py-2 hover:bg-gray-50 text-sm text-gray-700 cursor-pointer flex items-center gap-2 hover:text-[#FFA500]">
                     <FaBoxOpen className="text-gray-500" /> Orders
                   </li>
-                  <li className="px-4 py-2 hover:bg-gray-50 text-sm text-gray-700 cursor-pointer flex items-center gap-2">
+                  <li className="px-4 py-2 hover:bg-gray-50 text-sm text-gray-700 cursor-pointer flex items-center gap-2 hover:text-[#FFA500]">
                     <FaStar className="text-gray-500" /> Favorites
                   </li>
                   <div className="border-t my-1"></div>
-                  <li className="px-4 py-2 hover:bg-gray-50 text-sm text-gray-700 cursor-pointer">
+                  <li className="px-4 py-2 hover:bg-gray-50 text-sm text-gray-700 cursor-pointer hover:text-[#FFA500]">
                     Settings
                   </li>
                   <li className="px-4 py-2 hover:bg-gray-50 text-sm text-red-600 cursor-pointer">
@@ -134,8 +134,8 @@ export default function BuyerNavbar() {
 
       {/* Mobile Search - Hidden on desktop */}
       <div className="md:hidden ml-2">
-        <button className="p-2 hover:bg-gray-100 rounded-full">
-          <FiSearch className="w-5 h-5 text-gray-600" />
+        <button className="p-2 hover:bg-[#5a6a2d] rounded-full">
+          <FiSearch className="w-5 h-5 text-white" />
         </button>
       </div>
 
@@ -144,13 +144,13 @@ export default function BuyerNavbar() {
         <div className="absolute right-4 top-16 mt-2 w-80 bg-white border border-gray-200 rounded-md shadow-lg z-50">
           <div className="p-3 border-b font-semibold text-gray-700 flex justify-between items-center">
             <span>Notifications</span>
-            <button className="text-xs text-green-500 hover:underline">Mark all as read</button>
+            <button className="text-xs text-[#FFA500] hover:underline">Mark all as read</button>
           </div>
           <ul className="max-h-60 overflow-y-auto">
             <li className="px-3 py-3 hover:bg-gray-50 text-sm text-gray-700 cursor-pointer border-b">
               <div className="flex items-start gap-2">
-                <div className="bg-green-100 p-2 rounded-full">
-                  <FiBell className="text-green-500" />
+                <div className="bg-[#708238]/10 p-2 rounded-full">
+                  <FiBell className="text-[#708238]" />
                 </div>
                 <div>
                   <p className="font-medium">New offer received!</p>
@@ -160,8 +160,8 @@ export default function BuyerNavbar() {
             </li>
             <li className="px-3 py-3 hover:bg-gray-50 text-sm text-gray-700 cursor-pointer border-b">
               <div className="flex items-start gap-2">
-                <div className="bg-blue-100 p-2 rounded-full">
-                  <FiMail className="text-blue-500" />
+                <div className="bg-[#FFA500]/10 p-2 rounded-full">
+                  <FiMail className="text-[#FFA500]" />
                 </div>
                 <div>
                   <p className="font-medium">You have a new message</p>
@@ -181,7 +181,7 @@ export default function BuyerNavbar() {
               </div>
             </li>
           </ul>
-          <div className="px-4 py-2 text-center text-sm text-green-500 hover:underline cursor-pointer border-t">
+          <div className="px-4 py-2 text-center text-sm text-[#FFA500] hover:underline cursor-pointer border-t">
             View All Notifications
           </div>
         </div>

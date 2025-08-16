@@ -1,107 +1,6 @@
 import React, { useState } from "react";
-import { FaStar, FaTimes, FaUser, FaEnvelope, FaComment, FaPaperPlane, FaHeart, FaShoppingCart, FaSearch } from "react-icons/fa";
+import { FaStar, FaTimes, FaHeart, FaShoppingCart } from "react-icons/fa";
 import { Link } from "react-router-dom";
-const recentServices = [
-  {
-    id: 1,
-    title: "Inventory Dashboard Setup",
-    provider: "ERP Solutions Pro",
-    rating: 4.9,
-    reviews: 48,
-    price: 120,
-    delivery: "1 day",
-    img: "https://fiverr-res.cloudinary.com/t_gig_cards_web,q_auto,f_auto/gigs/282562225/original/6f38c5d851dcebf8718cab05c0e9416a898ad0ab.jpg",
-    description: "Professional ERP inventory dashboard setup with real-time tracking and analytics. Customizable to your business needs with seamless integration.",
-    tags: ["ERP", "Dashboard", "Analytics", "Inventory"]
-  },
-  {
-    id: 2,
-    title: "Sales & Invoicing Integration",
-    provider: "NextGen ERP",
-    rating: 5.0,
-    reviews: 32,
-    price: 150,
-    delivery: "2 days",
-    img: "https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/282512141/original/05ac3ede242c4774568b26922c3a5889a73e4597/automate-excel-with-macros-and-vba.png",
-    description: "Seamless integration of sales and invoicing systems into your ERP. Automate billing, track payments, and generate financial reports effortlessly.",
-    tags: ["Sales", "Invoicing", "Integration", "Automation"]
-  },
-  {
-    id: 3,
-    title: "Customer CRM Development",
-    provider: "CRM Experts",
-    rating: 4.8,
-    reviews: 27,
-    price: 110,
-    delivery: "3 days",
-    img: "https://fiverr-res.cloudinary.com/t_gig_cards_web,q_auto,f_auto/gigs/183271274/original/f7588b5f12d1b1beaa1fd53a43e76f54f7d988c5.png",
-    description: "Custom CRM solution tailored for your ERP system. Manage customer relationships, track interactions, and automate follow-ups.",
-    tags: ["CRM", "Customer", "Development", "Integration"]
-  },
-  {
-    id: 4,
-    title: "Warehouse Management Module",
-    provider: "WarehouseSoft",
-    rating: 5.0,
-    reviews: 21,
-    price: 100,
-    delivery: "4 days",
-    img: "https://fiverr-res.cloudinary.com/t_gig_cards_web,q_auto,f_auto/gigs/430593360/original/aad653ca444f92e02436633d7d72cdff46f888cc.png",
-    description: "Comprehensive warehouse management module for your ERP. Track inventory, manage shipments, and optimize storage space.",
-    tags: ["Warehouse", "Inventory", "Management", "Logistics"]
-  },
-];
-
-const inspiredServices = [
-  {
-    id: 5,
-    title: "HR & Payroll Automation",
-    provider: "SmartERP HR",
-    rating: 4.7,
-    reviews: 39,
-    price: 130,
-    delivery: "2 days",
-    img: "https://fiverr-res.cloudinary.com/t_gig_cards_web,q_auto,f_auto/gigs/106371679/original/f2d110667a924518aad3e8eb58895089885df3db.jpg",
-    description: "Automate HR processes and payroll management with our ERP solution. Handle employee data, attendance, and salary processing efficiently.",
-    tags: ["HR", "Payroll", "Automation", "Management"]
-  },
-  {
-    id: 6,
-    title: "Vendor Portal Integration",
-    provider: "ERP Gateway",
-    rating: 4.9,
-    reviews: 22,
-    price: 95,
-    delivery: "1 day",
-    img: "https://fiverr-res.cloudinary.com/t_gig_cards_web,q_auto,f_auto/gigs/412787028/original/2f0a82655996dad9f99a482fb4cc12d3f4b776f2.jpg",
-    description: "Connect with your vendors through a dedicated portal integrated with your ERP. Streamline procurement and vendor communications.",
-    tags: ["Vendor", "Portal", "Integration", "Procurement"]
-  },
-  {
-    id: 7,
-    title: "Advanced Reporting Setup",
-    provider: "ERP Insights",
-    rating: 5.0,
-    reviews: 30,
-    price: 145,
-    delivery: "3 days",
-    img: "https://fiverr-res.cloudinary.com/t_gig_cards_web,q_auto,f_auto/gigs/393706220/original/07162045d4d1cbb35f45a1de9be2c9d10ccec11f.jpg",
-    description: "Create powerful custom reports for your ERP system. Visualize data, track KPIs, and make informed business decisions.",
-    tags: ["Reporting", "Analytics", "Dashboard", "Business Intelligence"]
-  },
-  {
-    id: 8,
-    title: "Multi-Branch Inventory Sync",
-    provider: "BranchSync Tech",
-    rating: 4.6,
-    reviews: 18,
-    price: 125,
-    delivery: "2 days",
-    img: "https://fiverr-res.cloudinary.com/t_gig_cards_web,q_auto,f_auto/gigs/388330322/original/b541f81d01dd1fe857c2cfa5ee4cfb5c65fc6f20.png",
-    description: "Synchronize inventory across multiple branches in real-time. Prevent stockouts and optimize inventory distribution.",
-    tags: ["Inventory", "Multi-branch", "Sync", "Real-time"]
-  },
-];
 
 const ServiceCard = ({ item, onClick }) => (
   <div 
@@ -111,13 +10,13 @@ const ServiceCard = ({ item, onClick }) => (
     <div className="relative">
       <img src={item.img} alt={item.title} className="w-full h-44 object-cover" />
       <button className="absolute top-2 right-2 bg-white rounded-full p-2 shadow-md hover:bg-gray-100">
-        <FaHeart className="text-gray-500 hover:text-red-500" />
+        <FaHeart className="text-gray-500 hover:text-[#FFA500]" />
       </button>
     </div>
     <div className="p-4">
       <div className="flex items-start">
         <div className="flex-1">
-          <h3 className="text-base font-medium text-gray-800 leading-tight mb-1 hover:text-green-600 transition-colors duration-200">
+          <h3 className="text-base font-medium text-gray-800 leading-tight mb-1 hover:text-[#708238] transition-colors duration-200">
             {item.title}
           </h3>
           <p className="text-sm text-gray-500 mb-1">{item.provider}</p>
@@ -126,9 +25,9 @@ const ServiceCard = ({ item, onClick }) => (
           <p className="text-sm font-semibold text-gray-800">From ${item.price}</p>
         </div>
       </div>
-      <div className="flex items-center text-yellow-500 text-xs mb-1">
+      <div className="flex items-center text-[#FFA500] text-xs mb-1">
         {Array.from({ length: 5 }, (_, i) => (
-          <FaStar key={i} className={i < Math.floor(item.rating) ? "text-yellow-400" : "text-gray-300"} />
+          <FaStar key={i} className={i < Math.floor(item.rating) ? "text-[#FFA500]" : "text-gray-300"} />
         ))}
         <span className="text-gray-600 ml-2">({item.reviews})</span>
       </div>
@@ -214,25 +113,25 @@ const GigModal = ({ gig, onClose }) => {
                 <div className="mb-6">
                   <ul className="space-y-3 text-sm text-gray-600">
                     <li className="flex items-start">
-                      <span className="text-green-500 mr-2 mt-1">✓</span>
+                      <span className="text-[#708238] mr-2 mt-1">✓</span>
                       <span>Custom ERP solution setup</span>
                     </li>
                     <li className="flex items-start">
-                      <span className="text-green-500 mr-2 mt-1">✓</span>
+                      <span className="text-[#708238] mr-2 mt-1">✓</span>
                       <span>Basic configuration</span>
                     </li>
                     <li className="flex items-start">
-                      <span className="text-green-500 mr-2 mt-1">✓</span>
+                      <span className="text-[#708238] mr-2 mt-1">✓</span>
                       <span>1 round of revisions</span>
                     </li>
                     <li className="flex items-start">
-                      <span className="text-green-500 mr-2 mt-1">✓</span>
+                      <span className="text-[#708238] mr-2 mt-1">✓</span>
                       <span>Documentation provided</span>
                     </li>
                   </ul>
                 </div>
                 
-                <button className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-colors duration-300 mb-4 flex items-center justify-center">
+                <button className="w-full bg-[#708238] hover:bg-[#5a6a2d] text-white font-bold py-3 rounded-lg transition-colors duration-300 mb-4 flex items-center justify-center">
                   <FaShoppingCart className="mr-2" />
                   Continue (${gig.price})
                 </button>
@@ -240,9 +139,6 @@ const GigModal = ({ gig, onClose }) => {
                 <div className="text-center mb-4">
                   <p className="text-gray-500 text-sm">or</p>
                 </div>
-                
-                {/* Contact Form */}
-                
               </div>
               
               <div className="mt-6 bg-gray-50 p-4 rounded-xl">
@@ -251,16 +147,16 @@ const GigModal = ({ gig, onClose }) => {
                   <div className="ml-4">
                     <p className="font-semibold text-gray-800">{gig.provider}</p>
                     <div className="flex items-center mt-1">
-                      <div className="flex text-yellow-500 mr-2">
+                      <div className="flex text-[#FFA500] mr-2">
                         {Array.from({ length: 5 }, (_, i) => (
-                          <FaStar key={i} className={i < Math.floor(gig.rating) ? "text-yellow-400" : "text-gray-300"} size={14} />
+                          <FaStar key={i} className={i < Math.floor(gig.rating) ? "text-[#FFA500]" : "text-gray-300"} size={14} />
                         ))}
                       </div>
                       <span className="text-gray-600 text-sm">({gig.reviews} reviews)</span>
                     </div>
                   </div>
                 </div>
-                <button className="w-full border border-green-600 text-green-600 hover:bg-green-50 font-medium py-2 rounded-lg transition-colors duration-300">
+                <button className="w-full border border-[#708238] text-[#708238] hover:bg-[#708238]/10 font-medium py-2 rounded-lg transition-colors duration-300">
                   Contact Me
                 </button>
               </div>
@@ -275,6 +171,108 @@ const GigModal = ({ gig, onClose }) => {
 export default function BuyerDashboard() {
   const [selectedGig, setSelectedGig] = useState(null);
   
+  const recentServices = [
+    {
+      id: 1,
+      title: "Inventory Dashboard Setup",
+      provider: "ERP Solutions Pro",
+      rating: 4.9,
+      reviews: 48,
+      price: 120,
+      delivery: "1 day",
+      img: "https://fiverr-res.cloudinary.com/t_gig_cards_web,q_auto,f_auto/gigs/282562225/original/6f38c5d851dcebf8718cab05c0e9416a898ad0ab.jpg",
+      description: "Professional ERP inventory dashboard setup with real-time tracking and analytics. Customizable to your business needs with seamless integration.",
+      tags: ["ERP", "Dashboard", "Analytics", "Inventory"]
+    },
+    {
+      id: 2,
+      title: "Sales & Invoicing Integration",
+      provider: "NextGen ERP",
+      rating: 5.0,
+      reviews: 32,
+      price: 150,
+      delivery: "2 days",
+      img: "https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/282512141/original/05ac3ede242c4774568b26922c3a5889a73e4597/automate-excel-with-macros-and-vba.png",
+      description: "Seamless integration of sales and invoicing systems into your ERP. Automate billing, track payments, and generate financial reports effortlessly.",
+      tags: ["Sales", "Invoicing", "Integration", "Automation"]
+    },
+    {
+      id: 3,
+      title: "Customer CRM Development",
+      provider: "CRM Experts",
+      rating: 4.8,
+      reviews: 27,
+      price: 110,
+      delivery: "3 days",
+      img: "https://fiverr-res.cloudinary.com/t_gig_cards_web,q_auto,f_auto/gigs/183271274/original/f7588b5f12d1b1beaa1fd53a43e76f54f7d988c5.png",
+      description: "Custom CRM solution tailored for your ERP system. Manage customer relationships, track interactions, and automate follow-ups.",
+      tags: ["CRM", "Customer", "Development", "Integration"]
+    },
+    {
+      id: 4,
+      title: "Warehouse Management Module",
+      provider: "WarehouseSoft",
+      rating: 5.0,
+      reviews: 21,
+      price: 100,
+      delivery: "4 days",
+      img: "https://fiverr-res.cloudinary.com/t_gig_cards_web,q_auto,f_auto/gigs/430593360/original/aad653ca444f92e02436633d7d72cdff46f888cc.png",
+      description: "Comprehensive warehouse management module for your ERP. Track inventory, manage shipments, and optimize storage space.",
+      tags: ["Warehouse", "Inventory", "Management", "Logistics"]
+    },
+  ];
+
+  const inspiredServices = [
+    {
+      id: 5,
+      title: "HR & Payroll Automation",
+      provider: "SmartERP HR",
+      rating: 4.7,
+      reviews: 39,
+      price: 130,
+      delivery: "2 days",
+      img: "https://fiverr-res.cloudinary.com/t_gig_cards_web,q_auto,f_auto/gigs/106371679/original/f2d110667a924518aad3e8eb58895089885df3db.jpg",
+      description: "Automate HR processes and payroll management with our ERP solution. Handle employee data, attendance, and salary processing efficiently.",
+      tags: ["HR", "Payroll", "Automation", "Management"]
+    },
+    {
+      id: 6,
+      title: "Vendor Portal Integration",
+      provider: "ERP Gateway",
+      rating: 4.9,
+      reviews: 22,
+      price: 95,
+      delivery: "1 day",
+      img: "https://fiverr-res.cloudinary.com/t_gig_cards_web,q_auto,f_auto/gigs/412787028/original/2f0a82655996dad9f99a482fb4cc12d3f4b776f2.jpg",
+      description: "Connect with your vendors through a dedicated portal integrated with your ERP. Streamline procurement and vendor communications.",
+      tags: ["Vendor", "Portal", "Integration", "Procurement"]
+    },
+    {
+      id: 7,
+      title: "Advanced Reporting Setup",
+      provider: "ERP Insights",
+      rating: 5.0,
+      reviews: 30,
+      price: 145,
+      delivery: "3 days",
+      img: "https://fiverr-res.cloudinary.com/t_gig_cards_web,q_auto,f_auto/gigs/393706220/original/07162045d4d1cbb35f45a1de9be2c9d10ccec11f.jpg",
+      description: "Create powerful custom reports for your ERP system. Visualize data, track KPIs, and make informed business decisions.",
+      tags: ["Reporting", "Analytics", "Dashboard", "Business Intelligence"]
+    },
+    {
+      id: 8,
+      title: "Multi-Branch Inventory Sync",
+      provider: "BranchSync Tech",
+      rating: 4.6,
+      reviews: 18,
+      price: 125,
+      delivery: "2 days",
+      img: "https://fiverr-res.cloudinary.com/t_gig_cards_web,q_auto,f_auto/gigs/388330322/original/b541f81d01dd1fe857c2cfa5ee4cfb5c65fc6f20.png",
+      description: "Synchronize inventory across multiple branches in real-time. Prevent stockouts and optimize inventory distribution.",
+      tags: ["Inventory", "Multi-branch", "Sync", "Real-time"]
+    },
+  ];
+
   const handleGigClick = (gig) => {
     setSelectedGig(gig);
   };
@@ -285,44 +283,11 @@ export default function BuyerDashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans">
-      {/* Header */}
-      {/* <header className="bg-white shadow-sm">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center">
-              <div className="text-2xl font-bold text-green-600">ERP<span className="text-gray-800">Market</span></div>
-              <nav className="ml-10 hidden md:flex space-x-8">
-                <a href="#" className="text-gray-600 hover:text-green-600 font-medium">Dashboard</a>
-                <a href="#" className="text-gray-600 hover:text-green-600 font-medium">Explore</a>
-                <a href="#" className="text-gray-600 hover:text-green-600 font-medium">My Orders</a>
-                <a href="#" className="text-gray-600 hover:text-green-600 font-medium">Messages</a>
-              </nav>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="relative hidden md:block">
-                <input 
-                  type="text" 
-                  placeholder="Find services..." 
-                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500"
-                />
-                <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              </div>
-              <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors">
-                Post a Request
-              </button>
-              <div className="w-10 h-10 rounded-full bg-gray-200 border-2 border-dashed"></div>
-            </div>
-          </div>
-        </div>
-      </header> */}
-
-      {/* Dashboard Content */}
       <div className="container mx-auto px-4 py-8">
-        {/* Gig Modal */}
         <GigModal gig={selectedGig} onClose={closeModal} />
 
         {/* Welcome Section */}
-        <div className="relative bg-gradient-to-r from-green-50 to-blue-50 rounded-3xl shadow-md p-8 mb-12 overflow-hidden border border-white">
+        <div className="relative bg-gradient-to-r from-[#708238]/10 to-[#FFA500]/10 rounded-3xl shadow-md p-8 mb-12 overflow-hidden border border-white">
           <div className="relative z-10">
             <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-6">
               👋 Welcome back, Abdul Raziq
@@ -331,8 +296,8 @@ export default function BuyerDashboard() {
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-gray-700">
               {/* Card 1 */}
-              <div className="group bg-white rounded-2xl p-5 shadow-md hover:shadow-xl transition-all duration-300 flex items-start gap-4 border border-gray-100 hover:border-green-200">
-                <div className="bg-green-50 text-green-600 p-3 rounded-full shadow-sm group-hover:bg-green-100 transition">
+              <div className="group bg-white rounded-2xl p-5 shadow-md hover:shadow-xl transition-all duration-300 flex items-start gap-4 border border-gray-100 hover:border-[#708238]/30">
+                <div className="bg-[#708238]/10 text-[#708238] p-3 rounded-full shadow-sm group-hover:bg-[#708238]/20 transition">
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                     <path d="M12 20h9"></path>
                     <path d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4L16.5 3.5z"></path>
@@ -345,8 +310,8 @@ export default function BuyerDashboard() {
               </div>
 
               {/* Card 2 */}
-              <div className="group bg-white rounded-2xl p-5 shadow-md hover:shadow-xl transition-all duration-300 flex items-start gap-4 border border-gray-100 hover:border-blue-200">
-                <div className="bg-blue-50 text-blue-600 p-3 rounded-full shadow-sm group-hover:bg-blue-100 transition">
+              <div className="group bg-white rounded-2xl p-5 shadow-md hover:shadow-xl transition-all duration-300 flex items-start gap-4 border border-gray-100 hover:border-[#FFA500]/30">
+                <div className="bg-[#FFA500]/10 text-[#FFA500] p-3 rounded-full shadow-sm group-hover:bg-[#FFA500]/20 transition">
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                     <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h12a2 2 0 012 2z"></path>
                   </svg>
@@ -358,8 +323,8 @@ export default function BuyerDashboard() {
               </div>
 
               {/* Card 3 */}
-              <div className="group bg-white rounded-2xl p-5 shadow-md hover:shadow-xl transition-all duration-300 flex items-start gap-4 border border-gray-100 hover:border-purple-200">
-                <div className="bg-purple-50 text-purple-600 p-3 rounded-full shadow-sm group-hover:bg-purple-100 transition">
+              <div className="group bg-white rounded-2xl p-5 shadow-md hover:shadow-xl transition-all duration-300 flex items-start gap-4 border border-gray-100 hover:border-[#708238]/30">
+                <div className="bg-[#708238]/10 text-[#708238] p-3 rounded-full shadow-sm group-hover:bg-[#708238]/20 transition">
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                     <path d="M3 4a1 1 0 011-1h16a1 1 0 011 1v16l-4-4H4a1 1 0 01-1-1V4z"></path>
                   </svg>
@@ -386,7 +351,7 @@ export default function BuyerDashboard() {
         <section className="mb-12">
           <div className="flex justify-between items-center mb-5">
             <h2 className="text-2xl font-bold text-gray-900">Pick up where you left off</h2>
-            <Link className="text-green-600 hover:text-green-800 font-medium text-sm">See all</Link>
+            <Link className="text-[#708238] hover:text-[#5a6a2d] font-medium text-sm">See all</Link>
           </div>
           <div className="flex overflow-x-auto gap-6 scrollbar-hide pb-2">
             {recentServices.map((item) => (
@@ -399,7 +364,7 @@ export default function BuyerDashboard() {
         <section className="mb-12">
           <div className="flex justify-between items-center mb-5">
             <h2 className="text-2xl font-bold text-gray-900">Inspired by your ERP usage</h2>
-            <Link className="text-green-600 hover:text-green-800 font-medium text-sm">See all</Link>
+            <Link className="text-[#708238] hover:text-[#5a6a2d] font-medium text-sm">See all</Link>
           </div>
           <div className="flex overflow-x-auto gap-6 scrollbar-hide pb-2">
             {inspiredServices.map((item) => (
@@ -412,7 +377,7 @@ export default function BuyerDashboard() {
         <section className="mb-12">
           <div className="flex justify-between items-center mb-5">
             <h2 className="text-2xl font-bold text-gray-900">Top-rated ERP Experts</h2>
-            <Link className="text-green-600 hover:text-green-800 font-medium text-sm">See all</Link>
+            <Link className="text-[#708238] hover:text-[#5a6a2d] font-medium text-sm">See all</Link>
           </div>
           <div className="flex overflow-x-auto gap-6 scrollbar-hide pb-2">
             {[
@@ -474,7 +439,7 @@ export default function BuyerDashboard() {
         <section className="mb-12">
           <div className="flex justify-between items-center mb-5">
             <h2 className="text-2xl font-bold text-gray-900">Automations You May Need</h2>
-            <Link className="text-green-600 hover:text-green-800 font-medium text-sm">See all</Link>
+            <Link className="text-[#708238] hover:text-[#5a6a2d] font-medium text-sm">See all</Link>
           </div>
           <div className="flex overflow-x-auto gap-6 scrollbar-hide pb-2">
             {[
