@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../Assets/images/logo.jpeg";
+import logo from "../Assets/images/logo-2.jpeg";
 import {
   FaFacebookF,
   FaTwitter,
@@ -122,9 +122,9 @@ const Footer = () => {
               <p>English</p>
             </div>
 
-            <div className="flex items-center cursor-pointer gap-2 hover:text-[#1dbf73] text-gray-500 font-semibold">
+            {/* <div className="flex items-center cursor-pointer gap-2 hover:text-[#1dbf73] text-gray-500 font-semibold">
               <span>PKR</span>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

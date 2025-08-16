@@ -1,6 +1,25 @@
 import React, { useRef } from "react";
-import { SiSap, SiOracle, SiSage, SiSalesforce } from "react-icons/si";
-import { FaMicrosoft, FaCog, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { 
+  SiSap, 
+  SiOracle, 
+  SiSage, 
+  SiSalesforce,
+  SiWorkplace,  
+  SiNetapp,  
+  SiOpenai,   
+} from "react-icons/si";
+
+import { 
+  FaMicrosoft, 
+  FaCog, 
+  FaChevronLeft, 
+  FaChevronRight, 
+  FaPeopleCarry  
+} from "react-icons/fa";
+
+import { GiGears } from "react-icons/gi";
+
+
 
 const platforms = [
   { name: "SAP", icon: <SiSap className="text-green-800 text-6xl mx-auto" /> },
@@ -9,6 +28,12 @@ const platforms = [
   { name: "Sage", icon: <SiSage className="text-green-600 text-6xl mx-auto" /> },
   { name: "Infor", icon: <FaCog className="text-gray-600 text-6xl mx-auto" /> },
   { name: "Salesforce", icon: <SiSalesforce className="text-sky-600 text-6xl mx-auto" /> },
+  { name: "Workday", icon: <SiWorkplace className="text-indigo-600 text-6xl mx-auto" /> },
+  { name: "NetSuite", icon: <SiNetapp className="text-blue-400 text-6xl mx-auto" /> },
+  { name: "Epicor", icon: <GiGears className="text-orange-500 text-6xl mx-auto" /> },
+  { name: "JD Edwards", icon: <FaCog className="text-red-500 text-6xl mx-auto" /> },
+  { name: "PeopleSoft", icon: <FaPeopleCarry className="text-purple-600 text-6xl mx-auto" /> },
+  { name: "Odoo", icon: <SiOpenai className="text-pink-600 text-6xl mx-auto" /> },
 ];
 
 function Popularservices() {
@@ -50,17 +75,18 @@ function Popularservices() {
         className="mt-10 flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth"
       >
         {platforms.map((platform, index) => (
-          <div
-            key={index}
-            className="min-w-[200px] bg-[#003912] rounded-2xl text-center pt-4 hover:bg-orange-500 cursor-pointer transition-colors"
-          >
-            <h3 className="text-white font-semibold text-xl pt-4">
-              {platform.name}
-            </h3>
-            <div className="bg-white m-4 rounded-2xl mt-6 py-8 flex justify-center items-center">
-              {platform.icon}
-            </div>
-          </div>
+         <div
+         key={index}
+         className="min-w-[160px] bg-[#708238] rounded-2xl text-center pt-4 hover:bg-[#FFA500] cursor-pointer transition-colors"
+       >
+         <h3 className="text-white font-semibold text-lg pt-4">
+           {platform.name}
+         </h3>
+         <div className="bg-white m-4 rounded-2xl mt-6 py-6 flex justify-center items-center">
+           {platform.icon}
+         </div>
+       </div>
+       
         ))}
       </div>
     </div>

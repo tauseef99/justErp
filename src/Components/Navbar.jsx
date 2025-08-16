@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import logo from "../Assets/images/logo.jpeg";
+import logo from "../Assets/images/logo-2.jpeg";
 import SignInForm from "../Components/SignIn";
 import { FaChevronRight, FaSearch, FaBars, FaTimes } from "react-icons/fa";
 import { FaChevronDown } from "react-icons/fa";
@@ -10,6 +10,22 @@ import Modal from "./Modal";
 
 const subNavItems = [
   "Trending 🔥",
+  "S4/HANA Upgrade",
+  "SAP ABAP",
+  "S4/HANA Public Cloud",
+  "ERP Migration",
+  "NetSuite Customization",
+  "SAP BASIS",
+  "Crystal Reports",
+  "MS365",
+  "MS Dynamics",
+  "ERP Upgrade",
+  "BI/ BO",
+  "Customize Reports",
+  "Cloud Migration",
+  "Oracle EBS",
+  "Infor",
+  "Acumatica",
   "Graphics & Design",
   "Programming & Tech",
   "Digital Marketing",
@@ -19,6 +35,7 @@ const subNavItems = [
   "Business",
   "Finance",
 ];
+
 
 function Navbar() {
   const [isSticky, setIsSticky] = useState(false);
@@ -69,34 +86,34 @@ function Navbar() {
       
           {/* Desktop Nav Items */}
           <div className="hidden lg:flex gap-2 xl:gap-6 font-semibold items-center text-[#62646A] text-sm xl:text-[15px]">
-            <div className="flex items-center gap-2">
-              <p className="text-[#62646A]">Our Story</p>
-           <FaChevronDown className="text-sm" />
-            </div>
-            <div className="flex items-center gap-2">
-              <p>About</p>
-              {/* <FaChevronDown className="text-sm" /> */}
-            </div>
-            <div className="flex items-center gap-2">
-              <TfiWorld className="text-md" />
-              <p>EN</p>
-            </div>
-            <p>Want to be a Seller</p>
-            <p
-              onClick={() => setShowSignInModal(true)}
-              className="cursor-pointer"
-            >
-              Sign in
-            </p>
+  <div className="flex items-center gap-2">
+    <p className="cursor-pointer">About</p>
+    {/* <FaChevronDown className="text-sm" /> */}
+  </div>
+  <div className="flex items-center gap-2">
+    <p className="text-[#62646A] cursor-pointer">Our Story</p>
+    {/* <FaChevronDown className="text-sm" /> */}
+  </div>
+  <div className="flex items-center gap-2 cursor-pointer">
+    <TfiWorld className="text-md" />
+    <p>EN</p>
+  </div>
+  <p className="cursor-pointer">Want to be a Seller</p>
+  <p
+    onClick={() => setShowSignInModal(true)}
+    className="cursor-pointer"
+  >
+    Sign in
+  </p>
 
-            <button
-  className="text-black border border-black rounded-md px-5 py-2 hover:bg-orange-500 hover:text-white transition-colors duration-300"
-  onClick={() => setShowSignInModal(true)}
->
-  Join
-</button>
+  <button
+    className="text-black border border-black rounded-md px-5 py-2 hover:bg-[#FFA500] hover:text-white transition-colors duration-300"
+    onClick={() => setShowSignInModal(true)}
+  >
+    Join
+  </button>
+</div>
 
-          </div>
 
           {/* Mobile Menu */}
           {isMenuOpen && (
@@ -124,30 +141,31 @@ function Navbar() {
 
         {isSticky && (
           <div className="sub-nav border-t border-b mt-2 py-2 bg-white">
-            <div className="flex items-center max-w-7xl mx-auto px-4">
-              <div
-                className="flex overflow-x-auto lg:gap-10 gap-4 scrollbar-hide text-[#62646A] whitespace-nowrap w-full"
-                ref={subNavRef}
-              >
-                {subNavItems.map((item, index) => (
-                  <p
-                    key={index}
-                    className="cursor-pointer flex-shrink-0"
-                    onClick={() => handleSubNavClick(item)}
-                  >
-                    {item}
-                  </p>
-                ))}
-              </div>
-              <button
-                onClick={handleChevronClick}
-                className="ml-2 text-gray-600 flex-shrink-0"
-                aria-label="Scroll right"
-              >
-                <FaChevronRight className="text-sm" />
-              </button>
+          <div className="flex items-center max-w-7xl mx-auto px-4">
+            <div
+              className="flex overflow-x-auto lg:gap-4 gap-2 scrollbar-hide text-[#62646A] whitespace-nowrap w-full"
+              ref={subNavRef}
+            >
+              {subNavItems.map((item, index) => (
+                <p
+                  key={index}
+                  className="cursor-pointer flex-shrink-0 px-4 py-1 bg-[#708238]/20 text-[#708238] rounded-lg hover:bg-[#a3b56b] hover:text-white transition-colors"
+                  onClick={() => handleSubNavClick(item)}
+                >
+                  {item}
+                </p>
+              ))}
             </div>
+            <button
+              onClick={handleChevronClick}
+              className="ml-2 text-gray-600 flex-shrink-0"
+              aria-label="Scroll right"
+            >
+              <FaChevronRight className="text-sm" />
+            </button>
           </div>
+        </div>
+        
         )}
       </div>
 
