@@ -28,9 +28,14 @@ export default function SellerNavbar() {
           {showMobileMenu ? <FiX size={24} /> : <FiMenu size={24} />}
         </button>
         
-        <Link to="/seller/dashboard" className="min-w-[100px]">
-          <img src={logo} alt="Logo" className="h-10 w-auto rounded object-cover" />
-        </Link>
+        <Link to="/seller/dashboard" className="min-w-[192px]">
+  <img
+    src={logo}
+    alt="Logo"
+    className="w-48 rounded-lg object-cover"
+  />
+</Link>
+
       </div>
 
       {/* Center - Navigation (Desktop) */}

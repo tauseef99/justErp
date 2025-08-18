@@ -31,9 +31,9 @@ export default function BuyerNavbar() {
       {/* Left - Logo and Search */}
       <div className="flex items-center gap-6 w-full max-w-6xl mx-auto">
         {/* Minimal Logo */}
-        <Link to="/buyer/dashboard" className="min-w-[100px]">
-          <img src={logo} alt="Logo" className="h-10 w-auto rounded object-cover" />
-        </Link>
+        <Link to="/buyer/dashboard" className="min-w-[160px]">
+  <img src={logo} alt="Logo" className="h-16 w-auto rounded object-contain" />
+</Link>
 
         {/* Search Bar */}
         {/* <div className="hidden md:flex items-center bg-white rounded-md px-4 py-2 flex-1 max-w-xl">

@@ -567,13 +567,14 @@ const AdminDashboard = () => {
     <div className="flex flex-col h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="flex justify-between items-center px-4 sm:px-6 py-4">
+        <div className=" bg-[#FFA500] flex justify-between items-center px-4 sm:px-6 py-4">
           <div className="flex items-center">
             <img
-              src={logo}
-              alt="JustERPs Logo"
-              className="h-10 w-auto mr-4 sm:mr-10 rounded"
-            />
+  src={logo}
+  alt="JustERPs Logo"
+  className="w-48 rounded-lg mr-4 sm:mr-10 object-cover"
+/>
+
             <div className="relative hidden md:block">
               <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
               <input
