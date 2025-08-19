@@ -567,7 +567,7 @@ const AdminDashboard = () => {
     <div className="flex flex-col h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className=" bg-[#FFA500] flex justify-between items-center px-4 sm:px-6 py-4">
+        <div className=" bg-[#708238] flex justify-between items-center px-4 sm:px-6 py-4">
           <div className="flex items-center">
             <img
   src={logo}
@@ -575,14 +575,26 @@ const AdminDashboard = () => {
   className="w-48 rounded-lg mr-4 sm:mr-10 object-cover"
 />
 
-            <div className="relative hidden md:block">
-              <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search..."
-                className="pl-10 pr-4 py-2 w-64 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#708238] focus:border-transparent"
-              />
-            </div>
+<div className="hidden md:flex items-center justify-between p-4 space-x-6">
+  {/* Title */}
+  <h1 className="text-3xl font-extrabold text-white tracking-wide drop-shadow-lg">
+    ADMIN DASHBOARD
+  </h1>
+
+  {/* Search Box */}
+  <div className="relative">
+    <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+    <input
+      type="text"
+      placeholder="Search..."
+      className="pl-10 pr-4 py-2 w-64 border border-gray-200 rounded-lg 
+                 focus:outline-none focus:ring-2 focus:ring-[#708238] focus:border-transparent"
+    />
+  </div>
+</div>
+
+
+
           </div>
           <div className="flex items-center space-x-3 sm:space-x-4">
             <button className="p-2 rounded-full hover:bg-gray-100 relative">
@@ -598,96 +610,101 @@ const AdminDashboard = () => {
 
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
-        <nav className="w-64 bg-white shadow-sm border-r border-gray-200 flex-shrink-0 hidden md:block">
-          <div className="p-4">
-            <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">MAIN NAVIGATION</div>
-            <ul className="space-y-1">
-              <li>
-                <button
-                  className={`w-full flex items-center px-4 py-3 rounded-lg ${
-                    activeTab === 'dashboard' 
-                      ? `bg-[${lightPrimary}] text-[${primaryColor}]` 
-                      : 'text-gray-600 hover:bg-gray-100'
-                  }`}
-                  onClick={() => setActiveTab('dashboard')}
-                >
-                  <FiHome className="mr-3" />
-                  Dashboard
-                </button>
-              </li>
-              <li>
-                <button
-                  className={`w-full flex items-center px-4 py-3 rounded-lg ${
-                    activeTab === 'users' 
-                      ? `bg-[${lightPrimary}] text-[${primaryColor}]` 
-                      : 'text-gray-600 hover:bg-gray-100'
-                  }`}
-                  onClick={() => setActiveTab('users')}
-                >
-                  <FiUsers className="mr-3" />
-                  User Management
-                </button>
-              </li>
-              <li>
-                <button
-                  className={`w-full flex items-center px-4 py-3 rounded-lg ${
-                    activeTab === 'orders' 
-                      ? `bg-[${lightPrimary}] text-[${primaryColor}]` 
-                      : 'text-gray-600 hover:bg-gray-100'
-                  }`}
-                  onClick={() => setActiveTab('orders')}
-                >
-                  <FiPackage className="mr-3" />
-                  Orders & Projects
-                </button>
-              </li>
-              <li>
-                <button
-                  className={`w-full flex items-center px-4 py-3 rounded-lg ${
-                    activeTab === 'performance' 
-                      ? `bg-[${lightPrimary}] text-[${primaryColor}]` 
-                      : 'text-gray-600 hover:bg-gray-100'
-                  }`}
-                  onClick={() => setActiveTab('performance')}
-                >
-                  <FiStar className="mr-3" />
-                  Seller Performance
-                </button>
-              </li>
-            </ul>
-            
-            <div className="mt-8">
-              <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">ADMIN</div>
-              <ul className="space-y-1">
-                <li>
-                  <button className="w-full flex items-center px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-100">
-                    <FiSettings className="mr-3" />
-                    Settings
-                  </button>
-                </li>
-                <li>
-                  <button 
-                    onClick={handleLogout}
-                    className="w-full flex items-center px-4 py-3 rounded-lg text-gray-600 hover:text-[#FFA500] transition-colors"
-                  >
-                    <FiLogOut className="mr-3" />
-                    Logout
-                  </button>
-                </li>
-              </ul>
-            </div>
-          </div>
-          
-          <div className="p-4 border-t border-gray-200 mt-auto">
-            <div className="text-center text-xs text-gray-500">
-              <div className="flex items-center justify-center mb-1">
-                <span className="h-2 w-2 rounded-full bg-green-500 mr-2"></span>
-                Platform Status: Operational
-              </div>
-              <div>v2.1.0</div>
-            </div>
-          </div>
-        </nav>
+        <nav className="w-64 bg-[#708238] shadow-sm text-white border-r border-gray-200 flex-shrink-0 hidden md:block">
+  <div className="p-4">
+    <div className="text-xs font-semibold text-white uppercase tracking-wider mb-4">
+      MAIN NAVIGATION
+    </div>
+    <ul className="space-y-1">
+      <li>
+        <button
+          className={`w-full flex items-center px-4 py-3 rounded-lg ${
+            activeTab === 'dashboard' 
+              ? `bg-[${lightPrimary}] text-[${primaryColor}]` 
+              : 'text-white hover:bg-white/20'
+          }`}
+          onClick={() => setActiveTab('dashboard')}
+        >
+          <FiHome className="mr-3" />
+          Dashboard
+        </button>
+      </li>
+      <li>
+        <button
+          className={`w-full flex items-center px-4 py-3 rounded-lg ${
+            activeTab === 'users' 
+              ? `bg-[${lightPrimary}] text-[${primaryColor}]` 
+              : 'text-white hover:bg-white/20'
+          }`}
+          onClick={() => setActiveTab('users')}
+        >
+          <FiUsers className="mr-3" />
+          User Management
+        </button>
+      </li>
+      <li>
+        <button
+          className={`w-full flex items-center px-4 py-3 rounded-lg ${
+            activeTab === 'orders' 
+              ? `bg-[${lightPrimary}] text-[${primaryColor}]` 
+              : 'text-white hover:bg-white/20'
+          }`}
+          onClick={() => setActiveTab('orders')}
+        >
+          <FiPackage className="mr-3" />
+          Orders & Projects
+        </button>
+      </li>
+      <li>
+        <button
+          className={`w-full flex items-center px-4 py-3 rounded-lg ${
+            activeTab === 'performance' 
+              ? `bg-[${lightPrimary}] text-[${primaryColor}]` 
+              : 'text-white hover:bg-white/20'
+          }`}
+          onClick={() => setActiveTab('performance')}
+        >
+          <FiStar className="mr-3" />
+          Seller Performance
+        </button>
+      </li>
+    </ul>
+    
+    <div className="mt-8">
+      <div className="text-xs font-semibold text-white uppercase tracking-wider mb-4">
+        ADMIN
+      </div>
+      <ul className="space-y-1">
+        <li>
+          <button className="w-full flex items-center px-4 py-3 rounded-lg text-white hover:bg-white/20">
+            <FiSettings className="mr-3" />
+            Settings
+          </button>
+        </li>
+        <li>
+          <button 
+            onClick={handleLogout}
+            className="w-full flex items-center px-4 py-3 rounded-lg text-white hover:text-[#FFA500] transition-colors"
+          >
+            <FiLogOut className="mr-3" />
+            Logout
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+  
+  <div className="p-4 border-t border-gray-200 mt-auto">
+    <div className="text-center text-xs text-white">
+      <div className="flex items-center justify-center mb-1">
+        <span className="h-2 w-2 rounded-full bg-green-500 mr-2"></span>
+        Platform Status: Operational
+      </div>
+      <div>v2.1.0</div>
+    </div>
+  </div>
+</nav>
+
 
         {/* Mobile Bottom Navigation */}
         <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around py-2">
