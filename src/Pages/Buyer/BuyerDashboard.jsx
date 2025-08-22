@@ -287,65 +287,66 @@ export default function BuyerDashboard() {
         <GigModal gig={selectedGig} onClose={closeModal} />
 
         {/* Welcome Section */}
-        <div className="relative bg-gradient-to-r from-[#708238]/10 to-[#FFA500]/10 rounded-3xl shadow-md p-8 mb-12 overflow-hidden border border-white">
-          <div className="relative z-10">
-            <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-6">
-              👋 Welcome back, Abdul Raziq
-            </h1>
+      <div className="relative bg-gradient-to-r from-[#708238]/10 to-[#FFA500]/10 rounded-3xl shadow-md p-8 mb-12 overflow-hidden border border-white">
+  <div className="relative z-10">
+    <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-6">
+      👋 Welcome back, Abdul Raziq
+    </h1>
 
-            {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-gray-700">
-              {/* Card 1 */}
-              <div className="group bg-white rounded-2xl p-5 shadow-md hover:shadow-xl transition-all duration-300 flex items-start gap-4 border border-gray-100 hover:border-[#708238]/30">
-                <div className="bg-[#708238]/10 text-[#708238] p-3 rounded-full shadow-sm group-hover:bg-[#708238]/20 transition">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <path d="M12 20h9"></path>
-                    <path d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-                  </svg>
-                </div>
-                <div>
-                  <p className="font-semibold text-base">Post a Project Brief</p>
-                  <p className="text-gray-500 text-xs">Get custom proposals from vetted professionals.</p>
-                </div>
-              </div>
-
-              {/* Card 2 */}
-              <div className="group bg-white rounded-2xl p-5 shadow-md hover:shadow-xl transition-all duration-300 flex items-start gap-4 border border-gray-100 hover:border-[#FFA500]/30">
-                <div className="bg-[#FFA500]/10 text-[#FFA500] p-3 rounded-full shadow-sm group-hover:bg-[#FFA500]/20 transition">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h12a2 2 0 012 2z"></path>
-                  </svg>
-                </div>
-                <div>
-                  <p className="font-semibold text-base">Reply to Kathy Ky</p>
-                  <p className="text-gray-500 text-xs">“I'll check and let you know” – 2 years ago</p>
-                </div>
-              </div>
-
-              {/* Card 3 */}
-              <div className="group bg-white rounded-2xl p-5 shadow-md hover:shadow-xl transition-all duration-300 flex items-start gap-4 border border-gray-100 hover:border-[#708238]/30">
-                <div className="bg-[#708238]/10 text-[#708238] p-3 rounded-full shadow-sm group-hover:bg-[#708238]/20 transition">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <path d="M3 4a1 1 0 011-1h16a1 1 0 011 1v16l-4-4H4a1 1 0 01-1-1V4z"></path>
-                  </svg>
-                </div>
-                <div>
-                  <p className="font-semibold text-base">Customize Your Experience</p>
-                  <p className="text-gray-500 text-xs">Tailor Fiverr to your business needs.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Decorative Element */}
-          <div className="absolute right-4 bottom-4 z-0 opacity-10 hidden md:block pointer-events-none">
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/1055/1055646.png"
-              alt="Decorative"
-              className="w-40 h-40 object-contain"
-            />
-          </div>
+    {/* Stats Cards */}
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-white-700">
+      {/* Card 1 */}
+      <div className="group bg-[#708238] rounded-2xl p-5 shadow-md hover:shadow-xl transition-all duration-300 flex items-start gap-4 border border-gray-100">
+        <div className="bg-[#FFA500]/90 text-[#FFFFFF] p-3 rounded-full shadow-sm">
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <path d="M12 20h9"></path>
+            <path d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+          </svg>
         </div>
+        <div>
+          <p className="font-semibold text-base">Post a Project Brief</p>
+          <p className="text-white-700 text-xs">Get custom proposals from vetted professionals.</p>
+        </div>
+      </div>
+
+      {/* Card 2 */}
+      <div className="group bg-[#708238] rounded-2xl p-5 shadow-md hover:shadow-xl transition-all duration-300 flex items-start gap-4 border border-gray-100">
+        <div className="bg-[#FFA500]/90 text-[#FFFFFF] p-3 rounded-full shadow-sm">
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h12a2 2 0 012 2z"></path>
+          </svg>
+        </div>
+        <div>
+          <p className="font-semibold text-base">Reply to Kathy Ky</p>
+          <p className="text-white-700 text-xs">“I'll check and let you know” – 2 years ago</p>
+        </div>
+      </div>
+
+      {/* Card 3 */}
+      <div className="group bg-[#708238] rounded-2xl p-5 shadow-md hover:shadow-xl transition-all duration-300 flex items-start gap-4 border border-gray-100">
+        <div className="bg-[#FFA500]/90 text-[#FFFFFF] p-3 rounded-full shadow-sm">
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <path d="M3 4a1 1 0 011-1h16a1 1 0 011 1v16l-4-4H4a1 1 0 01-1-1V4z"></path>
+          </svg>
+        </div>
+        <div>
+          <p className="font-semibold text-base">Customize Your Experience</p>
+          <p className="text-white-700 text-xs">Tailor Fiverr to your business needs.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {/* Decorative Element */}
+  <div className="absolute right-4 bottom-4 z-0 opacity-10 hidden md:block pointer-events-none">
+    <img
+      src="https://cdn-icons-png.flaticon.com/512/1055/1055646.png"
+      alt="Decorative"
+      className="w-40 h-40 object-contain"
+    />
+  </div>
+</div>
+
 
         {/* Section 1 */}
         <section className="mb-12">

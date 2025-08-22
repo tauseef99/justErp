@@ -121,19 +121,25 @@ const SellerDashboard = () => {
 
           {/* Stats Overview */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
-              <p className="text-gray-500 text-sm">Pending Orders</p>
-              <p className="text-2xl font-bold text-gray-800 mt-1">12</p>
-            </div>
-            <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
-              <p className="text-gray-500 text-sm">Messages</p>
-              <p className="text-2xl font-bold text-gray-800 mt-1">5</p>
-            </div>
-            <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
-              <p className="text-gray-500 text-sm">Earnings</p>
-              <p className="text-2xl font-bold text-gray-800 mt-1">$1,240</p>
-            </div>
-          </div>
+  {/* Tab 1 */}
+  <div className="bg-[#708238] hover:bg-[#FFA500] transition-colors duration-300 p-4 rounded-xl border border-gray-100 shadow-sm cursor-pointer">
+    <p className="text-white text-sm">Pending Orders</p>
+    <p className="text-2xl font-bold text-white mt-1">12</p>
+  </div>
+
+  {/* Tab 2 */}
+  <div className="bg-[#708238] hover:bg-[#FFA500] transition-colors duration-300 p-4 rounded-xl border border-gray-100 shadow-sm cursor-pointer">
+    <p className="text-white text-sm">Messages</p>
+    <p className="text-2xl font-bold text-white mt-1">5</p>
+  </div>
+
+  {/* Tab 3 */}
+  <div className="bg-[#708238] hover:bg-[#FFA500] transition-colors duration-300 p-4 rounded-xl border border-gray-100 shadow-sm cursor-pointer">
+    <p className="text-white text-sm">Earnings</p>
+    <p className="text-2xl font-bold text-white mt-1">$1,240</p>
+  </div>
+</div>
+
 
           {/* Info Cards in grid layout */}
           <h2 className="text-lg font-bold text-gray-800 mb-4">Recommendations for you</h2>

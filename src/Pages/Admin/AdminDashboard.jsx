@@ -598,10 +598,10 @@ const AdminDashboard = () => {
           </div>
           <div className="flex items-center space-x-3 sm:space-x-4">
             <button className="p-2 rounded-full hover:bg-gray-100 relative">
-              <FiBell className="text-gray-600" />
+              <FiBell className="text-[#FFA500]" />
               <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
             </button>
-            <div className="h-8 w-8 rounded-full bg-[#708238] flex items-center justify-center text-white font-medium cursor-pointer">
+            <div className="h-8 w-8 rounded-full text-[#FFA500] hover:bg-gray-100 flex items-center justify-center font-medium cursor-pointer">
               A
             </div>
           </div>
@@ -612,9 +612,10 @@ const AdminDashboard = () => {
         {/* Sidebar */}
         <nav className="w-64 bg-[#708238] shadow-sm text-white border-r border-gray-200 flex-shrink-0 hidden md:block">
   <div className="p-4">
-    <div className="text-xs font-semibold text-white uppercase tracking-wider mb-4">
-      MAIN NAVIGATION
-    </div>
+  <h2 className="text-[#FFA500] font-semibold text-lg text-center">
+  Main Navigator
+</h2>
+
     <ul className="space-y-1">
       <li>
         <button
@@ -757,7 +758,7 @@ const AdminDashboard = () => {
                 </p>
               </div>
               <button 
-                className={`bg-[${primaryColor}] text-white px-4 py-2 rounded-lg hover:bg-[${primaryHover}] hidden md:block transition-colors`}
+                className={`bg-[${primaryColor}] text-white px-4 py-2 rounded-lg hover:bg-[#FFA500] hidden md:block transition-colors`}
               >
                 Generate Report
               </button>
