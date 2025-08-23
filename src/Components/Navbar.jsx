@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState} from "react";
+import { Link } from "react-router-dom";
 import logo from "../Assets/images/logo-2.jpeg";
 import SignInForm from "../Components/SignIn";
 import { FaChevronRight, FaChevronLeft, FaBars, FaTimes } from "react-icons/fa";
@@ -89,7 +90,9 @@ function Navbar() {
         <nav className="max-w-7xl px-4 pb-4 mx-auto flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3">
           {/* Logo + Hamburger */}
           <div className="w-full lg:w-max flex items-center justify-between lg:justify-start">
-            <img src={logo} className="w-48 rounded-lg" alt="Logo" />
+          <Link to="/" className="flex items-center">
+  <img src={logo} className="w-48 rounded-lg" alt="Logo" />
+</Link>
             <button
               className="text-2xl lg:hidden text-gray-700"
               onClick={toggleMenu}
@@ -126,8 +129,10 @@ function Navbar() {
             </div>
 
             <div className="flex items-center gap-2">
-              <p className="text-[#62646A] cursor-pointer">Our Story</p>
-            </div>
+  <Link to="/ourstory" className="text-[#62646A] cursor-pointer">
+    Our Story
+  </Link>
+</div>
 
             <div className="flex items-center gap-2 cursor-pointer">
               <TfiWorld className="text-md" />

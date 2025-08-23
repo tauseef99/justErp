@@ -12,6 +12,7 @@ import SellerProfile from "./Components/seller/SellerProfile";
 import BuyerMessages from "./Components/buyer/BuyerMessages";
 import AdminDashboard from "./Pages/Admin/AdminDashboard";
 import AdminLogin from "./Pages/Admin/AdminLogin";
+import { Ourstory } from "./Components/Ourstory";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/seller/Profile" element={<SellerProfile/>}/>
         <Route path="/buyer/messages" element={<BuyerMessages/>}/>
         <Route path="/admin/dashboard" element={<AdminDashboard/>}/>
+        <Route path="/ourstory" element={<Ourstory/>}/>
         <Route path="/admin/login" element={<AdminLogin/>}/>
 
 
