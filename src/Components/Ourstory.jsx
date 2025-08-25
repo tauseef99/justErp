@@ -33,60 +33,68 @@ export const Ourstory = () => {
         
         {/* Content Section */}
         <div className="bg-white rounded-xl shadow-md p-8 md:p-12 border border-gray-100">
-          <h2 className="text-2xl md:text-3xl font-bold text-[#708238] mb-8 text-center">
-            The ERP Marketplace Revolution: AMJ's Journey to Bridge the Gap
-          </h2>
+        <h3 className="text-xl md:text-2xl font-bold text-[#708238] mb-8 text-center">
+  The ERP Marketplace Revolution: AMJ's Journey to Bridge the Gap
+</h3>
+
           
           <div className="space-y-6 text-gray-700 leading-relaxed">
             <p>
-              December 2007 marked a turning point for AMJ when he finally passed his
-              SAP CRM certification on his third attempt - a triumph achieved through
-              unwavering persistence and countless hours of self-study. This hard-won
-              victory launched him into what would become a remarkable twenty-year
-              career in ERP sales.
+            In December 2007, after two previous attempts, AMJ earned his first SAP ERP certification—a
+hard-won victory that launched a successful twenty-year career in ERP sales. Throughout his
+journey, meeting countless consultants, he observed a persistent and frustrating industry-wide
+problem.
+
+            </p>
+            <p>
+            Companies were forced to bear the significant financial burden of hiring full-time employees for
+short-term, specialized projects. At the same time, he saw several brilliant, seasoned ERP experts
+unable to monetize their deep skills outside of traditional employment. Despite having available time
+and cross-industry expertise, these professionals had no dedicated platform to showcase their
+talents or find meaningful freelance work to support their goals and families. The only options were
+word-of-mouth and personal networks.
             </p>
             
             <p>
-              As he navigated the industry, meeting thousands of
-              ERP consultants across the globe, he began noticing a persistent problem
-              that no one seemed to be solving. Year after year, AMJ observed the same frustrating pattern: businesses
-              needing specialized SAP expertise for specific projects - whether system
-              upgrades, custom report development, or process optimizations - found
-              themselves forced into hiring full-time employees.
+            A breakthrough conversation in a coffee shop with a fellow consultant drew attention to his words: &quot;I
+took this part-time job because I can’t pay my daughter’s college fee with just my expertise. I need a
+project, but I can’t find one, because no one can find me.&quot; His words described not only his own
+problem but also that of many consultants across the globe: “No one can find them, and they cannot
+find the projects.”
             </p>
             
             <div className="bg-[#FFA500] bg-opacity-5 p-6 rounded-lg border-l-4 border-[#FFA500]">
               <p className="italic text-gray-800">
-                "This created unnecessary financial burdens for companies while leaving a wealth of
-                independent ERP talent underutilized. Meanwhile, highly skilled
-                consultants with decades of experience struggled to find freelance
-                opportunities."
+              Relying on full-time employees for short-term projects or expensive consulting firms creates an
+unnecessary financial burden for companies and leaves a large number of independent ERP talent
+underutilized. Meanwhile, highly skilled consultants with decades of experience struggle to find
+freelance opportunities.
               </p>
             </div>
             
+            
             <p>
-              The human cost of this inefficiency became painfully clear to AMJ. He
-              watched brilliant colleagues - experts in their fields - unable to
-              monetize their hard-earned skills outside traditional employment. Some
-              wanted to support their children's college education; others sought to
-              share their knowledge with more organizations. The current system was
-              failing both businesses and professionals alike.
+            The conclusion was clear: the industry desperately needed a dedicated global marketplace. AMJ
+envisioned a platform where companies could instantly find and hire vetted ERP talent within their
+budget and timeline, and where consultants, from anywhere in the world, could seamlessly connect
+with clients, share their expertise, and deliver projects with passion and commitment. That night,
+AMJ drafted the blueprint for JustERPs: an ERP-dedicated freelancing ecosystem where
+corporations can hire ERP consultants for projects on demand.
             </p>
             
             <p>
-              The breakthrough came during a conversation with a fellow consultant. As
-              they discussed the challenges of finding project work, AMJ realized what
-              the industry desperately needed: a global, digital marketplace
-              specifically designed for ERP talent.
+               This vision is now our mission. We are building that platform—a revolutionary ecosystem designed
+to efficiently connect the world&#39;s top SAP talent with the opportunities they deserve, empowering
+businesses and liberating professionals.
             </p>
-            
+            {/*
             <p>
               This vision consumed AMJ. He pictured a marketplace that would transform
               the ERP landscape - giving businesses the agility to stay competitive
               while providing professionals the freedom to build their careers on
               their own terms. No more wasted potential. No more unnecessary expenses.
               Just efficient, mutually beneficial connections.
-            </p>
+            </p> */}
              {/* Hero Image */}
         <div className="mb-16 rounded-lg overflow-hidden shadow-lg border-4 border-white">
           <img 
@@ -96,7 +104,8 @@ export const Ourstory = () => {
           />
         </div>
             
-            <p>
+        
+            {/* <p>
               With this clear mission, AMJ set out to create what the industry had
               been missing for decades. This wouldn't just be another job board or
               freelancing site, but a specialized ecosystem built specifically for the
@@ -110,17 +119,20 @@ export const Ourstory = () => {
               problem firsthand, he was ready to build the platform that would finally
               connect the world's SAP talent with the opportunities they deserved.
               The ERP revolution was about to begin.
-            </p>
+            </p> */}
           </div>
         </div>
         
         {/* Call to Action */}
-        <div className="text-center mt-16">
-          <button className="bg-[#FFA500] hover:bg-[#e59400] text-white font-semibold py-3 px-8 rounded-lg transition duration-300 shadow-md hover:shadow-lg">
-            Join Our Revolution
-          </button>
-          <p className="text-gray-500 text-sm mt-4">Be part of the change in ERP consulting</p>
-        </div>
+        <div className="text-center mt-16" style={{ fontFamily: "Segoe UI, sans-serif" }}>
+  <button className="bg-[#FFA500] hover:bg-[#e59400] text-white font-semibold py-3 px-8 rounded-lg transition duration-300 shadow-md hover:shadow-lg">
+    Join Our Revolution
+  </button>
+  <p className="text-gray-500 text-sm mt-4">
+    Be a part of the change in ERP consulting
+  </p>
+</div>
+
       </div>
     </div>
     <Footer/>
