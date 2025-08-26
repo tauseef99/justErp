@@ -13,6 +13,7 @@ import BuyerMessages from "./Components/buyer/BuyerMessages";
 import AdminDashboard from "./Pages/Admin/AdminDashboard";
 import AdminLogin from "./Pages/Admin/AdminLogin";
 import { Ourstory } from "./Components/Ourstory";
+import Register from "./Components/Register";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/admin/dashboard" element={<AdminDashboard/>}/>
         <Route path="/ourstory" element={<Ourstory/>}/>
         <Route path="/admin/login" element={<AdminLogin/>}/>
+        <Route path="/register" element={<Register/>}/>
 
 
       </Routes>
