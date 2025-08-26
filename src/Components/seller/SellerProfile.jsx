@@ -1,8 +1,29 @@
-import React from "react";
+
+import React, { useState, useEffect } from "react";
 import { FaPen, FaMapMarkerAlt, FaCalendarAlt, FaClock, FaTruck, FaGlobe, FaGraduationCap } from "react-icons/fa";
 import SellerLayout from "../../Pages/layouts/SellerLayout";
 
 export default function SellerProfile() {
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    // Get user from localStorage
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  if (!user) {
+    return (
+      <SellerLayout>
+        <div className="flex justify-center items-center h-screen">
+          <p className="text-gray-600 text-lg">Loading profile...</p>
+        </div>
+      </SellerLayout>
+    );
+  }
   return (
     <SellerLayout>
       <div className="min-h-screen bg-gray-50 py-8 px-4 md:px-8 font-sans">
@@ -48,7 +69,10 @@ export default function SellerProfile() {
                 </div>
                 
                 <div className="flex-1">
-                  <h1 className="text-2xl font-bold text-gray-800">Abdul Razi</h1>
+                  <h1 className="text-2xl font-bold text-gray-800">
+
+                  {user.username}
+                  </h1>
                   <p className="text-lg text-gray-600 mt-1">
                     Certified ERP Implementation Specialist | SAP & Oracle Expert
                   </p>
