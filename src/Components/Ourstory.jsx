@@ -147,7 +147,7 @@ export const Ourstory = () => {
       {showScroll && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-6 right-6 bg-[#708238] hover:bg-[#5a682c] text-white p-3 rounded-full shadow-lg transition duration-300"
+          className="fixed bottom-6 right-6 bg-[#FFA500] hover:bg-[#5a682c] text-white p-3 rounded-full shadow-lg transition duration-300"
         >
           <ArrowUp size={20} />
         </button>
