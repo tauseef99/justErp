@@ -14,6 +14,7 @@ import AdminDashboard from "./Pages/Admin/AdminDashboard";
 import AdminLogin from "./Pages/Admin/AdminLogin";
 import { Ourstory } from "./Components/Ourstory";
 import Register from "./Components/Register";
+import ErpConsultant from "./Components/ErpConsultant";
 
 function App() {
   return (
@@ -31,6 +32,8 @@ function App() {
         <Route path="/ourstory" element={<Ourstory/>}/>
         <Route path="/admin/login" element={<AdminLogin/>}/>
         <Route path="/register" element={<Register/>}/>
+        <Route path="/erpconsultant" element={<ErpConsultant/>}/>
+
 
 
       </Routes>

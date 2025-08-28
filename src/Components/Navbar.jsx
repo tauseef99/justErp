@@ -139,7 +139,9 @@ function Navbar() {
               <p>EN</p>
             </div>
 
+            <Link to='erpconsultant'>
             <p className="cursor-pointer">Register as ERP Consultant</p>
+            </Link>
             <p onClick={() => setShowSignInModal(true)} className="cursor-pointer">
               Sign in
             </p>
