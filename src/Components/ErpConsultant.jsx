@@ -87,8 +87,8 @@ const ErpConsultant = () => {
         {/* Statistics Section */}
         <div className="relative z-10 mt-20 flex flex-wrap justify-center gap-8 animate-on-scroll">
           {[
-            { value: "4 SEC", label: "New Project Every", },
-            { value: "500M+", label: "Platform Transactions", },
+            { value: "50 sec", label: "New Project Every", },
+            { value: "100M+", label: "Platform Transactions", },
             { value: "$100 - $30K", label: "Project Value Range", }
           ].map((stat, index) => (
             <div 
