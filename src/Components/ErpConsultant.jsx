@@ -1,11 +1,12 @@
-// src/pages/ErpConsultant.jsx
 import React, { useEffect, useState } from "react";
 import videoBg from '../Assets/videos/Header-bg.mp4'
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import SignIn from "./SignIn";
 
 const ErpConsultant = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     setIsVisible(true);
@@ -70,18 +71,32 @@ const ErpConsultant = () => {
           </div> */}
           
           {/* Enhanced Button */}
-          <button className="relative bg-gradient-to-r from-[#FFA500] to-[#ff8c00] hover:from-[#708238] hover:to-[#5a6a2c] 
-            px-12 py-5 my-10 rounded-xl font-bold shadow-2xl transition-all duration-300 transform hover:scale-105 text-lg group overflow-hidden">
-            <span className="relative z-10">Become an ERP Consultant</span>
-            
-            <div className="absolute inset-0 bg-gradient-to-r from-[#708238] to-[#5a6a2c] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            
-            <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-              </svg>
-            </div>
-          </button>
+          
+          <button
+              onClick={() => setIsModalOpen(true)}
+              className="relative bg-gradient-to-r from-[#FFA500] to-[#ff8c00] hover:from-[#708238] hover:to-[#5a6a2c] 
+              px-12 py-5 my-10 rounded-xl font-bold shadow-2xl transition-all duration-300 transform hover:scale-105 text-lg group overflow-hidden"
+            >
+              <span className="relative z-10">Become an ERP Consultant</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-[#708238] to-[#5a6a2c] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <svg
+                  className="w-5 h-5 ml-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  {/* <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  ></path> */}
+                </svg>
+              </div>
+            </button>
+          
         </div>
 
         {/* Statistics Section */}
@@ -236,11 +251,27 @@ const ErpConsultant = () => {
           <p className="text-xl mb-12 max-w-3xl mx-auto">
             Join thousands of ERP specialists already growing their consulting practice on our platform
           </p>
-          <button className="bg-[#FFA500] hover:bg-white hover:text-[#708238] px-12 py-5 rounded-xl font-semibold shadow-2xl transition-all duration-300 transform hover:scale-105 text-lg">
+          <button onClick={() => setIsModalOpen(true)} className="bg-[#FFA500] hover:bg-white hover:text-[#708238] px-12 py-5 rounded-xl font-semibold shadow-2xl transition-all duration-300 transform hover:scale-105 text-lg">
             Get Started Today
           </button>
         </div>
       </section>
+      {isModalOpen && (
+  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div className="max-w-6xl w-full mx-auto bg-white rounded-lg shadow-lg flex flex-col md:flex-row overflow-hidden h-screen relative">
+      {/* Close Button */}
+      <button
+        onClick={() => setIsModalOpen(false)}
+        className="absolute top-3 right-3 text-gray-600 hover:text-black text-2xl font-bold z-50"
+      >
+        ✕
+      </button>
+
+      {/* Rendering SignIn Component */}
+      <SignIn />
+    </div>
+  </div>
+)}
 
       {/* Custom CSS for animations */}
       <style jsx>{`
