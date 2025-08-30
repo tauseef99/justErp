@@ -9,20 +9,12 @@ export default function SellerProfile() {
   const [completedSteps, setCompletedSteps] = useState([]);
 
   useEffect(() => {
+    // Get user from localStorage
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
-    } else {
-      // fallback dummy data
-      setUser({
-        username: "John Doe",
-        email: "johndoe@example.com",
-        firstName: "John",
-        lastName: "Doe"
-      });
     }
   }, []);
-  
 
   const steps = [
     "Personal Info",

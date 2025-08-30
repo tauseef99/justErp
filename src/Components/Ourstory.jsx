@@ -118,13 +118,14 @@ export const Ourstory = () => {
               </p>
 
               {/* Hero Image */}
-              <div className="mb-16 rounded-lg overflow-hidden shadow-lg border-4 border-white">
+              <div className="mb-16 rounded-lg overflow-hidden shadow-lg border-4 border-white flex justify-center">
                 <img
                   src={ourstory2}
                   alt="ERP Marketplace Revolution"
-                  className="w-full h-96 object-cover"
+                  className="max-w-full h-auto object-cover mx-auto"
                 />
               </div>
+
             </div>
           </div>
 

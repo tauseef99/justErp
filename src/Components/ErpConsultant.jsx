@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import videoBg from '../Assets/videos/Header-bg.mp4'
+import videoBg from '../Assets/videos/JustERP.mp4'
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import SignIn from "./SignIn";
@@ -52,7 +52,8 @@ const ErpConsultant = () => {
 
         {/* Hero Content */}
         <div className={`relative z-10 transition-all duration-1000 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'} px-4`}>
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">ERP Expertise, Your Way</h1>
+          <h1 className="text-5xl md:text-6xl font-bold mb-6">Fun. Family.
+          Freelancing</h1>
           <p className="text-xl md:text-2xl mb-12 max-w-3xl mx-auto leading-relaxed">
             Showcase your specialized ERP skills and connect with businesses worldwide
           </p>
@@ -77,7 +78,7 @@ const ErpConsultant = () => {
               className="relative bg-gradient-to-r from-[#FFA500] to-[#ff8c00] hover:from-[#708238] hover:to-[#5a6a2c] 
               px-12 py-5 my-10 rounded-xl font-bold shadow-2xl transition-all duration-300 transform hover:scale-105 text-lg group overflow-hidden"
             >
-              <span className="relative z-10">Become an ERP Consultant</span>
+              <span className="relative z-10">Your Path to ERP Consulting</span>
               <div className="absolute inset-0 bg-gradient-to-r from-[#708238] to-[#5a6a2c] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <svg
@@ -129,7 +130,7 @@ const ErpConsultant = () => {
       {/* Community Section */}
       <section className="py-32 px-6 max-w-7xl mx-auto text-center">
         <h2 className="text-4xl md:text-5xl font-bold mb-6 text-[#708238] animate-on-scroll">
-          Join our ERP Specialist Community
+        Join our Global ERP Consulting Community
         </h2>
         <p className="text-xl text-gray-600 mb-16 max-w-3xl mx-auto animate-on-scroll">
           Connect with businesses seeking your specialized ERP skills and experience
