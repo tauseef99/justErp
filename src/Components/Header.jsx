@@ -50,9 +50,9 @@ const HeroHeader = () => {
       <div className="relative z-20 flex flex-col max-w-7xl mx-auto justify-center h-full px-4 text-white">
         {/* Heading */}
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-6 md:mb-8 text-center pt-20 md:pt-32 lg:pt-[200px]">
-          Your first meeting with
+          Your first meeting with {" "}
           <br className="hidden xs:block" />
-          ERP Consultant starts Here!
+           ERP Consultant starts Here!
         </h1>
     
         {/* Filters Box */}

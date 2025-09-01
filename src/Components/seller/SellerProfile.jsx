@@ -8,41 +8,40 @@ export default function SellerProfile() {
   const [currentStep, setCurrentStep] = useState(0);
   const [completedSteps, setCompletedSteps] = useState([]);
 
- useEffect(() => {
-  const storedUser = localStorage.getItem("user");
-  if (storedUser) {
-    setUser(JSON.parse(storedUser));
-  } else {
-    // fallback dummy data
-    setUser({
-      username: "John Doe",
-      email: "johndoe@example.com",
-      firstName: "John",
-      lastName: "Doe"
-    });
-  }
-}, []);
-
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    } else {
+      // fallback dummy data
+      setUser({
+        username: "John Doe",
+        email: "johndoe@example.com",
+        firstName: "John",
+        lastName: "Doe"
+      });
+    }
+  }, []);
 
   const steps = [
     "Personal Info",
-    "About Me",
-    "ERP Specialization",
-    "ERP Portfolio",
-    "Education",
-    "Certification",
-    "Technical Skills"
+    "Professional Summary",
+    "Functional Role",
+    "Technical Role",
+    "Project History",
+    "Technical Skills",
+    "Certifications",
+    "Services Offered",
+    "Languages"
   ];
 
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
-      // Mark current step as completed if not already
       if (!completedSteps.includes(currentStep)) {
         setCompletedSteps([...completedSteps, currentStep]);
       }
       setCurrentStep(currentStep + 1);
     } else {
-      // On last step, complete the wizard
       if (!completedSteps.includes(currentStep)) {
         setCompletedSteps([...completedSteps, currentStep]);
       }
@@ -57,7 +56,6 @@ export default function SellerProfile() {
   };
 
   const handleStepClick = (index) => {
-    // Only allow navigation to completed steps or the next logical step
     if (index <= completedSteps.length || index === completedSteps.length + 1) {
       setCurrentStep(index);
     }
@@ -65,8 +63,6 @@ export default function SellerProfile() {
 
   const closeWizard = () => {
     setShowWizard(false);
-    // Reset to first step when closing?
-    // setCurrentStep(0);
   };
 
   if (!user) {
@@ -85,7 +81,7 @@ export default function SellerProfile() {
         <div className="max-w-6xl mx-auto space-y-8">
           {/* Profile Header */}
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-800">ERP Specialist Profile</h1>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-800">ERP Consultant Profile</h1>
             <button 
               onClick={() => setShowWizard(true)}
               className="bg-[#708238] hover:bg-[#5a6a2d] text-white px-5 py-2 rounded-md text-sm font-medium transition-colors"
@@ -133,6 +129,10 @@ export default function SellerProfile() {
                   <p className="text-lg text-gray-600 mt-1">
                     Certified ERP Implementation Specialist | SAP & Oracle Expert
                   </p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    <a href="https://www.admin.com/" className="text-blue-600 text-sm hover:underline">https://www.admin.com/</a>
+                    <a href="https://www.admin.com/" className="text-blue-600 text-sm hover:underline">https://www.admin.com/</a>
+                  </div>
                   
                   <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                     <ProfileInfo 
@@ -162,9 +162,9 @@ export default function SellerProfile() {
             
             {/* Profile Sections */}
             <div className="p-6 space-y-8">
-              {/* About Me */}
+              {/* Professional Summary */}
               <SectionHeader 
-                title="About Me" 
+                title="Professional Summary" 
                 icon={
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -172,130 +172,155 @@ export default function SellerProfile() {
                 }
               />
               <p className="text-gray-600 leading-relaxed">
-                Certified ERP implementation specialist with 8+ years of experience in SAP S/4HANA, Oracle Cloud ERP, and Microsoft Dynamics. I've successfully led 50+ ERP implementations for manufacturing, logistics, and retail businesses. My expertise includes system configuration, module integration, data migration, and user training. I focus on delivering tailored ERP solutions that streamline operations and drive business growth.
+                Certified ERP implementation specialist with 8+ years of experience in SAP S/4HANA, Oracle Cloud ERP, and Microsoft Dynamics.
               </p>
               
-              {/* ERP Specializations */}
+              {/* Functional Experience */}
               <SectionHeader 
-                title="ERP Specializations" 
+                title="Functional Role" 
                 icon={
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                 }
               />
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <SpecializationCard 
-                  title="Implementation"
-                  items={["SAP S/4HANA", "Oracle Cloud ERP", "Microsoft Dynamics"]}
-                />
-                <SpecializationCard 
-                  title="Modules"
-                  items={["Finance (FI/CO)", "Supply Chain (SCM)", "HR (HCM)", "CRM"]}
-                />
-                <SpecializationCard 
-                  title="Integration"
-                  items={["API Development", "EDI Solutions", "Legacy System Migration"]}
-                />
+              <div className="overflow-x-auto">
+                <table className="min-w-full border border-gray-200">
+                  <thead>
+                    <tr className="bg-gray-50">
+                      <th className="border border-gray-200 px-4 py-2 text-left">Year</th>
+                      <th className="border border-gray-200 px-4 py-2 text-left">Role</th>
+                      <th className="border border-gray-200 px-4 py-2 text-left">Responsibility</th>
+                      <th className="border border-gray-200 px-4 py-2 text-left">Team Size</th>
+                      <th className="border border-gray-200 px-4 py-2 text-left">Industry</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="border border-gray-200 px-4 py-2">June 2023 to Current</td>
+                      <td className="border border-gray-200 px-4 py-2">SAP MM Senior Consultant</td>
+                      <td className="border border-gray-200 px-4 py-2">Configuration, Sign-Off, BA, documentation, reporting to team leader.</td>
+                      <td className="border border-gray-200 px-4 py-2">2</td>
+                      <td className="border border-gray-200 px-4 py-2">Manuf.</td>
+                    </tr>
+                    <tr className="bg-gray-50">
+                      <td className="border border-gray-200 px-4 py-2">March 2021 to May 2023</td>
+                      <td className="border border-gray-200 px-4 py-2">SAP MM Consultant</td>
+                      <td className="border border-gray-200 px-4 py-2">Reporting to senior team lead, requirement gathering, documentation, implementation</td>
+                      <td className="border border-gray-200 px-4 py-2">3</td>
+                      <td className="border border-gray-200 px-4 py-2">Auto</td>
+                    </tr>
+                    <tr>
+                      <td className="border border-gray-200 px-4 py-2">Feb. 2018 to Feb. 2012</td>
+                      <td className="border border-gray-200 px-4 py-2">SAP MM Support</td>
+                      <td className="border border-gray-200 px-4 py-2">End-user support, training, backups</td>
+                      <td className="border border-gray-200 px-4 py-2">3</td>
+                      <td className="border border-gray-200 px-4 py-2">Pharma</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
               
-              {/* Portfolio */}
+              {/* Technical Experience */}
               <SectionHeader 
-                title="ERP Portfolio" 
+                title="Technical Role" 
+                icon={
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                }
+              />
+              <div className="overflow-x-auto">
+                <table className="min-w-full border border-gray-200">
+                  <thead>
+                    <tr className="bg-gray-50">
+                      <th className="border border-gray-200 px-4 py-2 text-left">Year</th>
+                      <th className="border border-gray-200 px-4 py-2 text-left">Role</th>
+                      <th className="border border-gray-200 px-4 py-2 text-left">Responsibility</th>
+                      <th className="border border-gray-200 px-4 py-2 text-left">Team Size</th>
+                      <th className="border border-gray-200 px-4 py-2 text-left">Industry</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="border border-gray-200 px-4 py-2">June 2023 to Current</td>
+                      <td className="border border-gray-200 px-4 py-2">SAP MM Senior Consultant</td>
+                      <td className="border border-gray-200 px-4 py-2">Configuration, Sign-Off, BA, documentation, reporting to team leader.</td>
+                      <td className="border border-gray-200 px-4 py-2">2</td>
+                      <td className="border border-gray-200 px-4 py-2">Manuf.</td>
+                    </tr>
+                    <tr className="bg-gray-50">
+                      <td className="border border-gray-200 px-4 py-2">March 2021 to May 2023</td>
+                      <td className="border border-gray-200 px-4 py-2">SAP MM Support</td>
+                      <td className="border border-gray-200 px-4 py-2">Reporting to senior team lead, requirement gathering, documentation, implementation</td>
+                      <td className="border border-gray-200 px-4 py-2">3</td>
+                      <td className="border border-gray-200 px-4 py-2">Auto</td>
+                    </tr>
+                    <tr>
+                      <td className="border border-gray-200 px-4 py-2">2023</td>
+                      <td className="border border-gray-200 px-4 py-2">Consultant</td>
+                      <td className="border border-gray-200 px-4 py-2">requirement gathering, documentation, implementation</td>
+                      <td className="border border-gray-200 px-4 py-2">3</td>
+                      <td className="border border-gray-200 px-4 py-2">Pharma</td>
+                    </tr>
+                    <tr className="bg-gray-50">
+                      <td className="border border-gray-200 px-4 py-2">Feb. 2018 to Feb. 2012</td>
+                      <td className="border border-gray-200 px-4 py-2">SAP MM Support</td>
+                      <td className="border border-gray-200 px-4 py-2">End-user support, training, backups</td>
+                      <td className="border border-gray-200 px-4 py-2">3</td>
+                      <td className="border border-gray-200 px-4 py-2">Pharma</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              {/* Project Delivered History */}
+              <SectionHeader 
+                title="Project Delivered History" 
                 icon={
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                   </svg>
                 }
               />
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {[1, 2, 3].map((item) => (
-                  <div key={item} className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
-                    <div className="h-40 bg-gradient-to-br from-[#708238]/10 to-[#FFA500]/10 flex items-center justify-center">
-                      <div className="text-center p-4">
-                        <div className="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16 mx-auto" />
-                        <h3 className="font-semibold mt-2 text-gray-700">ERP Case Study #{item}</h3>
-                        <p className="text-xs text-gray-500 mt-1">Manufacturing Solution</p>
-                      </div>
-                    </div>
-                    <div className="p-3 bg-gray-50">
-                      <div className="flex justify-between items-center">
-                        <span className="text-xs font-medium text-gray-500">SAP Implementation</span>
-                        <span className="text-xs bg-[#708238]/10 text-[#708238] px-2 py-1 rounded">Completed</span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+              <div className="overflow-x-auto">
+                <table className="min-w-full border border-gray-200">
+                  <thead>
+                    <tr className="bg-gray-50">
+                      <th className="border border-gray-200 px-4 py-2 text-left">Project Name</th>
+                      <th className="border border-gray-200 px-4 py-2 text-left">Industry</th>
+                      <th className="border border-gray-200 px-4 py-2 text-left">Role Played</th>
+                      <th className="border border-gray-200 px-4 py-2 text-left">Team Size</th>
+                      <th className="border border-gray-200 px-4 py-2 text-left">Activities</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="border border-gray-200 px-4 py-2">S4HANA</td>
+                      <td className="border border-gray-200 px-4 py-2">Manufacturing</td>
+                      <td className="border border-gray-200 px-4 py-2">Team Lead</td>
+                      <td className="border border-gray-200 px-4 py-2">4</td>
+                      <td className="border border-gray-200 px-4 py-2">Interviewing, documentation, communication</td>
+                    </tr>
+                    <tr className="bg-gray-50">
+                      <td className="border border-gray-200 px-4 py-2">ECCG</td>
+                      <td className="border border-gray-200 px-4 py-2">Auto</td>
+                      <td className="border border-gray-200 px-4 py-2">BA</td>
+                      <td className="border border-gray-200 px-4 py-2">3</td>
+                      <td className="border border-gray-200 px-4 py-2"></td>
+                    </tr>
+                    <tr>
+                      <td className="border border-gray-200 px-4 py-2">Upgrade 4.7 LB ECCG</td>
+                      <td className="border border-gray-200 px-4 py-2">FMCG</td>
+                      <td className="border border-gray-200 px-4 py-2">Support</td>
+                      <td className="border border-gray-200 px-4 py-2">2</td>
+                      <td className="border border-gray-200 px-4 py-2"></td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
               
-              {/* Education & Certifications */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div>
-                  <SectionHeader 
-                    title="Education" 
-                    icon={<FaGraduationCap className="text-gray-500" />}
-                  />
-                  <div className="space-y-4">
-                    <EducationItem 
-                      degree="MSc in Enterprise Systems" 
-                      institution="University of Technology" 
-                      year="2015-2017"
-                    />
-                    <EducationItem 
-                      degree="BSc in Computer Science" 
-                      institution="University of Karachi" 
-                      year="2010-2014"
-                    />
-                  </div>
-                </div>
-                
-                <div>
-                  <SectionHeader 
-                    title="Certifications" 
-                    icon={
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-                      </svg>
-                    }
-                  />
-                  <div className="space-y-3">
-                    <CertificationItem 
-                      title="SAP Certified Application Associate" 
-                      issuer="SAP" 
-                      year="2022"
-                    />
-                    <CertificationItem 
-                      title="Oracle Cloud ERP Implementation Specialist" 
-                      issuer="Oracle" 
-                      year="2021"
-                    />
-                    <CertificationItem 
-                      title="Microsoft Dynamics 365 Finance" 
-                      issuer="Microsoft" 
-                      year="2020"
-                    />
-                    
-                    <div className="mt-4">
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Upload additional certifications
-                      </label>
-                      <div className="flex items-center">
-                        <label className="flex-1 cursor-pointer">
-                          <div className="flex items-center justify-center px-6 py-3 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-                            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                            </svg>
-                            Choose File
-                          </div>
-                          <input type="file" className="sr-only" />
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Skills */}
+              {/* Technical Skills */}
               <SectionHeader 
                 title="Technical Skills" 
                 icon={
@@ -304,21 +329,138 @@ export default function SellerProfile() {
                   </svg>
                 }
               />
-              <div className="flex flex-wrap gap-3">
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
                 {[
-                  "SAP S/4HANA", "Oracle ERP Cloud", "Microsoft Dynamics", 
-                  "ABAP Development", "SQL Database", "ERP Configuration",
-                  "Business Process Modeling", "Data Migration", "System Integration",
-                  "Workflow Automation", "Financial Module", "Supply Chain Module",
-                  "HR Module", "CRM Integration", "API Development"
+                  "Data Cleansing", "Data Migration", "Data Entry", "Development", "ERP Consulting",
+                  "ERP", "Cloud", "S4HANA", "ABAP", "Basis", 
+                  "Implementation", "Compute"
                 ].map((skill) => (
                   <span
                     key={skill}
-                    className="px-4 py-2 bg-[#708238]/10 text-[#708238] text-sm font-medium rounded-full border border-[#708238]/20 hover:bg-[#708238]/20 transition-colors"
+                    className="px-4 py-2 bg-[#708238]/10 text-[#708238] text-sm font-medium rounded-md border border-[#708238]/20 text-center"
                   >
                     {skill}
                   </span>
                 ))}
+              </div>
+              
+              {/* Certifications */}
+              <SectionHeader 
+                title="Certifications" 
+                icon={
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                  </svg>
+                }
+              />
+              <div className="overflow-x-auto">
+                <table className="min-w-full border border-gray-200">
+                  <thead>
+                    <tr className="bg-gray-50">
+                      <th className="border border-gray-200 px-4 py-2 text-left">Certification Name</th>
+                      <th className="border border-gray-200 px-4 py-2 text-left">Exam</th>
+                      <th className="border border-gray-200 px-4 py-2 text-left">Certification No.</th>
+                      <th className="border border-gray-200 px-4 py-2 text-left">Issued By</th>
+                      <th className="border border-gray-200 px-4 py-2 text-left">Validity/Expire Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="border border-gray-200 px-4 py-2">SAP CRM</td>
+                      <td className="border border-gray-200 px-4 py-2">CAT-05</td>
+                      <td className="border border-gray-200 px-4 py-2">123456</td>
+                      <td className="border border-gray-200 px-4 py-2">SAP</td>
+                      <td className="border border-gray-200 px-4 py-2">3 years</td>
+                    </tr>
+                    <tr className="bg-gray-50">
+                      <td className="border border-gray-200 px-4 py-2">PMP</td>
+                      <td className="border border-gray-200 px-4 py-2">PMP008</td>
+                      <td className="border border-gray-200 px-4 py-2">089755</td>
+                      <td className="border border-gray-200 px-4 py-2">Google</td>
+                      <td className="border border-gray-200 px-4 py-2">2 years</td>
+                    </tr>
+                    <tr>
+                      <td className="border border-gray-200 px-4 py-2">ServiceNow</td>
+                      <td className="border border-gray-200 px-4 py-2">SMDB</td>
+                      <td className="border border-gray-200 px-4 py-2">278901</td>
+                      <td className="border border-gray-200 px-4 py-2">ServiceNow</td>
+                      <td className="border border-gray-200 px-4 py-2">2 years</td>
+                    </tr>
+                    <tr className="bg-gray-50">
+                      <td className="border border-gray-200 px-4 py-2">SAP BASIS</td>
+                      <td className="border border-gray-200 px-4 py-2">0088</td>
+                      <td className="border border-gray-200 px-4 py-2">123456</td>
+                      <td className="border border-gray-200 px-4 py-2">SAP</td>
+                      <td className="border border-gray-200 px-4 py-2">2 years</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              {/* Services Offered */}
+              <SectionHeader 
+                title="ERP Consultancy/Services Offered" 
+                icon={
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 002 2h2a2 2 0 002-2V6m0 4v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2" />
+                  </svg>
+                }
+              />
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                {[
+                  "Implementation", "Configuration", "Upgrade", "Migration", "Reporting",
+                  "Training", "SignCard", "Data Cleansing", "Data Backups", "Remote Monitoring",
+                  "Business Analyst", "Business Intelligence", "Mapping", "Documentation", "DR"
+                ].map((service) => (
+                  <span
+                    key={service}
+                    className="px-4 py-2 bg-[#708238]/10 text-[#708238] text-sm font-medium rounded-md border border-[#708238]/20 text-center"
+                  >
+                    {service}
+                  </span>
+                ))}
+              </div>
+              
+              {/* Language Proficiencies */}
+              <SectionHeader 
+                title="Language Proficiencies" 
+                icon={
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                  </svg>
+                }
+              />
+              <div className="overflow-x-auto">
+                <table className="min-w-full border border-gray-200">
+                  <thead>
+                    <tr className="bg-gray-50">
+                      <th className="border border-gray-200 px-4 py-2 text-left">Language</th>
+                      <th className="border border-gray-200 px-4 py-2 text-center">Basic</th>
+                      <th className="border border-gray-200 px-4 py-2 text-center">Moderate</th>
+                      <th className="border border-gray-200 px-4 py-2 text-center">Professional</th>
+                      <th className="border border-gray-200 px-4 py-2 text-center">Native</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {["French", "Arabic", "English", "Uidu", "Persian", "Russian"].map((language) => (
+                      <tr key={language}>
+                        <td className="border border-gray-200 px-4 py-2 font-medium">{language}</td>
+                        <td className="border border-gray-200 px-4 py-2 text-center">
+                          <input type="radio" name={language} className="h-4 w-4 text-[#708238] focus:ring-[#708238]" />
+                        </td>
+                        <td className="border border-gray-200 px-4 py-2 text-center">
+                          <input type="radio" name={language} className="h-4 w-4 text-[#708238] focus:ring-[#708238]" />
+                        </td>
+                        <td className="border border-gray-200 px-4 py-2 text-center">
+                          <input type="radio" name={language} className="h-4 w-4 text-[#708238] focus:ring-[#708238]" />
+                        </td>
+                        <td className="border border-gray-200 px-4 py-2 text-center">
+                          <input type="radio" name={language} className="h-4 w-4 text-[#708238] focus:ring-[#708238]" />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
@@ -524,27 +666,33 @@ function PersonalInfoStep({ user }) {
 }
 
 function AboutMeStep() {
-  const [about, setAbout] = useState("Certified ERP implementation specialist with 8+ years of experience in SAP S/4HANA, Oracle Cloud ERP, and Microsoft Dynamics. I've successfully led 50+ ERP implementations for manufacturing, logistics, and retail businesses. My expertise includes system configuration, module integration, data migration, and user training. I focus on delivering tailored ERP solutions that streamline operations and drive business growth.");
+  const [about, setAbout] = useState("Certified ERP implementation specialist with 8+ years of experience in SAP S/4HANA, Oracle Cloud ERP, and Microsoft Dynamics.");
 
   return (
     <div className="space-y-4">
-      <h3 className="text-lg font-semibold text-gray-800">About Me</h3>
-      <p className="text-sm text-gray-600">Write a detailed description about yourself, your experience, and your expertise.</p>
-      
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">About Me</label>
-        <textarea
-          value={about}
-          onChange={(e) => setAbout(e.target.value)}
-          rows={8}
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#708238] focus:border-[#708238]"
-        />
-      </div>
-      
-      <div className="text-xs text-gray-500">
-        {about.length}/2000 characters
-      </div>
-    </div>
+  <h3 className="text-lg font-semibold text-gray-800">About Me</h3>
+  <p className="text-sm text-gray-600">
+    Write a detailed description about yourself, your experience, and your expertise.
+  </p>
+
+  <div>
+    <label className="block text-sm font-medium text-gray-700 mb-1">About Me</label>
+    <textarea
+      value={about}
+      onChange={(e) => setAbout(e.target.value)}
+      rows={8}
+      maxLength={150} 
+      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#708238] focus:border-[#708238]"
+    />
+  </div>
+
+  <div
+    className={`text-xs ${about.length === 150 ? "text-red-500" : "text-gray-500"}`}
+  >
+    {about.length}/150 characters
+  </div>
+</div>
+
   );
 }
 

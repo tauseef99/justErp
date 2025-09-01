@@ -216,7 +216,7 @@ const ErpConsultant = () => {
           {[
             { name: "Sarah", role: "Technical SAP Specialist", text: "Doubled my client base within 3 months by showcasing my technical SAP skills.", delay: 0 },
             { name: "Michael", role: "Functional Oracle Specialist", text: "Found niche clients who specifically needed my functional expertise in supply chain modules.", delay: 200 },
-            { name: "Priya", role: "Techno-Functional ERP Consultant", text: "The perfect platform to highlight my dual expertise in both technical and functional areas.", delay: 400 }
+            { name: "Tauseef", role: "Techno-Functional ERP Consultant", text: "The perfect platform to highlight my dual expertise in both technical and functional areas.", delay: 400 }
           ].map((story, index) => (
             <div 
               key={index} 
