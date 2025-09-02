@@ -33,10 +33,10 @@ export default function SellerProfile() {
     } else {
       // fallback dummy data
       setUser({
-        username: "John Doe",
-        email: "johndoe@example.com",
-        firstName: "John",
-        lastName: "Doe"
+        username: "naseem hussain",
+        email: "naseem@example.com",
+        firstName: "naseem",
+        lastName: "hussain"
       });
     }
   }, []);

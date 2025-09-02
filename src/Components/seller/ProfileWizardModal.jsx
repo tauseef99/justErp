@@ -137,11 +137,18 @@ function ProfessionalSummaryStep() {
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">Summary</label>
         <textarea
-          value={summary}
-          onChange={(e) => setSummary(e.target.value)}
-          rows={6}
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#708238] focus:border-[#708238]"
-        />
+  value={summary}
+  onChange={(e) => {
+    if (e.target.value.length <= 150) {
+      setSummary(e.target.value);
+    }
+  }}
+  rows={6}
+  maxLength={150}
+  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#708238] focus:border-[#708238]"
+/>
+<p className="text-sm text-gray-500 mt-1">{summary.length}/150</p>
+
       </div>
     </div>
   );
