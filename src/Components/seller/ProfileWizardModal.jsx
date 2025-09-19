@@ -373,14 +373,14 @@ export default function ProfileWizardModal({
         </div>
         
         {/* Navigation Buttons */}
-        <div className="flex justify-between p-6 border-t border-gray-200">
+        <div className="flex justify-between  p-6 border-t border-gray-200">
           <button
             onClick={handleBack}
             disabled={currentStep === 0 || saving}
             className={`flex items-center px-4 py-2 rounded-md ${
               currentStep === 0 || saving
-                ? "bg-gray-200 text-gray-500 cursor-not-allowed" 
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                ? "bg-[#FFA500] text-white cursor-not-allowed" 
+                : "bg-[#FFA500] text-white hover:bg-gray-200"
             }`}
           >
             <FaArrowLeft className="mr-2" /> Back

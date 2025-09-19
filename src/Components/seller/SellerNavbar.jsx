@@ -1,11 +1,49 @@
-import React, { useState } from 'react';
-import { FiBell, FiHelpCircle, FiMail, FiMenu, FiX } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
-import logo from '../../Assets/images/logo-2.jpeg';
+import React, { useState, useRef, useEffect } from "react";
+import { FiBell, FiHelpCircle, FiMail, FiMenu, FiX } from "react-icons/fi";
+import { Link, useNavigate } from "react-router-dom";
+import logo from "../../Assets/images/logo-2.jpeg";
+import axios from "axios";
 
 export default function SellerNavbar() {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const [profileImage, setProfileImage] = useState(null);
+  const [loadingImage, setLoadingImage] = useState(true);
+  useEffect(() => {
+    fetchProfileImage();
+  }, []);
+
+  const fetchProfileImage = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        setLoadingImage(false);
+        return;
+      }
+      
+      const cleanToken = token.replace(/^"(.*)"$/, '$1');
+      
+      const response = await axios.get('http://localhost:5000/api/seller/profile', {
+        headers: { 
+          Authorization: `Bearer ${cleanToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (response.data && response.data.profileImage) {
+        setProfileImage(response.data.profileImage);
+      }
+    } catch (error) {
+      console.log('Profile image fetch error:', error.response?.data || error.message);
+    } finally {
+      setLoadingImage(false);
+    }
+  };
+
+  const dropdownRef = useRef(null);
+  const navigate = useNavigate();
 
   const toggleDropdown = () => {
     setShowNotifications(!showNotifications);
@@ -15,42 +53,74 @@ export default function SellerNavbar() {
     setShowMobileMenu(!showMobileMenu);
   };
 
+  const toggleProfileDropdown = () => {
+    setShowProfileDropdown(!showProfileDropdown);
+  };
+
+  // Close dropdown if click outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target)
+      ) {
+        setShowProfileDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleLogout = () => {
+    // Add your logout logic here (clear token/session)
+    console.log("User logged out");
+    navigate("/register");
+  };
+
   return (
-    <nav className="sticky top-0 z-50 bg-white border-b border-[#5a6a2d] px-4 py-3 shadow-sm flex justify-between items-center"
-         style={{ backgroundColor: '#708238' }}>
-      
+    <nav
+      className="sticky top-0 z-50 bg-white border-b border-[#5a6a2d] px-4 py-3 shadow-sm flex justify-between items-center"
+      style={{ backgroundColor: "#708238" }}
+    >
       {/* Left - Logo and Mobile Menu Button */}
       <div className="flex items-center">
-        <button 
+        <button
           className="md:hidden text-white mr-3"
           onClick={toggleMobileMenu}
         >
           {showMobileMenu ? <FiX size={24} /> : <FiMenu size={24} />}
         </button>
-        
-        <Link to="/seller/dashboard" className="min-w-[192px]">
-  <img
-    src={logo}
-    alt="Logo"
-    className="w-48 rounded-lg object-cover"
-  />
-</Link>
 
+        <Link to="/seller/dashboard" className="min-w-[192px]">
+          <img
+            src={logo}
+            alt="Logo"
+            className="w-48 rounded-lg object-cover"
+          />
+        </Link>
       </div>
 
       {/* Center - Navigation (Desktop) */}
       <ul className="hidden md:flex gap-6 text-white">
         <Link to="/seller/dashboard">
-          <li className="hover:text-[#FFA500] cursor-pointer transition-colors">Dashboard</li>
+          <li className="hover:text-[#FFA500] cursor-pointer transition-colors">
+            Dashboard
+          </li>
         </Link>
         <Link to="#">
-          <li className="hover:text-[#FFA500] cursor-pointer transition-colors">My Business</li>
+          <li className="hover:text-[#FFA500] cursor-pointer transition-colors">
+            My Business
+          </li>
         </Link>
         <Link to="#">
-          <li className="hover:text-[#FFA500] cursor-pointer transition-colors">Orders</li>
+          <li className="hover:text-[#FFA500] cursor-pointer transition-colors">
+            Orders
+          </li>
         </Link>
         <Link to="#">
-          <li className="hover:text-[#FFA500] cursor-pointer transition-colors">Settings</li>
+          <li className="hover:text-[#FFA500] cursor-pointer transition-colors">
+            Settings
+          </li>
         </Link>
       </ul>
 
@@ -58,7 +128,7 @@ export default function SellerNavbar() {
       <div className="flex items-center gap-3 md:gap-5 relative">
         {/* Balance */}
         <span className="text-sm font-semibold px-3 py-1 rounded-md border border-[#FFA500] bg-[#FFA500] text-white hidden md:block">
-          $114.40
+          $0
         </span>
 
         {/* Notification Bell with Dropdown */}
@@ -73,7 +143,9 @@ export default function SellerNavbar() {
 
           {showNotifications && (
             <div className="absolute right-0 mt-2 w-72 bg-white border border-gray-200 rounded-md shadow-lg z-50">
-              <div className="p-4 border-b font-semibold text-gray-700">Notifications</div>
+              <div className="p-4 border-b font-semibold text-gray-700">
+                Notifications
+              </div>
               <ul className="max-h-60 overflow-y-auto">
                 <li className="px-4 py-2 hover:bg-gray-50 text-sm text-gray-700 cursor-pointer">
                   🎉 New order received!
@@ -103,59 +175,98 @@ export default function SellerNavbar() {
         {/* Help Icon */}
         <FiHelpCircle className="w-5 h-5 text-white hover:text-[#FFA500] cursor-pointer hidden md:block" />
 
-        {/* Profile Image */}
-        <img
-          src="https://static.vecteezy.com/system/resources/thumbnails/005/346/410/small_2x/close-up-portrait-of-smiling-handsome-young-caucasian-man-face-looking-at-camera-on-isolated-light-gray-studio-background-photo.jpg"
-          alt="User"
-          className="w-8 h-8 rounded-full object-cover border border-white hidden md:block"
+        {/* Profile Image + Dropdown */}
+        <div className="relative" ref={dropdownRef}>
+          
+           <img
+          src={profileImage ? `http://localhost:5000/uploads/${profileImage}` : "https://static.vecteezy.com/system/resources/thumbnails/005/346/410/small_2x/close-up-portrait-of-smiling-handsome-young-caucasian-man-face-looking-at-camera-on-isolated-light-gray-studio-background-photo.jpg"}
+          alt="Profile" onClick={toggleProfileDropdown}
+          className="w-8 h-8 rounded-full object-cover border border-white hidden md:block cursor-pointer"
+          onError={(e) => {
+            e.target.src = "https://static.vecteezy.com/system/resources/thumbnails/005/346/410/small_2x/close-up-portrait-of-smiling-handsome-young-caucasian-man-face-looking-at-camera-on-isolated-light-gray-studio-background-photo.jpg";
+          }}
         />
+
+          {showProfileDropdown && (
+            <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+              <div className="px-4 py-2 border-b text-gray-700 text-sm">
+                <p className="font-semibold">amjad hassan</p>
+                <p className="text-xs text-gray-500">amjadhassan@gmail.com</p>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                Logout
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Mobile Menu */}
       {showMobileMenu && (
         <div className="md:hidden fixed inset-0 bg-[#708238] z-40 pt-16 px-4">
           <div className="flex flex-col gap-6 py-6">
-            <Link 
-              to="/seller/dashboard" 
+            <Link
+              to="/seller/dashboard"
               className="text-white hover:text-[#FFA500] text-lg py-2 border-b border-[#5a6a2d]"
               onClick={toggleMobileMenu}
             >
               Dashboard
             </Link>
-            <Link 
-              to="#" 
+            <Link
+              to="#"
               className="text-white hover:text-[#FFA500] text-lg py-2 border-b border-[#5a6a2d]"
               onClick={toggleMobileMenu}
             >
               My Business
             </Link>
-            <Link 
-              to="#" 
+            <Link
+              to="#"
               className="text-white hover:text-[#FFA500] text-lg py-2 border-b border-[#5a6a2d]"
               onClick={toggleMobileMenu}
             >
               Orders
             </Link>
-            <Link 
-              to="#" 
+            <Link
+              to="#"
               className="text-white hover:text-[#FFA500] text-lg py-2 border-b border-[#5a6a2d]"
               onClick={toggleMobileMenu}
             >
               Settings
             </Link>
-            
+
             <div className="flex items-center justify-between mt-4">
               <span className="text-sm font-semibold px-3 py-1 rounded-md border border-[#FFA500] bg-[#FFA500] text-white">
                 $114.40
               </span>
-              
-              <div className="flex gap-4">
+
+              <div className="flex gap-4 items-center">
                 <FiHelpCircle className="w-5 h-5 text-white hover:text-[#FFA500] cursor-pointer" />
-                <img
-                  src="https://static.vecteezy.com/system/resources/thumbnails/005/346/410/small_2x/close-up-portrait-of-smiling-handsome-young-caucasian-man-face-looking-at-camera-on-isolated-light-gray-studio-background-photo.jpg"
-                  alt="User"
-                  className="w-8 h-8 rounded-full object-cover border border-white"
-                />
+                <div className="relative" ref={dropdownRef}>
+                  <img
+                    src="https://static.vecteezy.com/system/resources/thumbnails/005/346/410/small_2x/close-up-portrait-of-smiling-handsome-young-caucasian-man-face-looking-at-camera-on-isolated-light-gray-studio-background-photo.jpg"
+                    alt="User"
+                    onClick={toggleProfileDropdown}
+                    className="w-8 h-8 rounded-full object-cover border border-white cursor-pointer"
+                  />
+
+                  {showProfileDropdown && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                      <div className="px-4 py-2 border-b text-gray-700 text-sm">
+                        <p className="font-semibold">John Doe</p>
+                        <p className="text-xs text-gray-500">john@example.com</p>
+                      </div>
+                      <button
+                        onClick={handleLogout}
+                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>

@@ -3,9 +3,10 @@ import { FaMapMarkerAlt, FaCalendarAlt, FaClock, FaTruck, FaPen, FaStar } from "
 import SellerLayout from "../../Pages/layouts/SellerLayout";
 import ProfileWizardModal from "./ProfileWizardModal";
 import EditSectionModal from "./EditSectionModal";
+
 import axios from "axios";
 
-// ProfileImageUpload Component (from your working code)
+// ProfileImageUpload Component
 const ProfileImageUpload = ({ currentImage, onImageUpdate }) => {
   const [uploading, setUploading] = useState(false);
 
@@ -43,6 +44,8 @@ const ProfileImageUpload = ({ currentImage, onImageUpdate }) => {
       // Updated endpoint URL to match common API patterns
       const response = await axios.post(
         "http://localhost:5000/api/seller/profile/upload-image",
+       
+        
         formData,
         {
           headers: {
@@ -119,6 +122,32 @@ const ProfileImageUpload = ({ currentImage, onImageUpdate }) => {
   );
 };
 
+// ProfileInfo Component
+const ProfileInfo = ({ icon, label, value }) => (
+  <div className="flex items-center gap-2">
+    {icon}
+    <span className="text-gray-600 font-medium">{label}:</span>
+    <span className="text-gray-800">{value}</span>
+  </div>
+);
+
+// SectionHeader Component
+const SectionHeader = ({ title, icon, onEdit }) => (
+  <div className="flex items-center justify-between">
+    <div className="flex items-center gap-2">
+      {icon}
+      <h2 className="text-xl font-semibold text-gray-800">{title}</h2>
+    </div>
+    <button
+      onClick={onEdit}
+      className="flex items-center gap-1 text-[#708238] hover:text-[#5a6a2d] transition-colors"
+    >
+      <FaPen className="w-4 h-4" />
+      <span className="text-sm font-medium">Edit</span>
+    </button>
+  </div>
+);
+
 export default function SellerProfile() {
   const [user, setUser] = useState(null);
   const [sellerData, setSellerData] = useState(null);
@@ -130,7 +159,18 @@ export default function SellerProfile() {
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (e) {
+        console.error("Error parsing user data:", e);
+        // fallback dummy data
+        setUser({
+          username: "naseem hussain",
+          email: "naseem@example.com",
+          firstName: "naseem",
+          lastName: "hussain"
+        });
+      }
     } else {
       // fallback dummy data
       setUser({
@@ -151,11 +191,14 @@ export default function SellerProfile() {
       
       if (!token) {
         console.error('No token found');
+        setLoading(false);
         return;
       }
       
+      // Clean token if it's stored as a stringified JSON
       const cleanToken = token.replace(/^"(.*)"$/, '$1');
       
+      // Fetch profile wizard data
       const response = await axios.get('http://localhost:5000/api/profile-wizard', {
         headers: { 
           Authorization: `Bearer ${cleanToken}`,
@@ -174,14 +217,31 @@ export default function SellerProfile() {
           }
         });
         
-        if (profileResponse.data.profileImage) {
+        console.log("Full profile response:", profileResponse.data);
+        
+        if (profileResponse.data && profileResponse.data.profileImage) {
           setProfileImage(profileResponse.data.profileImage);
+          console.log("Profile image set:", profileResponse.data.profileImage);
+        } else {
+          console.log("No profile image in response");
         }
       } catch (error) {
-        console.log('Profile image not available yet');
+        console.log('Profile image fetch error:', error.response?.data || error.message);
+        // This is not critical, so we can continue
       }
     } catch (error) {
       console.error('Error fetching seller data:', error);
+      // Set empty seller data to prevent crashes
+      setSellerData({
+        professionalSummary: "",
+        functionalRoles: [],
+        technicalRoles: [],
+        projects: [],
+        technicalSkills: [],
+        certifications: [],
+        servicesOffered: [],
+        languages: []
+      });
     } finally {
       setLoading(false);
     }
@@ -229,6 +289,11 @@ export default function SellerProfile() {
   const handleSaveSection = async (updatedData) => {
     try {
       const token = localStorage.getItem('token');
+      if (!token) {
+        alert("Please login again");
+        return;
+      }
+      
       const cleanToken = token.replace(/^"(.*)"$/, '$1');
       
       let step;
@@ -288,6 +353,7 @@ export default function SellerProfile() {
       }
     } catch (error) {
       console.error('Error saving section:', error);
+      alert("Error saving changes. Please try again.");
       throw error;
     }
   };
@@ -303,7 +369,7 @@ export default function SellerProfile() {
     return (
       <SellerLayout>
         <div className="flex justify-center items-center h-screen">
-          <p className="text-gray-600 text-lg">Loading profile...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#708238]"></div>
         </div>
       </SellerLayout>
     );
@@ -313,7 +379,7 @@ export default function SellerProfile() {
     return (
       <SellerLayout>
         <div className="flex justify-center items-center h-screen">
-          <p className="text-gray-600 text-lg">Loading profile...</p>
+          <p className="text-gray-600 text-lg">Please login to view your profile</p>
         </div>
       </SellerLayout>
     );
@@ -435,7 +501,7 @@ export default function SellerProfile() {
                 title="Professional Summary" 
                 icon={
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
                 }
                 onEdit={() => openEditModal('professionalSummary')}
@@ -448,8 +514,8 @@ export default function SellerProfile() {
               <SectionHeader 
                 title="Functional Role" 
                 icon={
-                  <svg className="w-5 h-5" fill="none" stroke="current" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                 }
                 onEdit={() => openEditModal('functionalRoles')}
@@ -457,7 +523,7 @@ export default function SellerProfile() {
               <div className="overflow-x-auto">
                 <table className="min-w-full border border-gray-200">
                   <thead>
-                    <tr className="bg-gray-300">
+                    <tr className="bg-gray-50">
                       <th className="border border-gray-200 px-4 py-2 text-left">Year</th>
                       <th className="border border-gray-200 px-4 py-2 text-left">Role</th>
                       <th className="border border-gray-200 px-4 py-2 text-left">Responsibility</th>
@@ -492,7 +558,7 @@ export default function SellerProfile() {
                 title="Technical Role" 
                 icon={
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                   </svg>
                 }
                 onEdit={() => openEditModal('technicalRoles')}
@@ -500,7 +566,7 @@ export default function SellerProfile() {
               <div className="overflow-x-auto">
                 <table className="min-w-full border border-gray-200">
                   <thead>
-                    <tr className="bg-gray-300">
+                    <tr className="bg-gray-50">
                       <th className="border border-gray-200 px-4 py-2 text-left">Year</th>
                       <th className="border border-gray-200 px-4 py-2 text-left">Role</th>
                       <th className="border border-gray-200 px-4 py-2 text-left">Responsibility</th>
@@ -535,7 +601,7 @@ export default function SellerProfile() {
                 title="Project Delivered" 
                 icon={
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                 }
                 onEdit={() => openEditModal('projects')}
@@ -578,7 +644,7 @@ export default function SellerProfile() {
                 title="Technical Skills" 
                 icon={
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 V3L4 14h7v7l9-11h-7z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
                 }
                 onEdit={() => openEditModal('technicalSkills')}
@@ -603,7 +669,7 @@ export default function SellerProfile() {
                 title="Certifications" 
                 icon={
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 .42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3. 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                   </svg>
                 }
                 onEdit={() => openEditModal('certifications')}
@@ -625,14 +691,14 @@ export default function SellerProfile() {
                         <tr key={index} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
                           <td className="border border-gray-200 px-4 py-2">{cert.name || "N/A"}</td>
                           <td className="border border-gray-200 px-4 py-2">{cert.exam || "N/A"}</td>
-                          <td className="border border-gray-200 px-4 py-2">{cert.number || "N/A"}</td>
+                          <td className="border border-gray-200 px-4 py-2">{cert.certificationNumber || "N/A"}</td>
                           <td className="border border-gray-200 px-4 py-2">{cert.issuedBy || "N/A"}</td>
-                          <td className="border border-gray-200 px-4 py-2">{cert.validity || "N/A"}</td>
+                          <td className="border border-gray-200 px-4 py-2">{cert.validityDate || "N/A"}</td>
                         </tr>
                       ))
                     ) : (
                       <tr>
-                        <td colSpan="5" className="border border-gray-200 px-4 py-4 text-center text-gray-200">
+                        <td colSpan="5" className="border border-gray-200 px-4 py-4 text-center text-gray-500">
                           No certifications added yet.
                         </td>
                       </tr>
@@ -643,32 +709,30 @@ export default function SellerProfile() {
               
               {/* Services Offered */}
               <SectionHeader 
-                title="ERP Consultancy/Services Offered" 
+                title="Services Offered" 
                 icon={
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-22m8 0V6a2 2 0 002 2h2a2 2 0 002-2V6m0 4v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                   </svg>
                 }
                 onEdit={() => openEditModal('servicesOffered')}
               />
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {sellerData?.servicesOffered && sellerData.servicesOffered.length > 0 ? (
                   sellerData.servicesOffered.map((service, index) => (
-                    <span
-                      key={index}
-                      className="px-4 py-2 bg-[#708238]/10 text-[#708238] text-sm font-medium rounded-md border border-[#708238]/20 text-center"
-                    >
-                      {service}
-                    </span>
+                    <div key={index} className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                      <h3 className="font-medium text-gray-800">{service.name || "Service"}</h3>
+                      <p className="text-gray-600 mt-1 text-sm">{service.description || "No description provided."}</p>
+                    </div>
                   ))
                 ) : (
-                  <p className="text-gray-500 col-span-full">No services added yet.</p>
+                  <p className="text-gray-500">No services added yet.</p>
                 )}
               </div>
               
-              {/* Language Proficiencies */}
+              {/* Languages */}
               <SectionHeader 
-                title="Language Proficiencies" 
+                title="Languages" 
                 icon={
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
@@ -676,119 +740,42 @@ export default function SellerProfile() {
                 }
                 onEdit={() => openEditModal('languages')}
               />
-              <div className="overflow-x-auto">
-                <table className="min-w-full border border-gray-200">
-                  <thead>
-                    <tr className="bg-gray-50">
-                      <th className="border border-gray-200 px-4 py-2 text-left">Language</th>
-                      <th className="border border-gray-200 px-4 py-2 text-center">Basic</th>
-                      <th className="border border-gray-200 px-4 py-2 text-center">Intermediate</th>
-                      <th className="border border-gray-200 px-4 py-2 text-center">Fluent</th>
-                      <th className="border border-gray-200 px-4 py-2 text-center">Native</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {sellerData?.languages && sellerData.languages.length > 0 ? (
-                      sellerData.languages.map((lang, index) => (
-                        <tr key={index}>
-                          <td className="border border-gray-200 px-4 py-2 font-medium">{lang.language}</td>
-                          <td className="border border-gray-200 px-4 py-2 text-center">
-                            <input 
-                              type="radio" 
-                              checked={lang.proficiency === "Basic"} 
-                              readOnly
-                              className="h-4 w-4 text-[#708238] focus:ring-[#708238]" 
-                            />
-                          </td>
-                          <td className="border border-gray-200 px-4 py-2 text-center">
-                            <input 
-                              type="radio" 
-                              checked={lang.proficiency === "Intermediate"} 
-                              readOnly
-                              className="h-4 w-4 text-[#708238] focus:ring-[#708238]" 
-                            />
-                          </td>
-                          <td className="border border-gray-200 px-4 py-2 text-center">
-                            <input 
-                              type="radio" 
-                              checked={lang.proficiency === "Fluent"} 
-                              readOnly
-                              className="h-4 w-4 text-[#708238] focus:ring-[#708238]" 
-                            />
-                          </td>
-                          <td className="border border-gray-200 px-4 py-2 text-center">
-                            <input 
-                              type="radio" 
-                              checked={lang.proficiency === "Native"} 
-                              readOnly
-                              className="h-4 w-4 text-[#708238] focus:ring-[#708238]" 
-                            />
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan="5" className="border border-gray-200 px-4 py-4 text-center text-gray-500">
-                          No languages added yet.
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {sellerData?.languages && sellerData.languages.length > 0 ? (
+                  sellerData.languages.map((language, index) => (
+                    <div key={index} className="bg-gray-50 p-3 rounded-md border border-gray-200 text-center">
+                      <span className="font-medium text-gray-800">{language.name || "Language"}</span>
+                      <span className="text-gray-600 text-sm block mt-1">{language.proficiency || "N/A"}</span>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-gray-500">No languages added yet.</p>
+                )}
               </div>
             </div>
           </div>
         </div>
 
-        {/* Profile Completion Wizard Modal */}
-        <ProfileWizardModal 
-          showWizard={showWizard} 
-          closeWizard={closeWizard}
-          user={user}
-        />
+        {/* Profile Wizard Modal */}
+        {showWizard && (
+          <ProfileWizardModal 
+            isOpen={showWizard} 
+            onClose={closeWizard} 
+            onSave={fetchSellerData}
+          />
+        )}
 
         {/* Edit Section Modal */}
-        <EditSectionModal
-          isOpen={editModal.isOpen}
-          section={editModal.section}
-          data={editModal.data}
-          onClose={closeEditModal}
-          onSave={handleSaveSection}
-        />
+        {editModal.isOpen && (
+          <EditSectionModal 
+            isOpen={editModal.isOpen}
+            onClose={closeEditModal}
+            section={editModal.section}
+            data={editModal.data}
+            onSave={handleSaveSection}
+          />
+        )}
       </div>
     </SellerLayout>
-  );
-}
-
-// Helper components
-function ProfileInfo({ icon, label, value }) {
-  return (
-    <div className="flex items-center gap-3">
-      <div className="text-gray-400">{icon}</div>
-      <div>
-        <p className="text-xs text-gray-500">{label}</p>
-        <p className="text-sm font-medium text-gray-800">{value}</p>
-      </div>
-    </div>
-  );
-}
-
-function SectionHeader({ title, icon, onEdit }) {
-  return (
-    <div className="flex items-center justify-between pb-2 border-b border-gray-100">
-      <div className="flex items-center gap-3">
-        <div className="text-[#708238] bg-[#708238]/10 p-2 rounded-lg">
-          {icon}
-        </div>
-        <h2 className="text-lg font-semibold text-gray-800">{title}</h2>
-      </div>
-      <button 
-        onClick={onEdit}
-        className="text-gray-500 hover:text-[#708238] flex items-center gap-2 text-sm"
-      >
-        <FaPen className="text-xs" />
-        Edit
-      </button>
-    </div>
   );
 }

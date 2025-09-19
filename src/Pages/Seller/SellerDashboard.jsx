@@ -9,9 +9,43 @@ import {
 } from "react-icons/fa";
 import SellerLayout from "../layouts/SellerLayout";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const SellerDashboard = () => {
   const [user, setUser] = useState(null);
+  const [profileImage, setProfileImage] = useState(null);
+  const [loadingImage, setLoadingImage] = useState(true);
+  useEffect(() => {
+    fetchProfileImage();
+  }, []);
+
+  const fetchProfileImage = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        setLoadingImage(false);
+        return;
+      }
+      
+      const cleanToken = token.replace(/^"(.*)"$/, '$1');
+      
+      const response = await axios.get('http://localhost:5000/api/seller/profile', {
+        headers: { 
+          Authorization: `Bearer ${cleanToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (response.data && response.data.profileImage) {
+        setProfileImage(response.data.profileImage);
+      }
+    } catch (error) {
+      console.log('Profile image fetch error:', error.response?.data || error.message);
+    } finally {
+      setLoadingImage(false);
+    }
+  };
 
   useEffect(() => {
     try {
@@ -59,11 +93,18 @@ const SellerDashboard = () => {
           {/* Profile */}
           <div className="flex flex-col items-center text-center mb-6 pb-6 border-b border-gray-100">
             <div className="relative mb-4">
-              <img
-                src="https://static.vecteezy.com/system/resources/thumbnails/005/346/410/small_2x/close-up-portrait-of-smiling-handsome-young-caucasian-man-face-looking-at-camera-on-isolated-light-gray-studio-background-photo.jpg"
-                alt="Profile"
-                className="rounded-full w-16 h-16 border-2 border-emerald-500 object-cover"
-              />
+              {loadingImage ? (
+        <div className="animate-pulse bg-gray-300 rounded-full w-16 h-16 border-2 border-emerald-500"></div>
+      ) : (
+        <img
+          src={profileImage ? `http://localhost:5000/uploads/${profileImage}` : "https://static.vecteezy.com/system/resources/thumbnails/005/346/410/small_2x/close-up-portrait-of-smiling-handsome-young-caucasian-man-face-looking-at-camera-on-isolated-light-gray-studio-background-photo.jpg"}
+          alt="Profile"
+          className="rounded-full w-16 h-16 border-2 border-emerald-500 object-cover"
+          onError={(e) => {
+            e.target.src = "https://static.vecteezy.com/system/resources/thumbnails/005/346/410/small_2x/close-up-portrait-of-smiling-handsome-young-caucasian-man-face-looking-at-camera-on-isolated-light-gray-studio-background-photo.jpg";
+          }}
+        />
+      )}
               <div className="absolute bottom-0 right-0 w-5 h-5 bg-emerald-500 rounded-full border-2 border-white"></div>
             </div>
 
@@ -157,15 +198,15 @@ const SellerDashboard = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <div className="bg-[#708238] hover:bg-[#FFA500] transition-colors duration-300 p-4 rounded-xl border border-gray-100 shadow-sm cursor-pointer">
               <p className="text-white text-sm">Pending Orders</p>
-              <p className="text-2xl font-bold text-white mt-1">12</p>
+              <p className="text-2xl font-bold text-white mt-1">0</p>
             </div>
             <div className="bg-[#708238] hover:bg-[#FFA500] transition-colors duration-300 p-4 rounded-xl border border-gray-100 shadow-sm cursor-pointer">
               <p className="text-white text-sm">Messages</p>
-              <p className="text-2xl font-bold text-white mt-1">5</p>
+              <p className="text-2xl font-bold text-white mt-1">0</p>
             </div>
             <div className="bg-[#708238] hover:bg-[#FFA500] transition-colors duration-300 p-4 rounded-xl border border-gray-100 shadow-sm cursor-pointer">
               <p className="text-white text-sm">Earnings</p>
-              <p className="text-2xl font-bold text-white mt-1">$1,240</p>
+              <p className="text-2xl font-bold text-white mt-1">$0</p>
             </div>
           </div>
 
