@@ -6,13 +6,15 @@ import {
   FaInstagram,
   FaLinkedinIn,
 } from "react-icons/fa";
-import { TfiWorld, TfiLayoutAccordionSeparated } from "react-icons/tfi";
+import { TfiWorld } from "react-icons/tfi";
 
 const footerData = [
   {
     heading: "For Business Users",
     links: [
-      { name: "How to hire ERP Consultant", href: "/categories/erp-solutions" },
+      // { name: "How to hire ERP Consultant", href: "/categories/erp-solutions" },
+      { name: "How to hire ERP Consultant", href: "/docs/How_to_hire_ERP_Consultant.pdf" },
+
       { name: "How JustERPs work?", href: "/categories/crm-services" },
       { name: "FAQ’s", href: "/categories/hr-management" },
     ],

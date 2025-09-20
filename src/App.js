@@ -15,6 +15,7 @@ import AdminLogin from "./Pages/Admin/AdminLogin";
 import { Ourstory } from "./Components/Ourstory";
 import Register from "./Components/Register";
 import ErpConsultant from "./Components/ErpConsultant";
+// import HowToHireERP from "./Components/HowToHireERP";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
         <Route path="/admin/login" element={<AdminLogin/>}/>
         <Route path="/register" element={<Register/>}/>
         <Route path="/erpconsultant" element={<ErpConsultant/>}/>
+        {/* <Route path="/how-to-hire-erp-consultant" element={<HowToHireERP />} /> */}
 
 
 
