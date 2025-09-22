@@ -15,7 +15,8 @@ import AdminLogin from "./Pages/Admin/AdminLogin";
 import { Ourstory } from "./Components/Ourstory";
 import Register from "./Components/Register";
 import ErpConsultant from "./Components/ErpConsultant";
-// import HowToHireERP from "./Components/HowToHireERP";
+import HowToHireERP from "./Components/HowToHireERP";
+import BuyerProfile from "./Components/buyer/BuyerProfile";
 
 function App() {
   return (
@@ -34,7 +35,8 @@ function App() {
         <Route path="/admin/login" element={<AdminLogin/>}/>
         <Route path="/register" element={<Register/>}/>
         <Route path="/erpconsultant" element={<ErpConsultant/>}/>
-        {/* <Route path="/how-to-hire-erp-consultant" element={<HowToHireERP />} /> */}
+        <Route path="/how_to_hire_erp_consultant" element={<HowToHireERP />} />
+        <Route path="/buyer/profile" element={<BuyerProfile/>}/>
 
 
 

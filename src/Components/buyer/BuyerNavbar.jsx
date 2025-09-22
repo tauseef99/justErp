@@ -4,6 +4,7 @@ import { FiBell, FiMail, FiSearch, FiHelpCircle } from "react-icons/fi";
 import { FaHome, FaBoxOpen, FaEnvelope, FaUser, FaStar, FaStore } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
 import logo from '../../Assets/images/logo-2.jpeg';
+import BuyerProfile from './BuyerProfile';
 
 export default function BuyerNavbar() {
   const [showNotifications, setShowNotifications] = useState(false);
@@ -69,9 +70,9 @@ export default function BuyerNavbar() {
           </ul>
 
           {/* Become a Seller - Hidden on mobile */}
-          <Link to="/seller/dashboard" className="hidden md:flex items-center gap-1 text-sm font-medium text-white hover:text-[#FFA500] transition-colors">
+          {/* <Link to="/seller/dashboard" className="hidden md:flex items-center gap-1 text-sm font-medium text-white hover:text-[#FFA500] transition-colors">
             <FaStore className="text-sm" /> Switch to Selling
-          </Link>
+          </Link> */}
 
           {/* Notification Bell */}
           <div className="relative">
@@ -110,7 +111,9 @@ export default function BuyerNavbar() {
               <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50">
                 <ul className="py-1">
                   <li className="px-4 py-2 hover:bg-gray-50 text-sm text-gray-700 cursor-pointer flex items-center gap-2 hover:text-[#FFA500]">
+                    <Link to="/buyer/profile">
                     <FaUser className="text-gray-500" /> Profile
+                    </Link>
                   </li>
                   <li className="px-4 py-2 hover:bg-gray-50 text-sm text-gray-700 cursor-pointer flex items-center gap-2 hover:text-[#FFA500]">
                     <FaBoxOpen className="text-gray-500" /> Orders

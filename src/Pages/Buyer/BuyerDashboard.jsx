@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaStar, FaTimes, FaHeart, FaShoppingCart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
@@ -170,6 +170,7 @@ const GigModal = ({ gig, onClose }) => {
 
 export default function BuyerDashboard() {
   const [selectedGig, setSelectedGig] = useState(null);
+  const [userName, setUserName] = useState("");
   
   const recentServices = [
     {
@@ -281,6 +282,16 @@ export default function BuyerDashboard() {
     setSelectedGig(null);
   };
 
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser);
+      setUserName(parsedUser.name || parsedUser.username || parsedUser.email);
+    }
+  }, []);
+
+
   return (
     <div className="min-h-screen bg-gray-50 font-sans">
       <div className="container mx-auto px-4 py-8">
@@ -290,7 +301,7 @@ export default function BuyerDashboard() {
       <div className="relative bg-gradient-to-r from-[#708238]/10 to-[#FFA500]/10 rounded-3xl shadow-md p-8 mb-12 overflow-hidden border border-white">
   <div className="relative z-10">
     <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-6">
-      👋 Welcome back, Abdul Raziq
+      👋 Welcome back, {userName || "User"}
     </h1>
 
     {/* Stats Cards */}

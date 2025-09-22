@@ -12,8 +12,8 @@ const footerData = [
   {
     heading: "For Business Users",
     links: [
-      // { name: "How to hire ERP Consultant", href: "/categories/erp-solutions" },
-      { name: "How to hire ERP Consultant", href: "/docs/How_to_hire_ERP_Consultant.pdf" },
+       { name: "How to hire ERP Consultant", href: "/how_to_hire_erp_consultant" },
+      // { name: "How to hire ERP Consultant", href: "/docs/How_to_hire_ERP_Consultant.pdf" },
 
       { name: "How JustERPs work?", href: "/categories/crm-services" },
       { name: "FAQ’s", href: "/categories/hr-management" },
