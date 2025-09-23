@@ -17,6 +17,8 @@ import Register from "./Components/Register";
 import ErpConsultant from "./Components/ErpConsultant";
 import HowToHireERP from "./Components/HowToHireERP";
 import BuyerProfile from "./Components/buyer/BuyerProfile";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (

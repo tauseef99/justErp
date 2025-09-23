@@ -125,9 +125,20 @@ export default function BuyerNavbar() {
                   <li className="px-4 py-2 hover:bg-gray-50 text-sm text-gray-700 cursor-pointer hover:text-[#FFA500]">
                     Settings
                   </li>
-                  <li className="px-4 py-2 hover:bg-gray-50 text-sm text-red-600 cursor-pointer">
-                    Logout
-                  </li>
+                  <li
+  className="px-4 py-2 hover:bg-gray-50 text-sm text-red-600 cursor-pointer"
+  onClick={() => {
+    // Clear token & user data
+    localStorage.removeItem("token");
+    localStorage.removeItem("user"); // if you save user data too
+
+    // Redirect to login
+    window.location.href = "/signin"; // or "/login" depending on your route
+  }}
+>
+  Logout
+</li>
+
                 </ul>
               </div>
             )}
