@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import { FaUserCircle, FaEdit, FaSave, FaTimes, FaCamera } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export default function BuyerProfile() {
+  const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -203,7 +205,18 @@ export default function BuyerProfile() {
 
   return (
     <>
+
       <div className="min-h-screen bg-gradient-to-br from-amber-50 to-lime-50 py-8 px-4">
+        <button
+        onClick={() => navigate(-1)}
+        className="flex items-center justify-center gap-2 
+             px-6 py-3 rounded-full text-white font-medium 
+             bg-gradient-to-r from-[#FFA500] to-[#708238] 
+             shadow-lg hover:opacity-90 hover:scale-105 
+             transition-all duration-300 ease-in-out"
+      >
+        ← Back
+      </button>
         <div className="max-w-6xl mx-auto">
           <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
             {/* Header */}

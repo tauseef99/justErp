@@ -70,9 +70,9 @@ export default function BuyerNavbar() {
           </ul>
 
           {/* Become a Seller - Hidden on mobile */}
-          {/* <Link to="/seller/dashboard" className="hidden md:flex items-center gap-1 text-sm font-medium text-white hover:text-[#FFA500] transition-colors">
+          <Link to="/seller/dashboard" className="hidden md:flex items-center gap-1 text-sm font-medium text-white hover:text-[#FFA500] transition-colors">
             <FaStore className="text-sm" /> Switch to Selling
-          </Link> */}
+          </Link>
 
           {/* Notification Bell */}
           <div className="relative">

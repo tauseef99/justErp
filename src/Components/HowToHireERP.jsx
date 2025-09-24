@@ -4,7 +4,7 @@ import img1 from '../Assets/images/target.jpeg'
 import img2 from '../Assets/images/technicle-landscape.jpeg'
 import img3 from '../Assets/images/migrate-project.jpeg'
 import img4 from '../Assets/images/feedback.jpeg'
-import img5 from '../Assets/images/video-call.jpeg'
+import img5 from '../Assets/images/video-calll.jpeg'
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 
@@ -68,11 +68,11 @@ const HowToHireERP = () => {
           <div className="absolute inset-0 bg-black opacity-10"></div>
           <div className="absolute inset-0 bg-gradient-to-r from-[#FFA500]/20 to-[#708238]/20"></div>
           <div className="relative max-w-6xl mx-auto text-center">
-            <AnimatedSection delay={200}>
+            {/* <AnimatedSection delay={200}>
               <div className="inline-block bg-white bg-opacity-20 backdrop-blur-sm rounded-full px-6 py-2 mb-6 border border-white/30">
                 <span className="text-sm font-semibold uppercase tracking-wide">JustERPs Hiring Guide</span>
               </div>
-            </AnimatedSection>
+            </AnimatedSection> */}
             
             <AnimatedSection delay={400}>
               <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
@@ -81,9 +81,9 @@ const HowToHireERP = () => {
             </AnimatedSection>
             
             <AnimatedSection delay={600}>
-              <p className="text-xl md:text-2xl opacity-90 mb-8 max-w-3xl mx-auto leading-relaxed">
-                Select the Best ERP Consultant for Your Business with Our Proven Framework
-              </p>
+              <p className="text-xl md:text-2xl opacity-90 mb-8 max-w-3xl mx-auto leading-relaxed whitespace-nowrap">
+  Select the Best ERP Consultant for Your Business with Our Proven Framework
+</p>
             </AnimatedSection>
             
             <AnimatedSection delay={800}>
@@ -99,9 +99,9 @@ const HowToHireERP = () => {
           <div className="max-w-6xl mx-auto">
             <AnimatedSection>
               <div className="text-center mb-16">
-                <span className="inline-block px-4 py-2 bg-[#708238] text-white rounded-full text-sm font-semibold mb-4 uppercase tracking-wide">
+                {/* <span className="inline-block px-4 py-2 bg-[#708238] text-white rounded-full text-sm font-semibold mb-4 uppercase tracking-wide">
                   Visual Guide
-                </span>
+                </span> */}
                 <h2 className="text-4xl font-bold text-gray-800 mb-4">ERP Consultant Hiring Process</h2>
                 <p className="text-xl text-gray-600 max-w-3xl mx-auto">
                   Our structured 3-step approach ensures you find the right ERP consultant with precision and confidence
@@ -131,17 +131,21 @@ const HowToHireERP = () => {
           <div className="max-w-6xl mx-auto">
             <AnimatedSection>
               <div className="text-center mb-16">
-                <span className="inline-block px-4 py-2 bg-[#FFA500] bg-opacity-20 text-[#FFA500] rounded-full text-sm font-semibold mb-2 uppercase tracking-wide">
-                  STEP 
-                </span>
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-[#FFA500] text-white rounded-full text-2xl font-bold mb-4 shadow-lg">
-                  1
-                </div>
-                <h2 className="text-4xl font-bold text-gray-800 mb-4">Preparation Work Before Hiring</h2>
-                <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                  The foundation of a successful ERP consultant engagement starts with thorough preparation
-                </p>
-              </div>
+  <div className="inline-flex items-center justify-center w-20 h-20 bg-[#FFA500] text-white rounded-full text-xl tracking-wide font-bold mb-4 shadow-lg">
+    STEP&nbsp;1
+  </div>
+
+  <h2 className="text-4xl font-bold text-gray-800 mb-4">
+    Preparation Work Before Hiring
+  </h2>
+
+  <p className="text-xl text-gray-600 max-w-3xl mx-auto whitespace-nowrap">
+  The foundation of a successful ERP consultant engagement starts with thorough preparation
+</p>
+
+</div>
+
+
             </AnimatedSection>
             
             {/* Golden Rule Card */}
@@ -176,13 +180,13 @@ const HowToHireERP = () => {
                   <div className="space-y-6">
                     <div>
                       <h4 className="font-semibold text-gray-800 text-lg mb-3 flex items-center">
-                        <span className="w-3 h-3 bg-[#FFA500] rounded-full mr-3"></span>
+                        <span className="w-3 h-3 bg-[#708238] rounded-full mr-3"></span>
                         Core Problem Identification
                       </h4>
                       <ul className="text-gray-700 space-y-2 ml-6">
                         {["Migration from legacy systems", "New ERP setup and configuration", "Module-specific fixes and optimization", "Integration with existing systems"].map((item, index) => (
                           <li key={index} className="flex items-center transition-transform duration-200 hover:translate-x-1">
-                            <span className="w-2 h-2 bg-[#FFA500] rounded-full mr-3"></span>
+                            <span className="w-2 h-2 bg-[#708238] rounded-full mr-3"></span>
                             {item}
                           </li>
                         ))}
@@ -190,13 +194,13 @@ const HowToHireERP = () => {
                     </div>
                     <div>
                       <h4 className="font-semibold text-gray-800 text-lg mb-3 flex items-center">
-                        <span className="w-3 h-3 bg-[#FFA500] rounded-full mr-3"></span>
+                        <span className="w-3 h-3 bg-[#708238] rounded-full mr-3"></span>
                         Specific Goals Definition
                       </h4>
                       <ul className="text-gray-700 space-y-2 ml-6">
                         {["Process automation targets", "Cost reduction objectives", "Efficiency improvement metrics", "Integration requirements"].map((item, index) => (
                           <li key={index} className="flex items-center transition-transform duration-200 hover:translate-x-1">
-                            <span className="w-2 h-2 bg-[#FFA500] rounded-full mr-3"></span>
+                            <span className="w-2 h-2 bg-[#708238] rounded-full mr-3"></span>
                             {item}
                           </li>
                         ))}
@@ -205,12 +209,13 @@ const HowToHireERP = () => {
                   </div>
                 </div>
                 <div className="flex items-center justify-center">
-                  <img
-                    src={img1}
-                    alt="Define Your Project Scope"
-                    className="rounded-xl shadow-lg w-full h-80 object-cover transition-transform duration-500 hover:scale-105"
-                  />
-                </div>
+  <img
+    src={img1}
+    alt="Define Your Project Scope"
+    className="rounded-xl shadow-lg w-full h-80 object-contain transition-transform duration-500 hover:scale-105 "
+  />
+</div>
+
               </div>
             </AnimatedSection>
             
@@ -262,39 +267,63 @@ const HowToHireERP = () => {
             
             {/* Benefits Card */}
             <AnimatedCard delay={500}>
-              <div className="bg-gradient-to-r from-[#FFA500] to-[#FFB74D] text-white p-8 rounded-2xl shadow-lg transform hover:shadow-xl transition-all duration-300">
-                <h3 className="text-2xl font-semibold mb-8 text-center">Why This Process Works for You</h3>
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {[
-                    { icon: "M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z", title: "Clarity", desc: "Eliminates ambiguity and prevents scope creep" },
-                    { icon: "M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z", title: "Accuracy", desc: "Consultants provide precise proposals and timelines" },
-                    { icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z", title: "Quality Proposals", desc: "Receive serious, well-defined bids from consultants" },
-                    { icon: "M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h11-2zm2 4h-2v2h2V9z", title: "Transparency", desc: "SOW acts as a foundational agreement" }
-                  ].map((item, index) => (
-                    <div key={index} className="text-center transform hover:scale-105 transition-transform duration-300">
-                      <div className="bg-white bg-opacity-20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 shadow-inner">
-                        <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d={item.icon} clipRule="evenodd" />
-                        </svg>
-                      </div>
-                      <h4 className="font-semibold text-lg mb-2">{item.title}</h4>
-                      <p className="text-white text-opacity-90 text-sm">{item.desc}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <div className="border-2 border-[#FFA500] p-8 rounded-2xl shadow-lg transform hover:shadow-xl transition-all duration-300">
+  <h3 className="text-2xl font-semibold mb-8 text-center text-black">
+    Why This Process Works for You
+  </h3>
+  <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+    {[
+      {
+        icon: "M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z",
+        title: "Clarity",
+        desc: "Eliminates ambiguity and prevents scope creep",
+      },
+      {
+        icon: "M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z",
+        title: "Accuracy",
+        desc: "Consultants provide precise proposals and timelines",
+      },
+      {
+        icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z",
+        title: "Quality Proposals",
+        desc: "Receive serious, well-defined bids from consultants",
+      },
+      {
+        icon: "M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h11-2zm2 4h-2v2h2V9z",
+        title: "Transparency",
+        desc: "SOW acts as a foundational agreement",
+      },
+    ].map((item, index) => (
+      <div
+        key={index}
+        className="text-center transform hover:scale-105 transition-transform duration-300"
+      >
+        <div className="border-2 border-[#FFA500] rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 shadow-inner text-[#FFA500] bg-white">
+          <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d={item.icon} clipRule="evenodd" />
+          </svg>
+        </div>
+        <h4 className="font-semibold text-lg mb-2 text-black">
+          {item.title}
+        </h4>
+        <p className="text-gray-700 text-sm">{item.desc}</p>
+      </div>
+    ))}
+  </div>
+</div>
+
             </AnimatedCard>
           </div>
         </section>
 
         {/* Timeline Section */}
-        <section className="py-20 px-4 bg-gradient-to-br from-[#FFA500] to-[#708238] bg-opacity-10">
+        <section className="py-20 px-4 bg-white bg-opacity-10">
           <div className="max-w-6xl mx-auto">
             <AnimatedSection>
               <div className="text-center mb-16">
-                <span className="inline-block px-4 py-2 bg-[#708238] text-white rounded-full text-sm font-semibold mb-4 uppercase tracking-wide">
+                {/* <span className="inline-block px-4 py-2 bg-[#708238] text-white rounded-full text-sm font-semibold mb-4 uppercase tracking-wide">
                   Project Planning
-                </span>
+                </span> */}
                 <h2 className="text-4xl font-bold text-gray-800 mb-4">Migration Project Timeline Examples</h2>
                 <p className="text-xl text-gray-600 max-w-3xl mx-auto">
                   Project timelines vary based on complexity - from rapid implementations to comprehensive enterprise deployments
@@ -313,7 +342,7 @@ const HowToHireERP = () => {
                 </div>
                 <div className="text-center">
                   <p className="text-gray-600 text-lg">
-                    Typical timelines range from 47 days for small implementations to 173+ days for enterprise-level deployments
+                   Project Timelines
                   </p>
                 </div>
               </div>
@@ -326,23 +355,28 @@ const HowToHireERP = () => {
           <div className="max-w-6xl mx-auto">
             <AnimatedSection>
               <div className="text-center mb-16">
-                <span className="inline-block px-4 py-2 bg-[#708238] bg-opacity-20 text-[#708238] rounded-full text-sm font-semibold mb-2 uppercase tracking-wide">
-                  STEP
-                </span>
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-[#708238] text-white rounded-full text-2xl font-bold mb-4 shadow-lg">
-                  2
-                </div>
-                <h2 className="text-4xl font-bold text-gray-800 mb-4">The Selection Process</h2>
-                <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                  Finding the right ERP consultant requires a systematic and thorough approach
-                </p>
-              </div>
+  {/* Step label */}
+  <div className="inline-flex items-center justify-center w-20 h-20 bg-[#FFA500] text-white rounded-full text-xl tracking-wide font-bold mb-4 shadow-lg">
+    STEP&nbsp;2
+  </div>
+
+  {/* Step heading */}
+  <h2 className="text-4xl font-bold text-gray-800 mb-4">
+    The Selection Process
+  </h2>
+
+  {/* Step description */}
+  <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+    Finding the right ERP consultant requires a systematic and thorough approach
+  </p>
+</div>
+
             </AnimatedSection>
             
             <div className="grid md:grid-cols-3 gap-8">
               {[
                 {
-                  number: "2.1",
+                  
                   title: "Search and Shortlist Proactively",
                   items: [
                     "Use platform filters (ERP system, success rate, reviews)",
@@ -351,7 +385,7 @@ const HowToHireERP = () => {
                   ]
                 },
                 {
-                  number: "2.2",
+                  
                   title: "Initiate Contact and Interview",
                   items: [
                     "Use 'Invite to Job' feature",
@@ -361,7 +395,7 @@ const HowToHireERP = () => {
                   ]
                 },
                 {
-                  number: "2.3",
+                  
                   title: "Evaluate Proposals and Choose",
                   items: [
                     "Look beyond price",
@@ -395,26 +429,24 @@ const HowToHireERP = () => {
           <div className="max-w-6xl mx-auto">
             <AnimatedSection>
               <div className="text-center mb-16">
-                <span className="inline-block px-4 py-2 bg-[#FFA500] bg-opacity-20 text-[#FFA500] rounded-full text-sm font-semibold mb-2 uppercase tracking-wide">
-                  STEP
-                </span>
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-[#FFA500] text-white rounded-full text-2xl font-bold mb-4 shadow-lg">
-                  3
-                </div>
+                <div className="inline-flex items-center justify-center w-20 h-20 bg-[#FFA500] text-white rounded-full text-xl tracking-wide font-bold mb-4 shadow-lg">
+    STEP&nbsp;3
+  </div>
                 <h2 className="text-4xl font-bold text-gray-800 mb-4">Engagement & Management</h2>
-                <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                  Effective management ensures project success and maximizes your return on investment
-                </p>
+                <p className="text-xl text-gray-600 max-w-3xl mx-auto whitespace-nowrap">
+  Effective management ensures project success and maximizes your return on investment
+</p>
+
               </div>
             </AnimatedSection>
             
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
-                { number: "3.1", title: "Start with a Paid Pilot", desc: "Never release the full project budget upfront. Use milestone payments and start with a smaller, paid discovery phase." },
-                { number: "3.2", title: "Communication Protocols", desc: "Decide on communication channels, schedule regular check-ins, and designate a single point of contact." },
-                { number: "3.3", title: "Collaborate & Provide Feedback", desc: "Provide needed access and information promptly. Give constructive feedback at each milestone." },
-                { number: "3.4", title: "Review, Approve, and Pay", desc: "Thoroughly test and review each milestone delivery before releasing payment." },
-                { number: "3.5", title: "Close Project & Leave Review", desc: "Formally close the contract and leave a detailed, honest review to help other businesses." }
+                { title: "Start with a Paid Pilot", desc: "Never release the full project budget upfront. Use milestone payments and start with a smaller, paid discovery phase." },
+                { title: "Communication Protocols", desc: "Decide on communication channels, schedule regular check-ins, and designate a single point of contact." },
+                { title: "Collaborate & Provide Feedback", desc: "Provide needed access and information promptly. Give constructive feedback at each milestone." },
+                { title: "Review, Approve, and Pay", desc: "Thoroughly test and review each milestone delivery before releasing payment." },
+                { title: "Close Project & Leave Review", desc: "Formally close the contract and leave a detailed, honest review to help other businesses." }
               ].map((step, index) => (
                 <AnimatedCard key={index} delay={200 + (index * 100)}>
                   <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border-t border-gray-100 h-full">
@@ -433,25 +465,27 @@ const HowToHireERP = () => {
           <div className="max-w-6xl mx-auto">
             <AnimatedSection>
               <div className="text-center mb-16">
-                <span className="inline-block px-4 py-2 bg-[#708238] text-white rounded-full text-sm font-semibold mb-4 uppercase tracking-wide">
+                {/* <span className="inline-block px-4 py-2 bg-[#708238] text-white rounded-full text-sm font-semibold mb-4 uppercase tracking-wide">
                   Success Stories
-                </span>
+                </span> */}
                 <h2 className="text-4xl font-bold text-gray-800 mb-4">Client Feedback & Success Stories</h2>
-                <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                  See how businesses like yours have successfully implemented ERP solutions with our consultants
-                </p>
+                <p className="text-xl text-gray-600 max-w-3xl mx-auto whitespace-nowrap">
+  See how businesses like yours have successfully implemented ERP solutions with our consultants
+</p>
+
               </div>
             </AnimatedSection>
             
             <AnimatedCard delay={200}>
               <div className="bg-gray-50 rounded-2xl shadow-lg p-8 border border-gray-200 transform hover:shadow-xl transition-all duration-300">
                 <div className="flex justify-center mb-8">
-                  <img
-                    src={img4}
-                    alt="Client Feedback & Success Stories"
-                    className="rounded-xl shadow-md w-full max-w-4xl h-64 object-cover transition-transform duration-500 hover:scale-105"
-                  />
-                </div>
+  <img
+    src={img4}
+    alt="Client Feedback & Success Stories"
+    className="rounded-xl shadow-md w-full max-w-4xl object-contain transition-transform duration-500 hover:scale-105"
+  />
+</div>
+
                 <div className="text-center">
                   <p className="text-gray-600 text-lg">
                     Real feedback from satisfied clients who followed our hiring process
@@ -559,7 +593,7 @@ const HowToHireERP = () => {
             </AnimatedSection>
             
             <AnimatedSection delay={800}>
-              <p className="mt-8 text-white text-opacity-90 text-lg">JustERPs - Connecting businesses with top ERP talent since 2015</p>
+              <p className="mt-8 text-white text-opacity-90 text-lg">JustERPs - Connecting businesses with top ERP talent since 2025</p>
             </AnimatedSection>
           </div>
         </section>
