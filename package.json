@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.11.0",
     "framer-motion": "^12.23.12",
+    "jwt-decode": "^4.0.0",
     "lucide-react": "^0.541.0",
     "react": "^19.1.0",
     "react-countup": "^6.5.3",
@@ -20,6 +21,7 @@
     "react-slick": "^0.31.0",
     "react-toastify": "^11.0.5",
     "slick-carousel": "^1.8.1",
+    "socket.io-client": "^4.8.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

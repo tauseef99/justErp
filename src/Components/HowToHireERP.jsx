@@ -77,9 +77,10 @@ const HowToHireERP = () => {
     </AnimatedSection>
 
     <AnimatedSection delay={600}>
-      <p className="text-xl md:text-2xl opacity-90 mb-8 max-w-3xl mx-auto leading-relaxed">
-        Select the Best ERP Consultant for Your Business with Our Proven Framework
-      </p>
+      <p className="text-xl md:text-2xl opacity-90 mb-8 max-w-3xl mx-auto leading-relaxed whitespace-nowrap">
+  Select the Best ERP Consultant for Your Business with Our Proven Framework
+</p>
+
     </AnimatedSection>
 
     <AnimatedSection delay={800}>
@@ -103,9 +104,7 @@ const HowToHireERP = () => {
                   Visual Guide
                 </span> */}
                 <h2 className="text-4xl font-bold text-gray-800 mb-4">ERP Consultant Hiring Process</h2>
-                <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                  Our structured 3-step approach ensures you find the right ERP consultant with precision and confidence
-                </p>
+                
               </div>
             </AnimatedSection>
             
@@ -478,10 +477,7 @@ const HowToHireERP = () => {
                   Success Stories
                 </span> */}
                 <h2 className="text-4xl font-bold text-gray-800 mb-4">Client Feedback & Success Stories</h2>
-                <p className="text-xl text-gray-600 max-w-3xl mx-auto whitespace-nowrap">
-  See how businesses like yours have successfully implemented ERP solutions with our consultants
-</p>
-
+             
               </div>
             </AnimatedSection>
             

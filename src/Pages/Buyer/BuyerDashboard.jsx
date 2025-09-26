@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { FaStar, FaTimes, FaHeart, FaShoppingCart, FaMapMarkerAlt, FaCalendar, FaClock, FaGraduationCap, FaCertificate, FaLanguage } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { FaStar, FaTimes, FaHeart, FaShoppingCart, FaMapMarkerAlt, FaCalendar, FaClock, FaGraduationCap, FaCertificate, FaLanguage, FaSearch } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
 
-const ServiceCard = ({ item, onClick }) => (
+const ServiceCard = ({ item, onClick, onContactClick }) => (
   <div 
     className="min-w-[260px] max-w-[260px] bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-2 border border-gray-100"
     onClick={() => onClick(item)}
@@ -47,15 +47,23 @@ const ServiceCard = ({ item, onClick }) => (
           ))}
           <span className="text-gray-600 ml-2 text-sm font-medium">({item.reviews})</span>
         </div>
-        <div className="bg-[#708238] text-white text-xs font-semibold px-3 py-1 rounded-full">
+        <button 
+          onClick={(e) => {
+            e.stopPropagation(); // Prevent triggering the card click
+            onContactClick(item);
+          }}
+          className="bg-[#708238] text-white text-xs font-semibold px-3 py-1 rounded-full hover:bg-[#5a6a2d] transition-colors"
+        >
           Contact Now
-        </div>
+        </button>
       </div>
     </div>
   </div>
 );
 
-const GigModal = ({ gig, onClose }) => {
+// ... (Keep the GigModal component exactly as you have it, but update the Contact Me button)
+
+const GigModal = ({ gig, onClose, onContactClick }) => {
   if (!gig) return null;
 
   return (
@@ -337,8 +345,11 @@ const GigModal = ({ gig, onClose }) => {
                   <FaShoppingCart className="mr-2" />
                   Start Project (${gig.price})
                 </button>
-
-                <button className="w-full border-2 border-[#708238] text-[#708238] hover:bg-[#708238] hover:text-white font-medium py-3 rounded-lg transition-all duration-300 flex items-center justify-center">
+                
+                <button 
+                  onClick={() => onContactClick(gig)}
+                  className="w-full border-2 border-[#708238] text-[#708238] hover:bg-[#708238] hover:text-white font-medium py-3 rounded-lg transition-all duration-300 flex items-center justify-center"
+                >
                   Contact Me
                 </button>
 
@@ -384,43 +395,123 @@ const GigModal = ({ gig, onClose }) => {
   );
 };
 
+// Search Component (keep as is)
+const SearchBar = ({ searchTerm, onSearchChange, searchResults, totalSellers }) => {
+  return (
+    <div className="mb-8">
+      <div className="relative max-w-3xl mx-auto">
+        <div className="relative">
+          <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg" />
+          <input
+            type="text"
+            placeholder="Search ERP specialists by name, skills, location, or services..."
+            value={searchTerm}
+            onChange={onSearchChange}
+            className="w-full pl-12 pr-6 py-4 bg-white border border-gray-300 rounded-2xl shadow-lg focus:outline-none focus:ring-2 focus:ring-[#708238]/50 focus:border-transparent text-gray-700 placeholder-gray-500 text-lg transition-all duration-300"
+          />
+        </div>
+        
+        {/* Search Results Info */}
+        {searchTerm && (
+          <div className="mt-3 text-center">
+            <p className="text-gray-600 font-medium">
+              Found {searchResults.length} of {totalSellers} specialists matching "{searchTerm}"
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 export default function BuyerDashboard() {
   const [selectedGig, setSelectedGig] = useState(null);
   const [userName, setUserName] = useState("");
   const [sellers, setSellers] = useState([]);
+  const [filteredSellers, setFilteredSellers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
 
-  // Fetch all seller profiles
- // In BuyerDashboard useEffect
-const fetchSellers = async () => {
-  try {
-    setLoading(true);
-    const token = localStorage.getItem('token');
+  // Handle contact button click
+  // Update the handleContactClick function in BuyerDashboard.jsx
+const handleContactClick = (seller) => {
+  // Store seller data in localStorage to pass to messages component
+  localStorage.setItem('selectedSeller', JSON.stringify({
+    id: seller.id,
+    userId: seller.userId || seller.id, // Add userId field - use seller.id if userId doesn't exist
+    name: seller.provider,
+    title: seller.title,
+    price: seller.price,
+    rating: seller.rating,
+    reviews: seller.reviews,
+    img: seller.img,
+    level: seller.level,
+    location: seller.location
+  }));
+  
+  // Navigate to messages page
+  navigate('/buyer/messages');
+};
+
+  // Search functionality
+  const handleSearch = (term) => {
+    setSearchTerm(term);
     
-    // Use the detailed profiles endpoint
-    const response = await fetch('http://localhost:5000/api/seller/profile/all', {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch sellers');
+    if (!term.trim()) {
+      setFilteredSellers(sellers);
+      return;
     }
 
-    const data = await response.json();
-    setSellers(data);
-    setError(null);
-  } catch (err) {
-    console.error('Error fetching sellers:', err);
-    setError('Failed to load seller profiles');
-    setSellers(getFallbackSellers());
-  } finally {
-    setLoading(false);
-  }
-};
+    const filtered = sellers.filter(seller => 
+      seller.provider?.toLowerCase().includes(term.toLowerCase()) ||
+      seller.title?.toLowerCase().includes(term.toLowerCase()) ||
+      seller.level?.toLowerCase().includes(term.toLowerCase()) ||
+      seller.location?.toLowerCase().includes(term.toLowerCase()) ||
+      seller.description?.toLowerCase().includes(term.toLowerCase()) ||
+      (seller.technicalSkills && seller.technicalSkills.some(skill => 
+        skill.toLowerCase().includes(term.toLowerCase())
+      )) ||
+      (seller.servicesOffered && seller.servicesOffered.some(service => 
+        service.toLowerCase().includes(term.toLowerCase())
+      ))
+    );
+    
+    setFilteredSellers(filtered);
+  };
+
+  // Fetch all seller profiles
+  const fetchSellers = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem('token');
+      
+      const response = await fetch('http://localhost:5000/api/seller/profile/all', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch sellers');
+      }
+
+      const data = await response.json();
+      setSellers(data);
+      setFilteredSellers(data);
+      setError(null);
+    } catch (err) {
+      console.error('Error fetching sellers:', err);
+      setError('Failed to load seller profiles');
+      const fallbackSellers = getFallbackSellers();
+      setSellers(fallbackSellers);
+      setFilteredSellers(fallbackSellers);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Get user info from localStorage
   useEffect(() => {
@@ -455,16 +546,34 @@ const fetchSellers = async () => {
         description: "Professional ERP implementation services with years of experience.",
         tags: ["ERP", "Implementation", "Consulting"],
         level: "Level 2 ERP Specialist",
-        location: "New York, USA"
+        location: "New York, USA",
+        technicalSkills: ["SAP", "Oracle", "ERP Implementation"],
+        servicesOffered: ["ERP Consulting", "System Implementation", "Training"]
+      },
+      {
+        id: 2,
+        title: "SAP Solutions Expert",
+        provider: "Sarah Johnson",
+        rating: 4.8,
+        reviews: 32,
+        price: 150,
+        delivery: "2 days",
+        img: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+        description: "SAP certified consultant with 10+ years experience.",
+        tags: ["SAP", "Solutions", "Consulting"],
+        level: "Level 3 SAP Expert",
+        location: "London, UK",
+        technicalSkills: ["SAP HANA", "SAP Fiori", "ABAP"],
+        servicesOffered: ["SAP Implementation", "Customization", "Support"]
       }
     ];
   };
 
-  // Split sellers into different sections for display
-  const recentServices = sellers.slice(0, 4);
-  const inspiredServices = sellers.slice(4, 8);
-  const topRatedSellers = sellers.filter(seller => seller.rating >= 4.5).slice(0, 4);
-  const automationSellers = sellers.slice(8, 12);
+  // Split sellers into different sections for display (using filtered sellers)
+  const recentServices = filteredSellers.slice(0, 4);
+  const inspiredServices = filteredSellers.slice(4, 8);
+  const topRatedSellers = filteredSellers.filter(seller => seller.rating >= 4.5).slice(0, 4);
+  const automationSellers = filteredSellers.slice(8, 12);
 
   if (loading) {
     return (
@@ -480,7 +589,11 @@ const fetchSellers = async () => {
   return (
     <div className="min-h-screen bg-gray-50 font-sans">
       <div className="container mx-auto px-4 py-8">
-        <GigModal gig={selectedGig} onClose={closeModal} />
+        <GigModal 
+          gig={selectedGig} 
+          onClose={closeModal} 
+          onContactClick={handleContactClick}
+        />
 
         {error && (
           <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4">
@@ -488,92 +601,167 @@ const fetchSellers = async () => {
           </div>
         )}
 
+        {/* Professional Search Bar */}
+        <SearchBar 
+          searchTerm={searchTerm}
+          onSearchChange={(e) => handleSearch(e.target.value)}
+          searchResults={filteredSellers}
+          totalSellers={sellers.length}
+        />
+
         {/* Welcome Section */}
         <div className="relative bg-gradient-to-r from-[#708238]/10 to-[#FFA500]/10 rounded-3xl shadow-md p-8 mb-12 overflow-hidden border border-white">
-          {/* ... (keep your existing welcome section code) */}
           <div className="relative z-10">
             <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-6">
               👋 Welcome back, {userName || "User"}
             </h1>
-            {/* ... (rest of welcome section) */}
+            <p className="text-lg text-gray-700 mb-4 max-w-2xl">
+              Discover top ERP specialists tailored to your business needs. Find the perfect expert for your project.
+            </p>
           </div>
         </div>
 
-        {/* Section 1: Recent Services (Now showing real sellers) */}
-        <section className="mb-12">
-          <div className="flex justify-between items-center mb-5">
-            <h2 className="text-2xl font-bold text-gray-900">Available ERP Specialists</h2>
-            <Link className="text-[#708238] hover:text-[#5a6a2d] font-medium text-sm">See all</Link>
-          </div>
-          {recentServices.length > 0 ? (
-            <div className="flex overflow-x-auto gap-6 scrollbar-hide pb-2">
-              {recentServices.map((item) => (
-                <ServiceCard key={item.id} item={item} onClick={handleGigClick} />
-              ))}
+        {/* Show search results section when searching */}
+        {searchTerm && (
+          <section className="mb-12">
+            <div className="flex justify-between items-center mb-5">
+              <h2 className="text-2xl font-bold text-gray-900">
+                Search Results ({filteredSellers.length} specialists found)
+              </h2>
+              <button 
+                onClick={() => handleSearch("")}
+                className="text-[#708238] hover:text-[#5a6a2d] font-medium text-sm"
+              >
+                Clear Search
+              </button>
             </div>
-          ) : (
-            <div className="text-center py-8 text-gray-500">
-              No seller profiles available at the moment.
-            </div>
-          )}
-        </section>
+            {filteredSellers.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {filteredSellers.map((item) => (
+                  <ServiceCard 
+                    key={item.id} 
+                    item={item} 
+                    onClick={handleGigClick}
+                    onContactClick={handleContactClick}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12 bg-white rounded-2xl shadow-sm border border-gray-200">
+                <div className="text-6xl mb-4">🔍</div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">No specialists found</h3>
+                <p className="text-gray-600 mb-4">Try different keywords or browse all specialists below</p>
+                <button 
+                  onClick={() => handleSearch("")}
+                  className="bg-[#708238] hover:bg-[#5a6a2d] text-white font-medium py-2 px-6 rounded-lg transition-colors duration-300"
+                >
+                  View All Specialists
+                </button>
+              </div>
+            )}
+          </section>
+        )}
 
-        {/* Section 2: Inspired by your ERP usage */}
-        <section className="mb-12">
-          <div className="flex justify-between items-center mb-5">
-            <h2 className="text-2xl font-bold text-gray-900">Recommended Specialists</h2>
-            <Link className="text-[#708238] hover:text-[#5a6a2d] font-medium text-sm">See all</Link>
-          </div>
-          {inspiredServices.length > 0 ? (
-            <div className="flex overflow-x-auto gap-6 scrollbar-hide pb-2">
-              {inspiredServices.map((item) => (
-                <ServiceCard key={item.id} item={item} onClick={handleGigClick} />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-8 text-gray-500">
-              More specialists coming soon.
-            </div>
-          )}
-        </section>
+        {/* Regular sections (hidden when searching) */}
+        {!searchTerm && (
+          <>
+            {/* Section 1: Recent Services */}
+            <section className="mb-12">
+              <div className="flex justify-between items-center mb-5">
+                <h2 className="text-2xl font-bold text-gray-900">Available ERP Specialists</h2>
+                <Link to="/all-sellers" className="text-[#708238] hover:text-[#5a6a2d] font-medium text-sm">See all</Link>
+              </div>
+              {recentServices.length > 0 ? (
+                <div className="flex overflow-x-auto gap-6 scrollbar-hide pb-2">
+                  {recentServices.map((item) => (
+                    <ServiceCard 
+                      key={item.id} 
+                      item={item} 
+                      onClick={handleGigClick}
+                      onContactClick={handleContactClick}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8 text-gray-500">
+                  No seller profiles available at the moment.
+                </div>
+              )}
+            </section>
 
-        {/* Section 3: Top-rated ERP Experts */}
-        <section className="mb-12">
-          <div className="flex justify-between items-center mb-5">
-            <h2 className="text-2xl font-bold text-gray-900">Top-rated ERP Experts</h2>
-            <Link className="text-[#708238] hover:text-[#5a6a2d] font-medium text-sm">See all</Link>
-          </div>
-          {topRatedSellers.length > 0 ? (
-            <div className="flex overflow-x-auto gap-6 scrollbar-hide pb-2">
-              {topRatedSellers.map((item) => (
-                <ServiceCard key={item.id} item={item} onClick={handleGigClick} />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-8 text-gray-500">
-              No top-rated experts available.
-            </div>
-          )}
-        </section>
+            {/* Section 2: Inspired by your ERP usage */}
+            <section className="mb-12">
+              <div className="flex justify-between items-center mb-5">
+                <h2 className="text-2xl font-bold text-gray-900">Recommended Specialists</h2>
+                <Link to="/recommended" className="text-[#708238] hover:text-[#5a6a2d] font-medium text-sm">See all</Link>
+              </div>
+              {inspiredServices.length > 0 ? (
+                <div className="flex overflow-x-auto gap-6 scrollbar-hide pb-2">
+                  {inspiredServices.map((item) => (
+                    <ServiceCard 
+                      key={item.id} 
+                      item={item} 
+                      onClick={handleGigClick}
+                      onContactClick={handleContactClick}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8 text-gray-500">
+                  More specialists coming soon.
+                </div>
+              )}
+            </section>
 
-        {/* Section 4: Automations You May Need */}
-        <section className="mb-12">
-          <div className="flex justify-between items-center mb-5">
-            <h2 className="text-2xl font-bold text-gray-900">Automation Specialists</h2>
-            <Link className="text-[#708238] hover:text-[#5a6a2d] font-medium text-sm">See all</Link>
-          </div>
-          {automationSellers.length > 0 ? (
-            <div className="flex overflow-x-auto gap-6 scrollbar-hide pb-2">
-              {automationSellers.map((item) => (
-                <ServiceCard key={item.id} item={item} onClick={handleGigClick} />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-8 text-gray-500">
-              No automation specialists available.
-            </div>
-          )}
-        </section>
+            {/* Section 3: Top-rated ERP Experts */}
+            <section className="mb-12">
+              <div className="flex justify-between items-center mb-5">
+                <h2 className="text-2xl font-bold text-gray-900">Top-rated ERP Experts</h2>
+                <Link to="/top-rated" className="text-[#708238] hover:text-[#5a6a2d] font-medium text-sm">See all</Link>
+              </div>
+              {topRatedSellers.length > 0 ? (
+                <div className="flex overflow-x-auto gap-6 scrollbar-hide pb-2">
+                  {topRatedSellers.map((item) => (
+                    <ServiceCard 
+                      key={item.id} 
+                      item={item} 
+                      onClick={handleGigClick}
+                      onContactClick={handleContactClick}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8 text-gray-500">
+                  No top-rated experts available.
+                </div>
+              )}
+            </section>
+
+            {/* Section 4: Automations You May Need */}
+            <section className="mb-12">
+              <div className="flex justify-between items-center mb-5">
+                <h2 className="text-2xl font-bold text-gray-900">Automation Specialists</h2>
+                <Link to="/automation" className="text-[#708238] hover:text-[#5a6a2d] font-medium text-sm">See all</Link>
+              </div>
+              {automationSellers.length > 0 ? (
+                <div className="flex overflow-x-auto gap-6 scrollbar-hide pb-2">
+                  {automationSellers.map((item) => (
+                    <ServiceCard 
+                      key={item.id} 
+                      item={item} 
+                      onClick={handleGigClick}
+                      onContactClick={handleContactClick}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8 text-gray-500">
+                  No automation specialists available.
+                </div>
+              )}
+            </section>
+          </>
+        )}
       </div>
     </div>
   );
