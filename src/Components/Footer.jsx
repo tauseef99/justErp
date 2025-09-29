@@ -15,7 +15,7 @@ const footerData = [
        { name: "How to hire ERP Consultant", href: "/how_to_hire_erp_consultant" },
       // { name: "How to hire ERP Consultant", href: "/docs/How_to_hire_ERP_Consultant.pdf" },
 
-      { name: "How JustERPs work?", href: "/categories/crm-services" },
+      { name: "How JustERPs work?", href: "/how/erp/works" },
       { name: "FAQ’s", href: "/categories/hr-management" },
     ],
   },
@@ -54,7 +54,7 @@ const footerData = [
       { name: "JustERPs", href: "/about" },
       { name: "Customer Support", href: "/about" },
       { name: "Privacy Policy & Term of Services", href: "/about" },
-      { name: "Society Payback", href: "/about" },
+      { name: "Social Responsibility", href: "/social/responsibility" },
       { name: "Refer to Friend Bonus", href: "/about" },
       { name: "Personal Data Protection", href: "/about" },
 

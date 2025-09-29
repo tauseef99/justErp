@@ -19,6 +19,8 @@ import HowToHireERP from "./Components/HowToHireERP";
 import BuyerProfile from "./Components/buyer/BuyerProfile";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import HowJustERPsWorks from "./Components/HowJustERPsWorks";
+import SocialResponsibility from "./Components/SocialResponsibility";
 
 function App() {
   return (
@@ -39,6 +41,9 @@ function App() {
         <Route path="/erpconsultant" element={<ErpConsultant/>}/>
         <Route path="/how_to_hire_erp_consultant" element={<HowToHireERP />} />
         <Route path="/buyer/profile" element={<BuyerProfile/>}/>
+        <Route path="/how/erp/works" element={<HowJustERPsWorks/>}/>
+        <Route path="/social/responsibility" element={<SocialResponsibility/>}/>
+
 
 
 

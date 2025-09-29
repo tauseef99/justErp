@@ -22,298 +22,387 @@ const BuyerMessages = () => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [error, setError] = useState('');
+  const [socketStatus, setSocketStatus] = useState('disconnected');
+  const [selectedSeller, setSelectedSeller] = useState(null);
+  const [processingSeller, setProcessingSeller] = useState(false);
 
-  // Sample data for demonstration
-  const getSampleConversations = () => {
-    return [
-      {
-        _id: 'demo-1',
-        seller: {
-          _id: 'seller1',
-          name: 'John Doe',
-          profileImage: '',
-          email: 'john@example.com'
-        },
-        lastMessage: 'Hello! I can help with your ERP implementation',
-        lastMessageAt: new Date(),
-        unreadCount: 0,
-        status: 'active',
-        orderTitle: 'ERP Consultation'
-      },
-      {
-        _id: 'demo-2',
-        seller: {
-          _id: 'seller2',
-          name: 'Sarah Johnson',
-          profileImage: '',
-          email: 'sarah@example.com'
-        },
-        lastMessage: 'Looking forward to working with you!',
-        lastMessageAt: new Date(Date.now() - 86400000), // 1 day ago
-        unreadCount: 1,
-        status: 'active',
-        orderTitle: 'SAP Implementation'
-      }
-    ];
-  };
+  // Store user data in ref to avoid timing issues
+  const userRef = useRef(null);
 
-  const getSampleMessages = (conversationId) => {
-    if (conversationId === 'demo-1') {
-      return [
-        {
-          _id: '1',
-          sender: { _id: 'seller1', name: 'John Doe', profileImage: '' },
-          message: 'Hello! I can help with your ERP implementation needs. What specific requirements do you have?',
-          createdAt: new Date(Date.now() - 3600000),
-          isRead: true
-        },
-        {
-          _id: '2', 
-          sender: { _id: 'user123', name: 'You', profileImage: '' },
-          message: 'Hi John! I need help implementing an ERP system for my manufacturing business.',
-          createdAt: new Date(Date.now() - 1800000),
-          isRead: true
-        },
-        {
-          _id: '3',
-          sender: { _id: 'seller1', name: 'John Doe', profileImage: '' },
-          message: 'Great! I have extensive experience with manufacturing ERP systems. What is your timeline?',
-          createdAt: new Date(Date.now() - 600000),
-          isRead: false
-        }
-      ];
-    } else {
-      return [
-        {
-          _id: '1',
-          sender: { _id: 'seller2', name: 'Sarah Johnson', profileImage: '' },
-          message: 'Hi there! I understand you need SAP implementation services.',
-          createdAt: new Date(Date.now() - 7200000),
-          isRead: true
-        },
-        {
-          _id: '2',
-          sender: { _id: 'user123', name: 'You', profileImage: '' },
-          message: 'Yes, we are looking to implement SAP for our retail chain.',
-          createdAt: new Date(Date.now() - 3600000),
-          isRead: true
-        }
-      ];
-    }
-  };
-
-  // Initialize
- useEffect(() => {
-  const initializeChat = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        navigate('/login');
-        return;
-      }
-
-      const decoded = jwtDecode(token);
-      setUser(decoded);
-
-      // Load conversations first
-      await loadConversations();
-
-      // Check for selected seller from dashboard AFTER conversations are loaded
-      const sellerData = localStorage.getItem('selectedSeller');
-      if (sellerData) {
-        const seller = JSON.parse(sellerData);
-        console.log('Found selected seller:', seller);
+  // Initialize - COMPLETELY FIXED VERSION
+  useEffect(() => {
+    const initializeChat = async () => {
+      try {
+        console.log('🔧 Initializing chat...');
         
-        // Wait a bit for conversations to be fully loaded
-        setTimeout(() => {
-          handleSelectedSeller(seller);
-        }, 500);
-        
-        localStorage.removeItem('selectedSeller');
+        // Get token and validate
+        const token = localStorage.getItem('token');
+        if (!token) {
+          console.log('❌ No token found, redirecting to login');
+          navigate('/login');
+          return;
+        }
+
+        const decoded = jwtDecode(token);
+        console.log('👤 User decoded:', decoded);
+        setUser(decoded);
+        userRef.current = decoded; // Store in ref for immediate access
+
+        // 1. Connect to socket with better error handling
+        try {
+          console.log('🔌 Attempting socket connection...');
+          await socketService.connect(token);
+          setSocketStatus('connected');
+          
+          // Join user room after successful connection
+          if (socketService.joinUser(decoded.id)) {
+            console.log('✅ Socket connected and user joined');
+          }
+        } catch (socketError) {
+          console.error('❌ Socket connection failed:', socketError);
+          setSocketStatus('error');
+          // Continue without socket - we'll use fallback
+        }
+
+        // 2. Set up socket listeners
+        socketService.onNewMessage(handleNewMessage);
+        socketService.onConversationUpdated(handleConversationUpdated);
+        socketService.onUserTyping(handleUserTyping);
+        console.log('✅ Socket listeners set up');
+
+        // 3. Load conversations
+        await loadConversations();
+
+        // 4. Handle selected seller AFTER everything is ready
+        const storedSeller = localStorage.getItem('selectedSeller');
+        if (storedSeller) {
+          console.log('🛍️ Found selected seller in localStorage');
+          const sellerData = JSON.parse(storedSeller);
+          setSelectedSeller(sellerData);
+          
+          // Use the ref to ensure user data is available
+          if (userRef.current) {
+            console.log('👤 User data available via ref, processing seller immediately');
+            handleSelectedSeller(sellerData);
+            localStorage.removeItem('selectedSeller');
+            console.log('🗑️ Removed seller from localStorage');
+          } else {
+            // Wait a bit if user data isn't available yet
+            console.log('⏳ User data not ready, waiting...');
+            setTimeout(() => {
+              if (userRef.current) {
+                handleSelectedSeller(sellerData);
+                localStorage.removeItem('selectedSeller');
+              }
+            }, 500);
+          }
+        }
+
+      } catch (error) {
+        console.error('❌ Error initializing chat:', error);
+        setError('Failed to initialize messaging system');
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error('Error initializing chat:', error);
-      setError('Failed to initialize messaging system');
-      // Load sample data as fallback
-      setConversations(getSampleConversations());
-    } finally {
-      setLoading(false);
+    };
+
+    initializeChat();
+
+    return () => {
+      socketService.offNewMessage();
+      socketService.offConversationUpdated();
+      socketService.disconnect();
+    };
+  }, [navigate]);
+
+  // Update userRef when user state changes
+  useEffect(() => {
+    if (user) {
+      userRef.current = user;
     }
+  }, [user]);
+
+  // Socket event handlers
+  const handleNewMessage = (message) => {
+    console.log('📨 New message received via socket:', message);
+    
+    if (activeConversation && message.conversationId === activeConversation._id) {
+      setMessages(prev => {
+        // Avoid duplicates
+        if (prev.some(msg => msg._id === message._id)) return prev;
+        return [...prev, message];
+      });
+      scrollToBottom();
+    }
+    
+    // Update conversations list with proper unread count
+    setConversations(prev => 
+      prev.map(conv => {
+        if (conv._id === message.conversationId) {
+          const isActive = activeConversation && activeConversation._id === conv._id;
+          return { 
+            ...conv, 
+            lastMessage: message.message, 
+            lastMessageAt: new Date(),
+            unreadCount: isActive ? 0 : (conv.unreadCount || 0) + 1
+          };
+        }
+        return conv;
+      })
+    );
   };
 
-  initializeChat();
-
-  return () => {
-    socketService.offNewMessage();
-    socketService.offConversationUpdated();
+  const handleConversationUpdated = () => {
+    console.log('🔄 Conversation updated, reloading conversations...');
+    loadConversations();
   };
-}, [navigate]);
 
+  const handleUserTyping = (data) => {
+    console.log('✍️ User typing:', data);
+    // You can implement typing indicators here
+  };
 
   // Load conversations
   const loadConversations = async () => {
-  try {
-    const response = await messageAPI.getUserConversations();
-    if (response.data && response.data.length > 0) {
-      console.log('Loaded conversations:', response.data);
-      setConversations(response.data);
-    } else {
-      console.log('No conversations found, using sample data');
-      setConversations(getSampleConversations());
-    }
-  } catch (error) {
-    console.error('Error loading conversations:', error);
-    setConversations(getSampleConversations());
-  }
-};
-
-  // Handle selected seller from dashboard
-  const handleSelectedSeller = async (seller) => {
-  try {
-    if (!user || !seller.userId) {
-      console.error('User or seller data missing:', { user, seller });
-      throw new Error('User or seller data missing');
-    }
-
-    // First, check if we already have a conversation with this seller
-    const existingConversation = conversations.find(conv => 
-      conv.seller && conv.seller._id === seller.userId
-    );
-
-    if (existingConversation) {
-      console.log('Found existing conversation:', existingConversation);
-      setActiveConversation(existingConversation);
-      await loadMessages(existingConversation._id);
-      return;
-    }
-
-    // Try to create real conversation via API
     try {
-      const response = await messageAPI.getOrCreateConversation(user.id, seller.userId);
-      const conversation = response.data;
+      console.log('📂 Loading conversations...');
+      const response = await messageAPI.getUserConversations();
+      console.log('✅ Conversations API response:', response);
       
-      setConversations(prev => {
-        const existing = prev.find(c => c._id === conversation._id);
-        if (existing) return prev;
-        return [conversation, ...prev];
-      });
-      
-      setActiveConversation(conversation);
-      await loadMessages(conversation._id);
-    } catch (apiError) {
-      console.error('API error creating conversation:', apiError);
-      // Fallback to demo conversation if API fails
-      createDemoConversation(seller);
+      if (response.data && response.data.length > 0) {
+        console.log(`✅ Loaded ${response.data.length} conversations:`, response.data);
+        setConversations(response.data);
+        
+        // Auto-select first conversation if none selected and no seller from dashboard
+        const hasSelectedSeller = localStorage.getItem('selectedSeller') || selectedSeller;
+        if (!activeConversation && !hasSelectedSeller && response.data.length > 0) {
+          setActiveConversation(response.data[0]);
+          await loadMessages(response.data[0]._id);
+        }
+      } else {
+        console.log('ℹ️ No conversations found');
+        setConversations([]);
+      }
+    } catch (error) {
+      console.error('❌ Error loading conversations:', error);
+      if (error.response) {
+        console.error('Error response:', error.response.data);
+      }
+      setConversations([]);
     }
-  } catch (error) {
-    console.error('Error in handleSelectedSeller:', error);
-    // Create a demo conversation as fallback
-    createDemoConversation(seller);
-  }
-};
-
-// Add this helper function
-const createDemoConversation = (seller) => {
-  const demoConversation = {
-    _id: `demo-${seller.userId}-${Date.now()}`,
-    seller: {
-      _id: seller.userId,
-      name: seller.name,
-      profileImage: seller.img,
-      email: `${seller.name.toLowerCase().replace(/\s+/g, '')}@example.com`
-    },
-    lastMessage: `Started conversation about ${seller.title}`,
-    lastMessageAt: new Date(),
-    unreadCount: 0,
-    status: 'active',
-    orderTitle: seller.title,
-    isDemo: true // Add flag to identify demo conversations
   };
-  
-  setConversations(prev => {
-    const existing = prev.find(c => c.seller._id === seller.userId);
-    if (existing) return prev;
-    return [demoConversation, ...prev];
-  });
-  
-  setActiveConversation(demoConversation);
-  setMessages([{
-    _id: `demo-msg-${Date.now()}`,
-    sender: { 
-      _id: seller.userId, 
-      name: seller.name, 
-      profileImage: seller.img 
-    },
-    message: `Hi! Thanks for reaching out about ${seller.title}. How can I help you today?`,
-    createdAt: new Date(),
-    isRead: true,
-    isDemo: true
-  }]);
-};
+
+  // Handle selected seller from dashboard - FIXED VERSION
+  const handleSelectedSeller = async (seller) => {
+    try {
+      console.log('🔄 STARTING: Handling selected seller:', seller);
+      setProcessingSeller(true);
+      
+      // Use ref instead of state to avoid timing issues
+      const currentUser = userRef.current;
+      if (!currentUser || !currentUser.id) {
+        console.error('❌ User data missing - using ref:', userRef.current);
+        throw new Error('User data missing');
+      }
+
+      const sellerId = seller.userId || seller._id;
+      console.log(`💬 Creating conversation between buyer ${currentUser.id} and seller ${sellerId}`);
+
+      if (!sellerId) {
+        console.error('❌ Seller ID missing:', seller);
+        throw new Error('Seller ID missing');
+      }
+
+      // Check if conversation already exists in loaded conversations
+      const existingConversation = conversations.find(conv => 
+        conv.seller?._id === sellerId || 
+        conv.seller === sellerId ||
+        (conv.participants && conv.participants.some(p => p._id === sellerId))
+      );
+
+      if (existingConversation) {
+        console.log('✅ Existing conversation found:', existingConversation._id);
+        setActiveConversation(existingConversation);
+        await loadMessages(existingConversation._id);
+        
+        // Join conversation room if socket is connected
+        if (socketStatus === 'connected') {
+          socketService.joinConversation(existingConversation._id);
+        }
+        
+        setProcessingSeller(false);
+        return;
+      }
+
+      // Try to create real conversation via API
+      try {
+        console.log('📞 Calling getOrCreateConversation API...');
+        const response = await messageAPI.getOrCreateConversation(currentUser.id, sellerId);
+        
+        if (response.data && response.data._id) {
+          const conversation = response.data;
+          console.log('✅ Conversation created/retrieved:', conversation._id);
+          
+          // Update conversations list
+          setConversations(prev => {
+            const exists = prev.some(c => c._id === conversation._id);
+            if (exists) return prev;
+            return [conversation, ...prev];
+          });
+          
+          setActiveConversation(conversation);
+          await loadMessages(conversation._id);
+          
+          // Set up socket listeners for this conversation
+          if (socketStatus === 'connected') {
+            socketService.joinConversation(conversation._id);
+            console.log(`✅ Joined conversation room: ${conversation._id}`);
+          }
+          
+          console.log('🎉 SUCCESS: Conversation created and ready for messaging!');
+        } else {
+          throw new Error('No conversation data returned');
+        }
+        
+      } catch (apiError) {
+        console.error('❌ API error creating conversation:', apiError);
+        if (apiError.response) {
+          console.error('API error response:', apiError.response.data);
+          console.error('API error status:', apiError.response.status);
+        }
+        // Fallback to demo conversation if API fails
+        console.log('🔄 Falling back to demo conversation...');
+        createDemoConversation(seller);
+      }
+    } catch (error) {
+      console.error('❌ Error in handleSelectedSeller:', error);
+      console.log('🔄 Creating demo conversation due to error...');
+      createDemoConversation(seller);
+    } finally {
+      setProcessingSeller(false);
+    }
+  };
+
+  // Create demo conversation (fallback)
+  const createDemoConversation = (seller) => {
+    console.log('🎭 Creating demo conversation for:', seller);
+    
+    const sellerId = seller.userId || seller._id;
+    const demoConversation = {
+      _id: `demo-${sellerId}-${Date.now()}`,
+      seller: {
+        _id: sellerId,
+        name: seller.name || seller.businessName || 'Unknown Seller',
+        profileImage: seller.img || seller.profileImage,
+        email: seller.email || `${seller.name?.toLowerCase().replace(/\s+/g, '')}@example.com`
+      },
+      lastMessage: `Started conversation about ${seller.title || seller.serviceTitle || 'services'}`,
+      lastMessageAt: new Date(),
+      unreadCount: 0,
+      status: 'active',
+      orderTitle: seller.title || seller.serviceTitle || 'New Project',
+      isDemo: true
+    };
+    
+    setConversations(prev => {
+      const existing = prev.find(c => c.seller?._id === sellerId);
+      if (existing) return prev;
+      return [demoConversation, ...prev];
+    });
+    
+    setActiveConversation(demoConversation);
+    setMessages([{
+      _id: `demo-msg-${Date.now()}`,
+      sender: { 
+        _id: sellerId, 
+        name: seller.name || seller.businessName || 'Seller', 
+        profileImage: seller.img || seller.profileImage 
+      },
+      message: `Hi! Thanks for reaching out about ${seller.title || seller.serviceTitle || 'my services'}. How can I help you today?`,
+      createdAt: new Date(),
+      isRead: true,
+      isDemo: true
+    }]);
+    
+    console.log('✅ Demo conversation created and active');
+  };
 
   // Load messages for a conversation
   const loadMessages = async (conversationId) => {
     try {
+      console.log(`💬 Loading messages for conversation: ${conversationId}`);
+      
       // Check if it's a demo conversation
       if (conversationId.startsWith('demo-')) {
-        setMessages(getSampleMessages(conversationId));
+        console.log('🎭 Loading demo messages');
+        setMessages([{
+          _id: 'demo-msg-1',
+          sender: activeConversation?.seller,
+          message: 'Hi! Thanks for reaching out. How can I help you today?',
+          createdAt: new Date(),
+          isRead: true,
+          isDemo: true
+        }]);
         scrollToBottom();
         return;
       }
 
       const response = await messageAPI.getMessages(conversationId);
-      setMessages(response.data);
+      console.log('✅ Messages loaded:', response.data);
+      setMessages(response.data || []);
       scrollToBottom();
+
+      // Mark as read if not demo
+      if (!conversationId.startsWith('demo-')) {
+        await messageAPI.markAsRead(conversationId);
+      }
     } catch (error) {
-      console.error('Error loading messages:', error);
-      // Use sample messages for demo
-      setMessages(getSampleMessages(conversationId));
-      scrollToBottom();
+      console.error('❌ Error loading messages:', error);
+      if (error.response) {
+        console.error('Error response:', error.response.data);
+      }
+      setMessages([]);
     }
-  };
-
-  // Socket event handlers
-  const handleNewMessage = (message) => {
-    if (activeConversation && message.conversationId === activeConversation._id) {
-      setMessages(prev => [...prev, message]);
-      scrollToBottom();
-    }
-    
-    // Update conversations list
-    setConversations(prev => 
-      prev.map(conv => 
-        conv._id === message.conversationId 
-          ? { ...conv, lastMessage: message.message, lastMessageAt: new Date() }
-          : conv
-      )
-    );
-  };
-
-  const handleConversationUpdated = () => {
-    loadConversations();
   };
 
   // Send message
   const handleSendMessage = async () => {
-    if (newMessage.trim() === '' || !activeConversation) return;
+    if (newMessage.trim() === '' || !activeConversation) {
+      console.log('ℹ️ Message empty or no active conversation');
+      return;
+    }
 
+    console.log('📤 Sending message...');
     setIsSending(true);
+    
+    const messageToSend = newMessage.trim();
+    setNewMessage(''); // Clear input immediately for better UX
     
     try {
       // For demo conversations, just add the message locally
       if (activeConversation._id.startsWith('demo-')) {
+        console.log('🎭 Sending demo message');
         const newMsg = {
           _id: `msg-${Date.now()}`,
-          sender: { _id: user.id, name: 'You', profileImage: '' },
-          message: newMessage.trim(),
+          sender: { _id: userRef.current.id, name: userRef.current.name || 'You', profileImage: userRef.current.profileImage },
+          message: messageToSend,
           createdAt: new Date(),
           isRead: false,
-          conversationId: activeConversation._id
+          conversationId: activeConversation._id,
+          isDemo: true
         };
         
         setMessages(prev => [...prev, newMsg]);
-        setNewMessage('');
         scrollToBottom();
+        
+        // Update conversation last message
+        setConversations(prev => 
+          prev.map(conv => 
+            conv._id === activeConversation._id 
+              ? { ...conv, lastMessage: messageToSend, lastMessageAt: new Date() }
+              : conv
+          )
+        );
         
         // Simulate seller response after 2 seconds
         setTimeout(() => {
@@ -327,7 +416,8 @@ const createDemoConversation = (seller) => {
             message: 'Thanks for your message! I will get back to you shortly.',
             createdAt: new Date(),
             isRead: false,
-            conversationId: activeConversation._id
+            conversationId: activeConversation._id,
+            isDemo: true
           };
           setMessages(prev => [...prev, sellerResponse]);
           scrollToBottom();
@@ -337,17 +427,36 @@ const createDemoConversation = (seller) => {
         const messageData = {
           conversationId: activeConversation._id,
           receiverId: activeConversation.seller._id,
-          message: newMessage.trim()
+          message: messageToSend
         };
 
+        console.log('📡 Sending real message via API:', messageData);
+        
         const response = await messageAPI.sendMessage(messageData);
+        console.log('✅ Message sent successfully:', response.data);
+        
+        // The message will appear via socket, but we can add it immediately for better UX
         setMessages(prev => [...prev, response.data]);
-        setNewMessage('');
         scrollToBottom();
+        
+        // Update conversation
+        setConversations(prev => 
+          prev.map(conv => 
+            conv._id === activeConversation._id 
+              ? { ...conv, lastMessage: messageToSend, lastMessageAt: new Date() }
+              : conv
+          )
+        );
       }
     } catch (error) {
-      console.error('Error sending message:', error);
-      alert('Failed to send message. Please try again.');
+      console.error('❌ Error sending message:', error);
+      if (error.response) {
+        console.error('Error response data:', error.response.data);
+        console.error('Error response status:', error.response.status);
+      }
+      // Restore message if failed
+      setNewMessage(messageToSend);
+      alert('Failed to send message. Please check console for details.');
     } finally {
       setIsSending(false);
     }
@@ -384,7 +493,7 @@ const createDemoConversation = (seller) => {
 
   // Filter conversations
   const filteredConversations = conversations.filter(convo => 
-    convo.seller.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    convo.seller?.name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
     (convo.orderTitle && convo.orderTitle.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
@@ -402,12 +511,42 @@ const createDemoConversation = (seller) => {
     }
   };
 
+  // Manual retry function for seller processing
+  const retrySellerProcessing = () => {
+    if (selectedSeller) {
+      console.log('🔄 Manually retrying seller processing:', selectedSeller.name);
+      handleSelectedSeller(selectedSeller);
+    }
+  };
+
+  // Manual retry for socket connection
+  const retrySocketConnection = async () => {
+    try {
+      setSocketStatus('connecting');
+      const token = localStorage.getItem('token');
+      await socketService.connect(token);
+      setSocketStatus('connected');
+      
+      if (userRef.current) {
+        socketService.joinUser(userRef.current.id);
+      }
+      
+      if (activeConversation && !activeConversation._id.startsWith('demo-')) {
+        socketService.joinConversation(activeConversation._id);
+      }
+    } catch (error) {
+      console.error('❌ Failed to reconnect socket:', error);
+      setSocketStatus('error');
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex flex-col h-screen bg-gray-50">
         <BuyerNavbar />
         <div className="flex-1 flex items-center justify-center">
           <FaSpinner className="animate-spin text-4xl text-[#708238]" />
+          <span className="ml-2">Loading messages...</span>
         </div>
       </div>
     );
@@ -417,10 +556,40 @@ const createDemoConversation = (seller) => {
     <div className="flex flex-col h-screen bg-gray-50">
       <BuyerNavbar />
       
-      {/* Header */}
+      {/* Header with Socket Status */}
       <div className="bg-white shadow-sm py-4 px-6 border-b border-gray-200">
         <div className="flex justify-between items-center">
-          <h1 className="text-xl font-bold text-gray-800">Messages</h1>
+          <div className="flex items-center space-x-4">
+            <h1 className="text-xl font-bold text-gray-800">Messages</h1>
+            <div className={`flex items-center text-xs px-2 py-1 rounded-full ${
+              socketStatus === 'connected' ? 'bg-green-100 text-green-800' : 
+              socketStatus === 'disconnected' ? 'bg-yellow-100 text-yellow-800' : 
+              socketStatus === 'connecting' ? 'bg-blue-100 text-blue-800' :
+              'bg-red-100 text-red-800'
+            }`}>
+              <div className={`w-2 h-2 rounded-full mr-1 ${
+                socketStatus === 'connected' ? 'bg-green-500' : 
+                socketStatus === 'disconnected' ? 'bg-yellow-500' : 
+                socketStatus === 'connecting' ? 'bg-blue-500' :
+                'bg-red-500'
+              }`}></div>
+              {socketStatus}
+              {socketStatus === 'error' && (
+                <button 
+                  onClick={retrySocketConnection}
+                  className="ml-2 text-xs underline"
+                >
+                  Retry
+                </button>
+              )}
+            </div>
+            {processingSeller && (
+              <div className="flex items-center text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-800">
+                <FaSpinner className="animate-spin mr-1" />
+                Creating conversation...
+              </div>
+            )}
+          </div>
           <div className="hidden md:flex items-center space-x-4">
             <div className="relative">
               <input
@@ -453,6 +622,26 @@ const createDemoConversation = (seller) => {
           {error} - Using demo data for testing
         </div>
       )}
+      
+      {/* Enhanced Debug info */}
+      <div className="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-2 mx-4 mt-2 rounded text-xs">
+        <strong>Debug Info:</strong> 
+        User: {user?.id} | 
+        Conversations: {conversations.length} | 
+        Active: {activeConversation?._id} | 
+        Socket: {socketStatus} |
+        Seller: {selectedSeller?.name || 'None'}
+        {activeConversation?._id?.startsWith('demo-') && ' | 🎭 DEMO MODE'}
+        <br />
+        {selectedSeller && !activeConversation && (
+          <button 
+            onClick={retrySellerProcessing}
+            className="mt-1 bg-green-500 text-white px-2 py-1 rounded text-xs"
+          >
+            🔄 Retry Seller Processing
+          </button>
+        )}
+      </div>
       
       {/* Mobile Search Overlay */}
       {showSearch && (
@@ -515,7 +704,7 @@ const createDemoConversation = (seller) => {
                 >
                   <div className="flex items-start">
                     <div className="relative mr-3">
-                      {conversation.seller.profileImage ? (
+                      {conversation.seller?.profileImage ? (
                         <img 
                           src={conversation.seller.profileImage} 
                           alt={conversation.seller.name} 
@@ -531,7 +720,9 @@ const createDemoConversation = (seller) => {
                     
                     <div className="flex-1 min-w-0">
                       <div className="flex justify-between items-start">
-                        <h3 className="font-semibold text-gray-800 truncate">{conversation.seller.name}</h3>
+                        <h3 className="font-semibold text-gray-800 truncate">
+                          {conversation.seller?.name || 'Unknown Seller'}
+                        </h3>
                         <span className="text-xs text-gray-500 whitespace-nowrap">
                           {new Date(conversation.lastMessageAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </span>
@@ -564,6 +755,17 @@ const createDemoConversation = (seller) => {
                 <div className="text-center py-8 text-gray-500">
                   <FaUserCircle className="text-4xl text-gray-300 mx-auto mb-3" />
                   <p>No conversations found</p>
+                  {selectedSeller && (
+                    <div className="mt-4 space-y-2">
+                      <p className="text-sm text-gray-600">Trying to connect with: <strong>{selectedSeller.name}</strong></p>
+                      <button 
+                        onClick={retrySellerProcessing}
+                        className="bg-[#708238] hover:bg-[#5a6a2d] text-white px-4 py-2 rounded-md text-sm"
+                      >
+                        Retry Connection
+                      </button>
+                    </div>
+                  )}
                   <button 
                     className="mt-4 bg-[#708238] hover:bg-[#5a6a2d] text-white px-4 py-2 rounded-md text-sm"
                     onClick={() => navigate('/buyer/dashboard')}
@@ -585,7 +787,7 @@ const createDemoConversation = (seller) => {
                 <div className="flex justify-between items-center">
                   <div className="flex items-center">
                     <div className="relative mr-3">
-                      {activeConversation.seller.profileImage ? (
+                      {activeConversation.seller?.profileImage ? (
                         <img 
                           src={activeConversation.seller.profileImage} 
                           alt={activeConversation.seller.name} 
@@ -599,7 +801,7 @@ const createDemoConversation = (seller) => {
                       <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white"></div>
                     </div>
                     <div>
-                      <h2 className="font-bold text-gray-800">{activeConversation.seller.name}</h2>
+                      <h2 className="font-bold text-gray-800">{activeConversation.seller?.name || 'Unknown Seller'}</h2>
                       <div className="flex items-center space-x-1 text-xs text-gray-500">
                         <span>Online</span>
                         <span className="mx-1">•</span>
@@ -626,6 +828,9 @@ const createDemoConversation = (seller) => {
                       <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 border border-gray-200">
                         <button className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left hover:text-[#FFA500]">
                           <FaArchive className="mr-2 text-gray-500" /> Archive
+                        </button>
+                        <button className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left hover:text-red-500">
+                          <FaTrash className="mr-2 text-gray-500" /> Delete
                         </button>
                       </div>
                     )}
@@ -660,12 +865,12 @@ const createDemoConversation = (seller) => {
                     {messages.map((message) => (
                       <div 
                         key={message._id} 
-                        className={`flex ${message.sender._id === user.id ? 'justify-end' : 'justify-start'}`}
+                        className={`flex ${message.sender?._id === user?.id ? 'justify-end' : 'justify-start'}`}
                       >
                         <div className="flex items-end space-x-2">
-                          {message.sender._id !== user.id && (
+                          {message.sender?._id !== user?.id && (
                             <div className="mb-1">
-                              {message.sender.profileImage ? (
+                              {message.sender?.profileImage ? (
                                 <img 
                                   src={message.sender.profileImage} 
                                   alt="avatar" 
@@ -681,17 +886,17 @@ const createDemoConversation = (seller) => {
                           
                           <div 
                             className={`max-w-md rounded-2xl px-4 py-3 ${
-                              message.sender._id === user.id 
+                              message.sender?._id === user?.id 
                                 ? 'bg-[#708238] text-white rounded-br-none' 
                                 : 'bg-white text-gray-800 rounded-bl-none border border-gray-200'
                             }`}
                           >
                             <p className="text-sm">{message.message}</p>
                             <div className={`flex items-center text-xs mt-2 ${
-                              message.sender._id === user.id ? 'text-[#FFA500]' : 'text-gray-500'
+                              message.sender?._id === user?.id ? 'text-[#FFA500]' : 'text-gray-500'
                             }`}>
                               <span>{new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                              {message.sender._id === user.id && (
+                              {message.sender?._id === user?.id && (
                                 <span className="ml-2">
                                   {message.isRead ? <FaCheckDouble className="text-[#FFA500]" /> : <FaCheck className="text-current" />}
                                 </span>
@@ -760,6 +965,19 @@ const createDemoConversation = (seller) => {
                 </div>
                 <h3 className="text-lg font-medium text-gray-900 mb-1">No conversation selected</h3>
                 <p className="text-gray-500 mb-6">Select a conversation from the list to start messaging</p>
+                {selectedSeller && (
+                  <div className="mb-4 p-3 bg-yellow-50 rounded-lg">
+                    <p className="text-sm text-yellow-700">
+                      Trying to connect with: <strong>{selectedSeller.name}</strong>
+                    </p>
+                    <button 
+                      onClick={retrySellerProcessing}
+                      className="mt-2 bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded text-sm"
+                    >
+                      Retry Connection
+                    </button>
+                  </div>
+                )}
                 <button 
                   className="bg-[#708238] hover:bg-[#5a6a2d] text-white px-5 py-2 rounded-md text-sm font-medium"
                   onClick={() => navigate('/buyer/dashboard')}
