@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { useInView } from "react-intersection-observer";
-import img1 from '../Assets/images/Objective.jpg'
+import img1 from '../Assets/images/Objectives.jpg'
 import img2 from '../Assets/images/technicle-landscape.jpeg'
 import img3 from '../Assets/images/Project-Timeline.png'
 import img4 from '../Assets/images/CS_Feedback.png'
@@ -211,13 +211,14 @@ const HowToHireERP = () => {
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center justify-center">
+             <div className="flex items-center justify-center">
   <img
     src={img1}
     alt="Define Your Project Scope"
-    className="rounded-xl shadow-lg w-full h-80 object-contain transition-transform duration-500 hover:scale-105 "
+    className="rounded-xl shadow-lg max-w-full h-auto object-contain transition-transform duration-500 hover:scale-105"
   />
 </div>
+
 
               </div>
             </AnimatedSection>

@@ -21,7 +21,7 @@ const SellerMessages = () => {
   const [error, setError] = useState(null);
   const messagesEndRef = useRef(null);
 
-  // Initialize - FIXED VERSION
+  // Initialize
   useEffect(() => {
     const initializeChat = async () => {
       try {
@@ -70,27 +70,32 @@ const SellerMessages = () => {
     };
   }, []);
 
-  // Load conversations - FIXED VERSION
+  // Load conversations - FIXED: Better data structure handling
   const loadConversations = async () => {
     try {
       console.log('📂 Seller: Loading conversations...');
       const response = await messageAPI.getUserConversations();
       console.log('✅ Seller: Conversations API response:', response);
       
+      // Handle different response structures
+      let conversationsData = [];
       if (response.data && Array.isArray(response.data)) {
-        console.log(`✅ Seller: Loaded ${response.data.length} conversations`);
-        setConversations(response.data);
-        
-        // Auto-select first conversation if available
-        if (response.data.length > 0 && !activeConversation) {
-          const firstConversation = response.data[0];
-          console.log('✅ Seller: Auto-selecting first conversation:', firstConversation._id);
-          setActiveConversation(firstConversation);
-          await loadMessages(firstConversation._id);
-        }
-      } else {
-        console.log('ℹ️ Seller: No conversations found or invalid response');
-        setConversations([]);
+        conversationsData = response.data;
+      } else if (response.data && response.data.conversations) {
+        conversationsData = response.data.conversations;
+      } else if (response.data && response.data.data) {
+        conversationsData = response.data.data;
+      }
+      
+      console.log(`✅ Seller: Loaded ${conversationsData.length} conversations`, conversationsData);
+      setConversations(conversationsData);
+      
+      // Auto-select first conversation if available
+      if (conversationsData.length > 0 && !activeConversation) {
+        const firstConversation = conversationsData[0];
+        console.log('✅ Seller: Auto-selecting first conversation:', firstConversation);
+        setActiveConversation(firstConversation);
+        await loadMessages(firstConversation._id);
       }
     } catch (error) {
       console.error('❌ Seller: Error loading conversations:', error);
@@ -102,31 +107,112 @@ const SellerMessages = () => {
     }
   };
 
-  // Load messages for a conversation - FIXED VERSION
+  // Load messages for a conversation - FIXED: Better timeout and data handling
   const loadMessages = async (conversationId) => {
+    if (!conversationId) {
+      console.error('❌ No conversation ID provided');
+      return;
+    }
+
     try {
       console.log(`💬 Seller: Loading messages for conversation: ${conversationId}`);
       const response = await messageAPI.getMessages(conversationId);
-      console.log('✅ Seller: Messages loaded:', response.data);
+      console.log('✅ Seller: Messages API response:', response);
       
-      setMessages(response.data || []);
+      // Handle different response structures
+      let messagesData = [];
+      if (response.data && Array.isArray(response.data)) {
+        messagesData = response.data;
+      } else if (response.data && response.data.messages) {
+        messagesData = response.data.messages;
+      } else if (response.data && response.data.data) {
+        messagesData = response.data.data;
+      }
+      
+      console.log(`✅ Seller: Loaded ${messagesData.length} messages`, messagesData);
+      setMessages(messagesData);
       scrollToBottom();
       
       // Join conversation room if socket is connected
-      if (socketService.getConnectionStatus()) {
+      if (socketService.getConnectionStatus && socketService.getConnectionStatus()) {
         socketService.joinConversation(conversationId);
         console.log(`✅ Seller: Joined conversation room: ${conversationId}`);
       }
     } catch (error) {
       console.error('❌ Seller: Error loading messages:', error);
+      
+      // Don't clear messages on timeout - keep existing ones
+      if (error.code === 'ECONNABORTED') {
+        console.warn('⚠️ Message load timeout - keeping existing messages');
+        // Don't setMessages([]) here - keep whatever messages we have
+        return;
+      }
+      
       if (error.response) {
         console.error('Error response:', error.response.data);
+        // Only clear messages on actual errors, not timeouts
+        if (error.response.status !== 408) { // 408 is timeout
+          setMessages([]);
+        }
+      } else {
+        // For network errors, keep existing messages
+        console.warn('⚠️ Network error - keeping existing messages');
       }
-      setMessages([]);
     }
   };
 
-  // Socket event handlers - FIXED VERSION
+  // Helper functions to safely access buyer data - FIXED: Better data access
+  const getBuyerName = (conversation) => {
+    if (!conversation) return 'Unknown Buyer';
+    
+    // Try different possible data structures
+    if (conversation.buyer?.name) return conversation.buyer.name;
+    if (conversation.buyer?.username) return conversation.buyer.username;
+    if (conversation.buyer?.firstName) {
+      return `${conversation.buyer.firstName}${conversation.buyer.lastName ? ' ' + conversation.buyer.lastName : ''}`;
+    }
+    
+    // Check if buyer data is nested differently
+    if (conversation.participants && Array.isArray(conversation.participants)) {
+      const buyer = conversation.participants.find(p => p.role === 'buyer' || p._id !== user?.id);
+      if (buyer) return buyer.name || buyer.username || 'Buyer';
+    }
+    
+    return 'Unknown Buyer';
+  };
+
+  const getBuyerImage = (conversation) => {
+    if (!conversation) return null;
+    
+    // Try different possible data structures
+    if (conversation.buyer?.profileImage) return conversation.buyer.profileImage;
+    if (conversation.buyer?.avatar) return conversation.buyer.avatar;
+    if (conversation.buyer?.image) return conversation.buyer.image;
+    
+    // Check if buyer data is nested differently
+    if (conversation.participants && Array.isArray(conversation.participants)) {
+      const buyer = conversation.participants.find(p => p.role === 'buyer' || p._id !== user?.id);
+      if (buyer) return buyer.profileImage || buyer.avatar || buyer.image;
+    }
+    
+    return null;
+  };
+
+  const getBuyerEmail = (conversation) => {
+    if (!conversation) return 'Not available';
+    
+    if (conversation.buyer?.email) return conversation.buyer.email;
+    
+    // Check if buyer data is nested differently
+    if (conversation.participants && Array.isArray(conversation.participants)) {
+      const buyer = conversation.participants.find(p => p.role === 'buyer' || p._id !== user?.id);
+      if (buyer) return buyer.email || 'Not available';
+    }
+    
+    return 'Not available';
+  };
+
+  // Socket event handlers
   const handleNewMessage = (message) => {
     console.log('📨 Seller received new message:', message);
     
@@ -162,7 +248,7 @@ const SellerMessages = () => {
     loadConversations();
   };
 
-  // Send message from seller - FIXED VERSION
+  // Send message from seller
   const handleSendMessage = async () => {
     if (message.trim() === '' || !activeConversation) {
       console.log('ℹ️ Seller: Message empty or no active conversation');
@@ -176,9 +262,15 @@ const SellerMessages = () => {
     setMessage('');
     
     try {
+      // Get buyer ID safely
+      const buyerId = activeConversation.buyer?._id;
+      if (!buyerId) {
+        throw new Error('Could not find buyer ID in conversation data');
+      }
+
       const messageData = {
         conversationId: activeConversation._id,
-        receiverId: activeConversation.buyer._id, // Seller sends to buyer
+        receiverId: buyerId,
         message: messageToSend
       };
 
@@ -188,8 +280,11 @@ const SellerMessages = () => {
       console.log('✅ Seller: Message sent successfully:', response.data);
       
       // Add message to local state immediately for better UX
-      setMessages(prev => [...prev, response.data]);
-      scrollToBottom();
+      const newMessage = response.data?.message || response.data?.data || response.data;
+      if (newMessage) {
+        setMessages(prev => [...prev, newMessage]);
+        scrollToBottom();
+      }
       
       // Update conversation last message
       setConversations(prev => 
@@ -312,17 +407,20 @@ const SellerMessages = () => {
                   }`}
                 >
                   <div className="relative">
-                    {conversation.buyer?.profileImage ? (
+                    {getBuyerImage(conversation) ? (
                       <img 
-                        src={conversation.buyer.profileImage} 
-                        alt={conversation.buyer?.name || 'Buyer'}
+                        src={getBuyerImage(conversation)} 
+                        alt={getBuyerName(conversation)}
                         className="w-12 h-12 rounded-full object-cover"
+                        onError={(e) => {
+                          // Hide broken image and show fallback
+                          e.target.style.display = 'none';
+                        }}
                       />
-                    ) : (
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#708238] to-[#FFA500] flex items-center justify-center text-white font-bold text-lg">
-                        {(conversation.buyer?.name?.[0] || 'B').toUpperCase()}
-                      </div>
-                    )}
+                    ) : null}
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#708238] to-[#FFA500] flex items-center justify-center text-white font-bold text-lg">
+                      {getBuyerName(conversation).charAt(0).toUpperCase()}
+                    </div>
                     {conversation.unreadCount > 0 && (
                       <span className="absolute -top-1 -right-1 bg-[#FFA500] text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                         {conversation.unreadCount}
@@ -332,7 +430,7 @@ const SellerMessages = () => {
                   <div className="ml-3 flex-1 min-w-0">
                     <div className="flex justify-between items-center">
                       <h4 className="text-sm font-semibold text-gray-800 truncate">
-                        {conversation.buyer?.name || 'Unknown Buyer'}
+                        {getBuyerName(conversation)}
                       </h4>
                       <span className="text-xs text-gray-400">
                         {conversation.lastMessageAt ? 
@@ -361,23 +459,26 @@ const SellerMessages = () => {
         <div className="flex-1 flex flex-col bg-white">
           {activeConversation ? (
             <>
-              {/* Chat Header */}
+              {/* Chat Header - FIXED: Using helper functions */}
               <div className="border-b p-4 flex justify-between items-center bg-white sticky top-0 z-10">
                 <div className="flex items-center space-x-3">
-                  {activeConversation.buyer?.profileImage ? (
+                  {getBuyerImage(activeConversation) ? (
                     <img 
-                      src={activeConversation.buyer.profileImage} 
-                      alt={activeConversation.buyer?.name || 'Buyer'}
+                      src={getBuyerImage(activeConversation)} 
+                      alt={getBuyerName(activeConversation)}
                       className="w-10 h-10 rounded-full object-cover"
+                      onError={(e) => {
+                        // Hide broken image and show fallback
+                        e.target.style.display = 'none';
+                      }}
                     />
-                  ) : (
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#708238] to-[#FFA500] flex items-center justify-center text-white font-bold">
-                      {(activeConversation.buyer?.name?.[0] || 'B').toUpperCase()}
-                    </div>
-                  )}
+                  ) : null}
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#708238] to-[#FFA500] flex items-center justify-center text-white font-bold">
+                    {getBuyerName(activeConversation).charAt(0).toUpperCase()}
+                  </div>
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900">
-                      {activeConversation.buyer?.name || 'Unknown Buyer'}
+                      {getBuyerName(activeConversation)}
                     </h3>
                     <div className="flex items-center">
                       <BsStarFill className="text-[#FFA500] text-xs mr-1" />
@@ -400,46 +501,53 @@ const SellerMessages = () => {
 
               {/* Messages */}
               <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 bg-[#f9fbf7]">
-                {messages.map((msg, idx) => (
-                  <div
-                    key={msg._id || idx}
-                    className={`flex ${
-                      msg.sender?._id === user?.id ? "justify-end" : "justify-start"
-                    }`}
-                  >
+                {messages.length > 0 ? (
+                  messages.map((msg, idx) => (
                     <div
-                      className={`max-w-[85%] md:max-w-[70%] lg:max-w-[60%] ${
-                        msg.sender?._id === user?.id ? "text-right" : "text-left"
+                      key={msg._id || idx}
+                      className={`flex ${
+                        msg.sender?._id === user?.id ? "justify-end" : "justify-start"
                       }`}
                     >
-                      <div className="flex items-center mb-1 space-x-2">
-                        {msg.sender?._id !== user?.id && (
-                          <span className="text-xs font-medium text-gray-700">
-                            {msg.sender?.name || 'Buyer'}
-                          </span>
-                        )}
-                        <span className="text-xs text-gray-400">
-                          {msg.createdAt ? 
-                            new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                            : 'Now'
-                          }
-                        </span>
-                        {msg.sender?._id === user?.id && msg.isRead && (
-                          <IoCheckmarkDone className="text-xs text-[#708238]" />
-                        )}
-                      </div>
                       <div
-                        className={`px-4 py-3 rounded-2xl ${
-                          msg.sender?._id === user?.id
-                            ? "bg-[#708238] text-white"
-                            : "bg-white text-gray-800 border border-gray-200"
+                        className={`max-w-[85%] md:max-w-[70%] lg:max-w-[60%] ${
+                          msg.sender?._id === user?.id ? "text-right" : "text-left"
                         }`}
                       >
-                        <p className="text-sm">{msg.message}</p>
+                        <div className="flex items-center mb-1 space-x-2">
+                          {msg.sender?._id !== user?.id && (
+                            <span className="text-xs font-medium text-gray-700">
+                              {msg.sender?.name || getBuyerName(activeConversation)}
+                            </span>
+                          )}
+                          <span className="text-xs text-gray-400">
+                            {msg.createdAt ? 
+                              new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                              : 'Now'
+                            }
+                          </span>
+                          {msg.sender?._id === user?.id && msg.isRead && (
+                            <IoCheckmarkDone className="text-xs text-[#708238]" />
+                          )}
+                        </div>
+                        <div
+                          className={`px-4 py-3 rounded-2xl ${
+                            msg.sender?._id === user?.id
+                              ? "bg-[#708238] text-white"
+                              : "bg-white text-gray-800 border border-gray-200"
+                          }`}
+                        >
+                          <p className="text-sm">{msg.message}</p>
+                        </div>
                       </div>
                     </div>
+                  ))
+                ) : (
+                  <div className="text-center py-8 text-gray-500">
+                    <p>No messages yet</p>
+                    <p className="text-sm text-gray-400 mt-1">Start a conversation with {getBuyerName(activeConversation)}</p>
                   </div>
-                ))}
+                )}
                 <div ref={messagesEndRef} />
               </div>
 
@@ -487,7 +595,7 @@ const SellerMessages = () => {
           )}
         </div>
 
-        {/* Right Panel - Order Info (Desktop) */}
+        {/* Right Panel - Order Info */}
         {activeConversation && (
           <div className={`hidden lg:block w-1/4 border-l bg-white p-6 ${showOrderPanel ? "!block" : ""}`}>
             <div className="sticky top-0 space-y-6">
@@ -508,7 +616,7 @@ const SellerMessages = () => {
                 <div className="bg-gray-50 rounded-xl p-4">
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-sm font-medium text-gray-600">Buyer</span>
-                    <span className="text-sm font-semibold">{activeConversation.buyer?.name || 'Unknown Buyer'}</span>
+                    <span className="text-sm font-semibold">{getBuyerName(activeConversation)}</span>
                   </div>
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-sm font-medium text-gray-600">Status</span>
@@ -530,71 +638,11 @@ const SellerMessages = () => {
 
               <div>
                 <h3 className="text-lg font-semibold text-gray-800 mb-3">
-                  About {activeConversation.buyer?.name || 'Buyer'}
+                  About {getBuyerName(activeConversation)}
                 </h3>
                 <div className="space-y-3">
                   <p className="text-sm text-gray-600">
-                    <span className="font-medium">Email:</span> {activeConversation.buyer?.email || 'Not available'}
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    <span className="font-medium">Member since:</span> {new Date().getFullYear()}
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    <span className="font-medium">Avg. response time:</span> 1 hour
-                  </p>
-                </div>
-              </div>
-
-              <button className="w-full px-4 py-2 bg-black text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition">
-                View Order Page
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Right Panel - Order Info (Mobile) */}
-        {showOrderPanel && activeConversation && (
-          <div className="lg:hidden fixed inset-0 bg-white z-50 p-6 pt-16">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-xl font-semibold text-gray-800">Order Details</h3>
-              <button 
-                onClick={() => setShowOrderPanel(false)}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                <FiX size={24} />
-              </button>
-            </div>
-            
-            <div className="space-y-6">
-              <div className="bg-gray-50 rounded-xl p-4">
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm font-medium text-gray-600">Buyer</span>
-                  <span className="text-sm font-semibold">{activeConversation.buyer?.name || 'Unknown Buyer'}</span>
-                </div>
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm font-medium text-gray-600">Status</span>
-                  <span className="text-sm font-semibold text-[#708238]">
-                    Active
-                  </span>
-                </div>
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm font-medium text-gray-600">Last Activity</span>
-                  <span className="text-sm font-semibold">
-                    {activeConversation.lastMessageAt ? 
-                      new Date(activeConversation.lastMessageAt).toLocaleDateString()
-                      : 'Today'
-                    }
-                  </span>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-3">
-                  About {activeConversation.buyer?.name || 'Buyer'}
-                </h3>
-                <div className="space-y-3">
-                  <p className="text-sm text-gray-600">
-                    <span className="font-medium">Email:</span> {activeConversation.buyer?.email || 'Not available'}
+                    <span className="font-medium">Email:</span> {getBuyerEmail(activeConversation)}
                   </p>
                   <p className="text-sm text-gray-600">
                     <span className="font-medium">Member since:</span> {new Date().getFullYear()}
