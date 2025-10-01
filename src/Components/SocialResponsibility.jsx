@@ -105,17 +105,12 @@ const SocialResponsibility = () => {
           </h2>
           <p className="text-lg md:text-xl text-gray-700 leading-relaxed mb-8 max-w-4xl mx-auto">
             JustERPs is more than a platform connecting businesses with top-tier
-            ERP consultants—it’s a catalyst for change. While our consultants
+            ERP consultants it's a catalyst for change. While our consultants
             deliver exceptional project-based results across SAP, NetSuite,
             Oracle, and beyond, our mission reaches further: to harness digital
             transformation as a force for social good.
           </p>
-          <motion.span
-            whileHover={{ scale: 1.1 }}
-            className="inline-block px-10 py-4 bg-gradient-to-r from-[#FFA500] to-orange-500 text-white rounded-full font-semibold text-lg shadow-lg hover:shadow-2xl transition"
-          >
-            Creating Impact Through Technology
-          </motion.span>
+          
         </motion.div>
       </div>
 
@@ -133,11 +128,7 @@ const SocialResponsibility = () => {
           </h2>
           <div className="w-32 h-1 bg-[#FFA500] mx-auto mb-6"></div>
           <p className="text-2xl text-gray-600 max-w-3xl mx-auto">
-            We reinvest{" "}
-            <span className="text-[#FFA500] font-bold text-3xl">
-              5% of every transaction
-            </span>{" "}
-            into high-impact, community-driven initiatives
+            We will reinvest a portion of every transaction into high-impact, community-driven initiatives
           </p>
         </motion.div>
 
@@ -172,14 +163,21 @@ const SocialResponsibility = () => {
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 1 }}
           viewport={{ once: true }}
-          className="bg-gradient-to-r from-[#708238] to-[#8a9c4a] rounded-3xl shadow-2xl p-12 lg:p-16 mb-12"
+          className="bg-white rounded-3xl shadow-2xl p-12 lg:p-16 mb-12"
         >
-          <h2 className="text-4xl font-bold text-white text-center mb-8">
-            How Your Consulting Work Creates Real-World Impact
-          </h2>
-          <p className="text-xl text-white text-center mb-12 opacity-90 max-w-4xl mx-auto">
-            Every hour worked on JustERPs fuels tangible social outcomes
-          </p>
+       <div className="bg-white border-4 border-[#708238] rounded-lg shadow-lg p-10 max-w-4xl mx-auto my-12">
+  <h4 className="text-2xl font-bold text-black text-center mb-6 leading-snug whitespace-nowrap">
+    How Your Consulting Work Creates Real-World Impact
+  </h4>
+  <p className="text-xl text-black text-center opacity-90 leading-relaxed">
+    Every hour worked on JustERPs fuels tangible social outcomes "For Example"
+  </p>
+</div>
+
+
+
+
+
 
           <div className="grid md:grid-cols-3 gap-8">
             {impactExamples.map((example, index) => (
@@ -189,13 +187,13 @@ const SocialResponsibility = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: index * 0.2 }}
                 viewport={{ once: true }}
-                className="bg-white bg-opacity-20 backdrop-blur-sm rounded-2xl p-8 hover:scale-105 border border-white border-opacity-30 transition"
+                className="bg-white rounded-2xl p-8 hover:scale-105 border border-green-500 transition shadow-lg"
               >
                 <div className="text-4xl mb-4 text-center">{example.icon}</div>
-                <h3 className="text-xl font-semibold text-white text-center mb-4">
+                <h3 className="text-xl font-semibold text-black text-center mb-4">
                   {example.scenario}
                 </h3>
-                <p className="text-white text-center opacity-90 leading-relaxed">
+                <p className="text-gray-700 text-center leading-relaxed">
                   {example.impact}
                 </p>
               </motion.div>
@@ -205,7 +203,7 @@ const SocialResponsibility = () => {
       </div>
 
       {/* Dashboard Section */}
-      <div className="container mx-auto px-6 lg:px-20 py-24">
+      {/* <div className="container mx-auto px-6 lg:px-20 py-24">
         <motion.div
           initial={{ opacity: 0, y: 80 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -231,10 +229,10 @@ const SocialResponsibility = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, delay: index * 0.2 }}
                 viewport={{ once: true }}
-                className="bg-white rounded-2xl shadow-lg p-6 hover:scale-105 transition"
+                className="bg-white rounded-2xl shadow-lg p-6 hover:scale-105 transition group hover:bg-gradient-to-r hover:from-green-50 hover:to-orange-50"
               >
                 <div className="flex items-center space-x-4">
-                  <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-[#FFA500] to-orange-400 rounded-full flex items-center justify-center">
+                  <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-[#FFA500] to-orange-400 rounded-full flex items-center justify-center group-hover:bg-gradient-to-br group-hover:from-green-500 group-hover:to-green-600 transition-colors">
                     <span className="text-white text-lg">{feature.icon}</span>
                   </div>
                   <div>
@@ -253,13 +251,13 @@ const SocialResponsibility = () => {
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1 }}
             viewport={{ once: true }}
-            className="bg-gradient-to-br from-[#FFA500] to-orange-500 rounded-3xl shadow-2xl p-8"
+            className="bg-gradient-to-br from-green-100 to-green-200 rounded-3xl shadow-2xl p-8 border border-green-300"
           >
             <div className="text-center mb-8">
-              <h3 className="text-3xl font-bold text-white mb-2">
+              <h3 className="text-3xl font-bold text-gray-800 mb-2">
                 Live Impact Tracker
               </h3>
-              <p className="text-white opacity-90">
+              <p className="text-gray-600">
                 Real-time contributions making a difference
               </p>
             </div>
@@ -283,13 +281,13 @@ const SocialResponsibility = () => {
               ].map((stat, index) => (
                 <div
                   key={index}
-                  className="bg-white bg-opacity-20 backdrop-blur-sm rounded-xl p-6 text-center"
+                  className="bg-white rounded-xl p-6 text-center border border-green-500 shadow-md hover:shadow-lg transition"
                 >
-                  <div className="text-4xl font-bold text-white mb-2">
+                  <div className="text-4xl font-bold text-gray-800 mb-2">
                     {stat.value}
                     {stat.suffix}
                   </div>
-                  <div className="text-white opacity-90 font-semibold">
+                  <div className="text-gray-600 font-semibold">
                     {stat.label}
                   </div>
                 </div>
@@ -297,7 +295,7 @@ const SocialResponsibility = () => {
             </div>
           </motion.div>
         </div>
-      </div>
+      </div> */}
 
       {/* Founder Quote */}
       <div className="container mx-auto px-6 lg:px-20 py-24">
@@ -340,17 +338,17 @@ const SocialResponsibility = () => {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 1 }}
             viewport={{ once: true }}
-            className="bg-gradient-to-br from-[#708238] to-[#8a9c4a] rounded-3xl shadow-2xl p-10 hover:scale-105 transition"
+            className="bg-white rounded-3xl shadow-2xl p-10 hover:scale-105 transition border-l-8 border-green-500"
           >
             <div className="text-center mb-6">
-              <div className="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-3xl text-white">👨‍💻</span>
+              <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-3xl text-green-600">👨‍💻</span>
               </div>
-              <h3 className="text-3xl font-bold text-white mb-4">
+              <h3 className="text-3xl font-bold text-gray-800 mb-4">
                 For Consultants
               </h3>
             </div>
-            <p className="text-xl text-white text-center leading-relaxed opacity-90">
+            <p className="text-xl text-gray-700 text-center leading-relaxed">
               Your expertise does more than solve complex ERP challenges—it
               changes lives. Every project you complete creates ripple effects
               of positive change in communities worldwide.
@@ -362,17 +360,17 @@ const SocialResponsibility = () => {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 1 }}
             viewport={{ once: true }}
-            className="bg-gradient-to-br from-[#FFA500] to-orange-500 rounded-3xl shadow-2xl p-10 hover:scale-105 transition"
+            className="bg-white rounded-3xl shadow-2xl p-10 hover:scale-105 transition border-l-8 border-orange-500"
           >
             <div className="text-center mb-6">
-              <div className="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-3xl text-white">👨‍💼</span>
+              <div className="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-3xl text-orange-600">👨‍💼</span>
               </div>
-              <h3 className="text-3xl font-bold text-white mb-4">
+              <h3 className="text-3xl font-bold text-gray-800 mb-4">
                 For Clients
               </h3>
             </div>
-            <p className="text-xl text-white text-center leading-relaxed opacity-90">
+            <p className="text-xl text-gray-700 text-center leading-relaxed">
               Every project improvement now powers human development on a global
               scale. Your business growth directly contributes to meaningful
               social transformation.
@@ -388,28 +386,30 @@ const SocialResponsibility = () => {
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1 }}
           viewport={{ once: true }}
-          className="bg-gradient-to-r from-[#708238] to-[#5a6a2d] text-white rounded-3xl shadow-2xl p-16"
+          className="bg-gradient-to-r from-green-100 to-green-200 text-gray-800 rounded-3xl shadow-2xl p-16 border border-green-300"
         >
           <div className="text-center">
             <h2 className="text-5xl font-bold mb-6">Join Our Mission</h2>
-            <p className="text-xl text-gray-200 mb-10 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xl text-gray-700 mb-10 max-w-2xl mx-auto leading-relaxed">
               Be part of a community that believes in using technology to create
               a better world. Your skills and projects can drive real change.
             </p>
-            <div className="flex flex-col lg:flex-row justify-center gap-6">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                className="bg-gradient-to-r from-[#FFA500] to-orange-500 hover:from-orange-500 hover:to-orange-600 text-white font-bold py-5 px-12 rounded-full shadow-xl transition"
-              >
-                Register as ERP Consultant
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                className="bg-gradient-to-r from-white to-gray-100 hover:from-gray-100 hover:to-gray-200 text-[#708238] font-bold py-5 px-12 rounded-full shadow-xl transition"
-              >
-                Hire ERP Consultant
-              </motion.button>
-            </div>
+           <div className="flex flex-col lg:flex-row justify-center gap-6">
+  <motion.button
+    whileHover={{ scale: 1.05, backgroundColor: "#FFA500" }}
+    className="w-72 bg-gradient-to-r from-[#FFA500] to-orange-500 text-white font-bold py-5 rounded-full shadow-xl transition hover:shadow-2xl text-center"
+  >
+    Register as ERP Consultant
+  </motion.button>
+
+  <motion.button
+    whileHover={{ scale: 1.05, backgroundColor: "#708238" }}
+    className="w-72 bg-gradient-to-r from-[#708238] to-[#5a6a2d] text-white font-bold py-5 rounded-full shadow-xl transition hover:shadow-2xl text-center"
+  >
+    Hire ERP Consultant
+  </motion.button>
+</div>
+
           </div>
         </motion.div>
       </div>
@@ -450,17 +450,17 @@ const impactInitiatives = [
 // Data for impact examples
 const impactExamples = [
   {
-    icon: "",
+    icon: "📊",
     scenario: "40 Hours of SAP Consulting",
     impact: "Funds a child's school meals for an entire month",
   },
   {
-    icon: "",
+    icon: "💼",
     scenario: "NetSuite Implementation",
     impact: "Supports a women's entrepreneurship workshop",
   },
   {
-    icon: "",
+    icon: "🏗️",
     scenario: "Long-term Engagements",
     impact: "Finances entire classroom renovations in needy communities",
   },

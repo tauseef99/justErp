@@ -1,10 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FaSearch, FaPaperclip, FaSmile, FaPaperPlane, FaEllipsisV, FaStar, FaCheck, FaCheckDouble, FaClock, FaTrash, FaArchive, FaSpinner, FaUserCircle, FaTimes } from 'react-icons/fa';
+import { FaSearch, FaPaperclip, FaSmile, FaPaperPlane, FaEllipsisV, FaStar, FaCheck, FaCheckDouble, FaClock, FaTrash, FaArchive, FaSpinner, FaUserCircle, FaTimes, FaPhone, FaVideo } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import BuyerNavbar from './BuyerNavbar';
 import { messageAPI } from '../../services/messageService';
 import { jwtDecode } from "jwt-decode"; 
 import socketService from "../../services/socketService";
+
+import CallModal from '../CallModal.jsx';
+
+
+import useWebRTC from '../../hooks/useWebRTC.js';
 
 const BuyerMessages = () => {
   const navigate = useNavigate();
@@ -25,6 +30,27 @@ const BuyerMessages = () => {
   const [socketStatus, setSocketStatus] = useState('disconnected');
   const [selectedSeller, setSelectedSeller] = useState(null);
   const [processingSeller, setProcessingSeller] = useState(false);
+  
+  // Call-related states
+  const [isCallModalOpen, setIsCallModalOpen] = useState(false);
+  const [currentCall, setCurrentCall] = useState(null);
+  const [isIncomingCall, setIsIncomingCall] = useState(false);
+  const [callHistory, setCallHistory] = useState([]);
+  
+  // WebRTC refs and hooks
+  const localVideoRef = useRef(null);
+  const remoteVideoRef = useRef(null);
+
+  const {
+    startCall,
+    endCall,
+    rejectCall,
+    answerCall,
+    isCallActive,
+    isCallInProgress,
+    localStream,
+    remoteStream
+  } = useWebRTC(localVideoRef, remoteVideoRef);
 
   // Store user data in ref to avoid timing issues
   const userRef = useRef(null);
@@ -68,7 +94,15 @@ const BuyerMessages = () => {
         socketService.onNewMessage(handleNewMessage);
         socketService.onConversationUpdated(handleConversationUpdated);
         socketService.onUserTyping(handleUserTyping);
-        console.log('✅ Socket listeners set up');
+        
+        // Call-related socket listeners
+        socketService.onIncomingCall(handleIncomingCall);
+        socketService.onCallAnswered(handleCallAnswered);
+        socketService.onCallEnded(handleCallEnded);
+        socketService.onCallRejected(handleCallRejected);
+        socketService.onICECandidate(handleRemoteICECandidate);
+        
+        console.log('✅ All socket listeners set up');
 
         // 3. Load conversations
         await loadConversations();
@@ -109,9 +143,21 @@ const BuyerMessages = () => {
     initializeChat();
 
     return () => {
+      // Clean up socket listeners
       socketService.offNewMessage();
       socketService.offConversationUpdated();
+      socketService.offUserTyping();
+      socketService.offIncomingCall();
+      socketService.offCallAnswered();
+      socketService.offCallEnded();
+      socketService.offCallRejected();
+      socketService.offICECandidate();
       socketService.disconnect();
+      
+      // End any active call
+      if (isCallActive || isCallInProgress) {
+        endCall();
+      }
     };
   }, [navigate]);
 
@@ -160,6 +206,39 @@ const BuyerMessages = () => {
   const handleUserTyping = (data) => {
     console.log('✍️ User typing:', data);
     // You can implement typing indicators here
+  };
+
+  // Call-related socket handlers
+  const handleIncomingCall = (data) => {
+    console.log('📞 Incoming call received:', data);
+    setCurrentCall(data.call);
+    setIsIncomingCall(true);
+    setIsCallModalOpen(true);
+  };
+
+  const handleCallAnswered = (data) => {
+    console.log('📞 Call answered by remote:', data);
+    // The call modal will handle the UI update
+  };
+
+  const handleCallEnded = (data) => {
+    console.log('📞 Call ended by remote:', data);
+    setIsCallModalOpen(false);
+    setCurrentCall(null);
+    setIsIncomingCall(false);
+  };
+
+  const handleCallRejected = (data) => {
+    console.log('📞 Call rejected by remote:', data);
+    setIsCallModalOpen(false);
+    setCurrentCall(null);
+    setIsIncomingCall(false);
+    alert('Call was rejected by the seller.');
+  };
+
+  const handleRemoteICECandidate = (data) => {
+    console.log('❄️ Remote ICE candidate received:', data);
+    // Handled by useWebRTC hook
   };
 
   // Load conversations
@@ -462,6 +541,68 @@ const BuyerMessages = () => {
     }
   };
 
+  // Call management functions
+  const handleStartCall = async (callType) => {
+    if (!activeConversation || activeConversation._id.startsWith('demo-')) {
+      alert('Cannot start calls in demo conversations');
+      return;
+    }
+
+    if (isCallInProgress || isCallActive) {
+      alert('A call is already in progress');
+      return;
+    }
+
+    try {
+      console.log(`📞 Starting ${callType} call...`);
+      const call = await startCall(activeConversation._id, callType);
+      setCurrentCall(call);
+      setIsIncomingCall(false);
+      setIsCallModalOpen(true);
+    } catch (error) {
+      console.error('❌ Failed to start call:', error);
+      alert(`Failed to start ${callType} call: ${error.message}`);
+    }
+  };
+
+  const handleAnswerCall = async (callType = 'audio') => {
+    try {
+      await answerCall(currentCall, callType);
+      setIsIncomingCall(false);
+    } catch (error) {
+      console.error('❌ Error answering call:', error);
+      alert('Failed to answer call. Please try again.');
+    }
+  };
+
+  const handleRejectCall = async () => {
+    try {
+      await rejectCall(currentCall._id);
+      setIsCallModalOpen(false);
+      setCurrentCall(null);
+      setIsIncomingCall(false);
+    } catch (error) {
+      console.error('❌ Failed to reject call:', error);
+    }
+  };
+
+  const handleEndCall = async () => {
+    await endCall();
+    setIsCallModalOpen(false);
+    setCurrentCall(null);
+    setIsIncomingCall(false);
+  };
+
+  const handleCloseCallModal = () => {
+    if (isCallActive || isCallInProgress) {
+      handleEndCall();
+    } else {
+      setIsCallModalOpen(false);
+      setCurrentCall(null);
+      setIsIncomingCall(false);
+    }
+  };
+
   // Utility functions
   const scrollToBottom = () => {
     setTimeout(() => {
@@ -589,6 +730,12 @@ const BuyerMessages = () => {
                 Creating conversation...
               </div>
             )}
+            {(isCallInProgress || isCallActive) && (
+              <div className="flex items-center text-xs px-2 py-1 rounded-full bg-purple-100 text-purple-800">
+                <FaPhone className="mr-1" />
+                Call in Progress
+              </div>
+            )}
           </div>
           <div className="hidden md:flex items-center space-x-4">
             <div className="relative">
@@ -630,7 +777,8 @@ const BuyerMessages = () => {
         Conversations: {conversations.length} | 
         Active: {activeConversation?._id} | 
         Socket: {socketStatus} |
-        Seller: {selectedSeller?.name || 'None'}
+        Seller: {selectedSeller?.name || 'None'} |
+        Call: {isCallActive ? 'Active' : isCallInProgress ? 'In Progress' : 'None'}
         {activeConversation?._id?.startsWith('demo-') && ' | 🎭 DEMO MODE'}
         <br />
         {selectedSeller && !activeConversation && (
@@ -816,24 +964,48 @@ const BuyerMessages = () => {
                     </div>
                   </div>
                   
-                  <div className="relative">
-                    <button 
-                      className="text-gray-500 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100"
-                      onClick={() => setShowDropdown(!showDropdown)}
-                    >
-                      <FaEllipsisV />
-                    </button>
-                    
-                    {showDropdown && (
-                      <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 border border-gray-200">
-                        <button className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left hover:text-[#FFA500]">
-                          <FaArchive className="mr-2 text-gray-500" /> Archive
+                  <div className="flex items-center space-x-2">
+                    {/* Call Buttons */}
+                    {!activeConversation._id.startsWith('demo-') && (
+                      <>
+                        <button
+                          onClick={() => handleStartCall('audio')}
+                          className="text-green-600 hover:text-green-700 p-2 rounded-full hover:bg-green-50 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                          title="Audio Call"
+                          disabled={isCallInProgress || isCallActive}
+                        >
+                          <FaPhone />
                         </button>
-                        <button className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left hover:text-red-500">
-                          <FaTrash className="mr-2 text-gray-500" /> Delete
+                        <button
+                          onClick={() => handleStartCall('video')}
+                          className="text-blue-600 hover:text-blue-700 p-2 rounded-full hover:bg-blue-50 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                          title="Video Call"
+                          disabled={isCallInProgress || isCallActive}
+                        >
+                          <FaVideo />
                         </button>
-                      </div>
+                      </>
                     )}
+                    
+                    <div className="relative">
+                      <button 
+                        className="text-gray-500 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100"
+                        onClick={() => setShowDropdown(!showDropdown)}
+                      >
+                        <FaEllipsisV />
+                      </button>
+                      
+                      {showDropdown && (
+                        <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 border border-gray-200">
+                          <button className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left hover:text-[#FFA500]">
+                            <FaArchive className="mr-2 text-gray-500" /> Archive
+                          </button>
+                          <button className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left hover:text-red-500">
+                            <FaTrash className="mr-2 text-gray-500" /> Delete
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1006,6 +1178,23 @@ const BuyerMessages = () => {
           </div>
         </div>
       </div>
+
+      {/* Call Modal */}
+      {isCallModalOpen && currentCall && (
+        <CallModal
+          call={currentCall}
+          isIncoming={isIncomingCall}
+          isActive={isCallActive}
+          onAnswer={handleAnswerCall}
+          onReject={handleRejectCall}
+          onEnd={handleEndCall}
+          onClose={handleCloseCallModal}
+          localVideoRef={localVideoRef}
+          remoteVideoRef={remoteVideoRef}
+          localStream={localStream}
+          remoteStream={remoteStream}
+        />
+      )}
     </div>
   );
 };

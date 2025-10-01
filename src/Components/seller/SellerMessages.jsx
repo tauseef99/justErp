@@ -2,11 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import { FiSearch, FiSend, FiPaperclip, FiSmile, FiMenu, FiX } from "react-icons/fi";
 import { IoCheckmarkDone } from "react-icons/io5";
 import { BsThreeDotsVertical, BsStarFill } from "react-icons/bs";
-import { FaSpinner, FaUserCircle } from "react-icons/fa";
+import { FaSpinner, FaUserCircle, FaPhone, FaVideo } from "react-icons/fa";
 import SellerLayout from "../../Pages/layouts/SellerLayout";
 import { messageAPI } from "../../services/messageService";
 import socketService from "../../services/socketService";
 import { jwtDecode } from 'jwt-decode';
+import CallModal from '../CallModal.jsx';
+import useWebRTC from '../../hooks/useWebRTC.js';
 
 const SellerMessages = () => {
   const [message, setMessage] = useState("");
@@ -21,7 +23,31 @@ const SellerMessages = () => {
   const [error, setError] = useState(null);
   const messagesEndRef = useRef(null);
 
-  // Initialize
+  // Call-related states
+  const [isCallModalOpen, setIsCallModalOpen] = useState(false);
+  const [currentCall, setCurrentCall] = useState(null);
+  const [isIncomingCall, setIsIncomingCall] = useState(false);
+  const [socketStatus, setSocketStatus] = useState('disconnected');
+
+  // WebRTC refs and hooks
+  const localVideoRef = useRef(null);
+  const remoteVideoRef = useRef(null);
+
+  const {
+    startCall,
+    endCall,
+    rejectCall,
+    answerCall,
+    isCallActive,
+    isCallInProgress,
+    localStream,
+    remoteStream
+  } = useWebRTC(localVideoRef, remoteVideoRef);
+
+  // Store user data in ref to avoid timing issues
+  const userRef = useRef(null);
+
+  // Initialize with call functionality
   useEffect(() => {
     const initializeChat = async () => {
       try {
@@ -35,21 +61,33 @@ const SellerMessages = () => {
         const decoded = jwtDecode(token);
         console.log('👤 Seller User decoded:', decoded);
         setUser(decoded);
+        userRef.current = decoded;
 
         // Connect to socket with error handling
         try {
+          console.log('🔌 Seller: Attempting socket connection...');
           await socketService.connect(token);
+          setSocketStatus('connected');
           socketService.joinUser(decoded.id);
           console.log('✅ Seller: Socket connected and joined user room');
         } catch (socketError) {
           console.error('❌ Seller: Socket connection failed:', socketError);
+          setSocketStatus('error');
           // Continue without socket
         }
 
         // Set up socket listeners
         socketService.onNewMessage(handleNewMessage);
         socketService.onConversationUpdated(handleConversationUpdated);
-        console.log('✅ Seller: Socket listeners set up');
+        
+        // Call-related socket listeners
+        socketService.onIncomingCall(handleIncomingCall);
+        socketService.onCallAnswered(handleCallAnswered);
+        socketService.onCallEnded(handleCallEnded);
+        socketService.onCallRejected(handleCallRejected);
+        socketService.onICECandidate(handleRemoteICECandidate);
+        
+        console.log('✅ Seller: All socket listeners set up');
 
         // Load conversations
         await loadConversations();
@@ -64,11 +102,98 @@ const SellerMessages = () => {
     initializeChat();
 
     return () => {
+      // Clean up socket listeners
       socketService.offNewMessage();
       socketService.offConversationUpdated();
+      socketService.offIncomingCall();
+      socketService.offCallAnswered();
+      socketService.offCallEnded();
+      socketService.offCallRejected();
+      socketService.offICECandidate();
       socketService.disconnect();
+      
+      // End any active call
+      if (isCallActive || isCallInProgress) {
+        endCall();
+      }
     };
   }, []);
+
+  // Update userRef when user state changes
+  useEffect(() => {
+    if (user) {
+      userRef.current = user;
+    }
+  }, [user]);
+
+  // Socket event handlers
+  const handleNewMessage = (message) => {
+    console.log('📨 Seller received new message:', message);
+    
+    if (activeConversation && message.conversationId === activeConversation._id) {
+      setMessages(prev => {
+        // Avoid duplicates
+        if (prev.some(msg => msg._id === message._id)) return prev;
+        return [...prev, message];
+      });
+      scrollToBottom();
+      
+      // Mark as read automatically when seller views the message
+      markAsRead(activeConversation._id);
+    }
+    
+    // Update conversations list
+    setConversations(prev => 
+      prev.map(conv => 
+        conv._id === message.conversationId 
+          ? { 
+              ...conv, 
+              lastMessage: message.message, 
+              lastMessageAt: new Date(),
+              unreadCount: conv._id === activeConversation?._id ? 0 : (conv.unreadCount || 0) + 1
+            }
+          : conv
+      )
+    );
+  };
+
+  const handleConversationUpdated = () => {
+    console.log('🔄 Seller: Conversation updated, reloading...');
+    loadConversations();
+  };
+
+  // Call-related socket handlers
+  const handleIncomingCall = (data) => {
+    console.log('📞 Seller: Incoming call received:', data);
+    setCurrentCall(data.call);
+    setIsIncomingCall(true);
+    setIsCallModalOpen(true);
+  };
+
+  const handleCallAnswered = (data) => {
+    console.log('📞 Seller: Call answered by remote:', data);
+    // The call modal will handle the UI update
+  };
+
+  const handleCallEnded = (data) => {
+    console.log('📞 Seller: Call ended by remote:', data);
+    setIsCallModalOpen(false);
+    setCurrentCall(null);
+    setIsIncomingCall(false);
+  };
+
+  const handleCallRejected = (data) => {
+    console.log('📞 Seller: Call rejected by remote:', data);
+    setIsCallModalOpen(false);
+    setCurrentCall(null);
+    setIsIncomingCall(false);
+    alert('Call was rejected by the buyer.');
+  };
+
+  const handleRemoteICECandidate = (data) => {
+    console.log('❄️ Seller: Remote ICE candidate received:', data);
+    // Handled by useWebRTC hook
+  };
 
   // Load conversations - FIXED: Better data structure handling
   const loadConversations = async () => {
@@ -144,18 +269,15 @@ const SellerMessages = () => {
       // Don't clear messages on timeout - keep existing ones
       if (error.code === 'ECONNABORTED') {
         console.warn('⚠️ Message load timeout - keeping existing messages');
-        // Don't setMessages([]) here - keep whatever messages we have
         return;
       }
       
       if (error.response) {
         console.error('Error response:', error.response.data);
-        // Only clear messages on actual errors, not timeouts
         if (error.response.status !== 408) { // 408 is timeout
           setMessages([]);
         }
       } else {
-        // For network errors, keep existing messages
         console.warn('⚠️ Network error - keeping existing messages');
       }
     }
@@ -210,42 +332,6 @@ const SellerMessages = () => {
     }
     
     return 'Not available';
-  };
-
-  // Socket event handlers
-  const handleNewMessage = (message) => {
-    console.log('📨 Seller received new message:', message);
-    
-    if (activeConversation && message.conversationId === activeConversation._id) {
-      setMessages(prev => {
-        // Avoid duplicates
-        if (prev.some(msg => msg._id === message._id)) return prev;
-        return [...prev, message];
-      });
-      scrollToBottom();
-      
-      // Mark as read automatically when seller views the message
-      markAsRead(activeConversation._id);
-    }
-    
-    // Update conversations list
-    setConversations(prev => 
-      prev.map(conv => 
-        conv._id === message.conversationId 
-          ? { 
-              ...conv, 
-              lastMessage: message.message, 
-              lastMessageAt: new Date(),
-              unreadCount: conv._id === activeConversation?._id ? 0 : (conv.unreadCount || 0) + 1
-            }
-          : conv
-      )
-    );
-  };
-
-  const handleConversationUpdated = () => {
-    console.log('🔄 Seller: Conversation updated, reloading...');
-    loadConversations();
   };
 
   // Send message from seller
@@ -308,6 +394,68 @@ const SellerMessages = () => {
     }
   };
 
+  // Call management functions
+  const handleStartCall = async (callType) => {
+    if (!activeConversation) {
+      alert('Please select a conversation first');
+      return;
+    }
+
+    if (isCallInProgress || isCallActive) {
+      alert('A call is already in progress');
+      return;
+    }
+
+    try {
+      console.log(`📞 Seller: Starting ${callType} call...`);
+      const call = await startCall(activeConversation._id, callType);
+      setCurrentCall(call);
+      setIsIncomingCall(false);
+      setIsCallModalOpen(true);
+    } catch (error) {
+      console.error('❌ Seller: Failed to start call:', error);
+      alert(`Failed to start ${callType} call: ${error.message}`);
+    }
+  };
+
+  const handleAnswerCall = async (callType = 'audio') => {
+    try {
+      await answerCall(currentCall, callType);
+      setIsIncomingCall(false);
+    } catch (error) {
+      console.error('❌ Seller: Error answering call:', error);
+      alert('Failed to answer call. Please try again.');
+    }
+  };
+
+  const handleRejectCall = async () => {
+    try {
+      await rejectCall(currentCall._id);
+      setIsCallModalOpen(false);
+      setCurrentCall(null);
+      setIsIncomingCall(false);
+    } catch (error) {
+      console.error('❌ Seller: Failed to reject call:', error);
+    }
+  };
+
+  const handleEndCall = async () => {
+    await endCall();
+    setIsCallModalOpen(false);
+    setCurrentCall(null);
+    setIsIncomingCall(false);
+  };
+
+  const handleCloseCallModal = () => {
+    if (isCallActive || isCallInProgress) {
+      handleEndCall();
+    } else {
+      setIsCallModalOpen(false);
+      setCurrentCall(null);
+      setIsIncomingCall(false);
+    }
+  };
+
   // Utility functions
   const scrollToBottom = () => {
     setTimeout(() => {
@@ -332,6 +480,27 @@ const SellerMessages = () => {
       );
     } catch (error) {
       console.error('Error marking as read:', error);
+    }
+  };
+
+  // Manual retry for socket connection
+  const retrySocketConnection = async () => {
+    try {
+      setSocketStatus('connecting');
+      const token = localStorage.getItem('token');
+      await socketService.connect(token);
+      setSocketStatus('connected');
+      
+      if (userRef.current) {
+        socketService.joinUser(userRef.current.id);
+      }
+      
+      if (activeConversation) {
+        socketService.joinConversation(activeConversation._id);
+      }
+    } catch (error) {
+      console.error('❌ Seller: Failed to reconnect socket:', error);
+      setSocketStatus('error');
     }
   };
 
@@ -361,12 +530,29 @@ const SellerMessages = () => {
             {showMobileMenu ? <FiX size={24} /> : <FiMenu size={24} />}
           </button>
           <h2 className="text-xl font-bold text-gray-800">Messages</h2>
-          <button 
-            onClick={() => setShowOrderPanel(!showOrderPanel)}
-            className="text-gray-700"
-          >
-            <BsThreeDotsVertical size={20} />
-          </button>
+          <div className="flex items-center space-x-2">
+            {/* Socket Status */}
+            <div className={`flex items-center text-xs px-2 py-1 rounded-full ${
+              socketStatus === 'connected' ? 'bg-green-100 text-green-800' : 
+              socketStatus === 'disconnected' ? 'bg-yellow-100 text-yellow-800' : 
+              socketStatus === 'connecting' ? 'bg-blue-100 text-blue-800' :
+              'bg-red-100 text-red-800'
+            }`}>
+              <div className={`w-2 h-2 rounded-full mr-1 ${
+                socketStatus === 'connected' ? 'bg-green-500' : 
+                socketStatus === 'disconnected' ? 'bg-yellow-500' : 
+                socketStatus === 'connecting' ? 'bg-blue-500' :
+                'bg-red-500'
+              }`}></div>
+              {socketStatus}
+            </div>
+            <button 
+              onClick={() => setShowOrderPanel(!showOrderPanel)}
+              className="text-gray-700"
+            >
+              <BsThreeDotsVertical size={20} />
+            </button>
+          </div>
         </div>
 
         {/* Error Display */}
@@ -375,6 +561,38 @@ const SellerMessages = () => {
             {error}
           </div>
         )}
+
+        {/* Socket Status for Desktop */}
+        <div className="hidden lg:flex absolute top-4 right-4 z-10">
+          <div className={`flex items-center text-xs px-2 py-1 rounded-full ${
+            socketStatus === 'connected' ? 'bg-green-100 text-green-800' : 
+            socketStatus === 'disconnected' ? 'bg-yellow-100 text-yellow-800' : 
+            socketStatus === 'connecting' ? 'bg-blue-100 text-blue-800' :
+            'bg-red-100 text-red-800'
+          }`}>
+            <div className={`w-2 h-2 rounded-full mr-1 ${
+              socketStatus === 'connected' ? 'bg-green-500' : 
+              socketStatus === 'disconnected' ? 'bg-yellow-500' : 
+              socketStatus === 'connecting' ? 'bg-blue-500' :
+              'bg-red-500'
+            }`}></div>
+            {socketStatus}
+            {socketStatus === 'error' && (
+              <button 
+                onClick={retrySocketConnection}
+                className="ml-2 text-xs underline"
+              >
+                Retry
+              </button>
+            )}
+          </div>
+          {(isCallInProgress || isCallActive) && (
+            <div className="flex items-center text-xs px-2 py-1 rounded-full bg-purple-100 text-purple-800 ml-2">
+              <FaPhone className="mr-1" />
+              Call in Progress
+            </div>
+          )}
+        </div>
 
         {/* Left Sidebar - Conversations */}
         <div className={`${showMobileMenu ? "block" : "hidden"} lg:block w-full lg:w-1/3 xl:w-1/4 border-r bg-white p-4 overflow-y-auto`}>
@@ -413,7 +631,6 @@ const SellerMessages = () => {
                         alt={getBuyerName(conversation)}
                         className="w-12 h-12 rounded-full object-cover"
                         onError={(e) => {
-                          // Hide broken image and show fallback
                           e.target.style.display = 'none';
                         }}
                       />
@@ -468,7 +685,6 @@ const SellerMessages = () => {
                       alt={getBuyerName(activeConversation)}
                       className="w-10 h-10 rounded-full object-cover"
                       onError={(e) => {
-                        // Hide broken image and show fallback
                         e.target.style.display = 'none';
                       }}
                     />
@@ -487,6 +703,24 @@ const SellerMessages = () => {
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">
+                  {/* Call Buttons */}
+                  <button
+                    onClick={() => handleStartCall('audio')}
+                    className="text-green-600 hover:text-green-700 p-2 rounded-full hover:bg-green-50 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                    title="Audio Call"
+                    disabled={isCallInProgress || isCallActive}
+                  >
+                    <FaPhone />
+                  </button>
+                  <button
+                    onClick={() => handleStartCall('video')}
+                    className="text-blue-600 hover:text-blue-700 p-2 rounded-full hover:bg-blue-50 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                    title="Video Call"
+                    disabled={isCallInProgress || isCallActive}
+                  >
+                    <FaVideo />
+                  </button>
+                  
                   <button 
                     onClick={() => setShowOrderPanel(!showOrderPanel)}
                     className="text-gray-500 hover:text-[#708238] lg:hidden"
@@ -660,6 +894,23 @@ const SellerMessages = () => {
           </div>
         )}
       </div>
+
+      {/* Call Modal */}
+      {isCallModalOpen && currentCall && (
+        <CallModal
+          call={currentCall}
+          isIncoming={isIncomingCall}
+          isActive={isCallActive}
+          onAnswer={handleAnswerCall}
+          onReject={handleRejectCall}
+          onEnd={handleEndCall}
+          onClose={handleCloseCallModal}
+          localVideoRef={localVideoRef}
+          remoteVideoRef={remoteVideoRef}
+          localStream={localStream}
+          remoteStream={remoteStream}
+        />
+      )}
     </SellerLayout>
   );
 };

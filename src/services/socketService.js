@@ -77,6 +77,7 @@ class SocketService {
     }
   }
 
+  // ----------------- Chat-related -----------------
   joinUser(userId) {
     if (this.socket && this.isConnected) {
       this.socket.emit('joinUser', userId);
@@ -136,12 +137,123 @@ class SocketService {
     }
   }
 
+  // ADDED: Missing offUserTyping method
+  offUserTyping() {
+    if (this.socket) {
+      this.socket.off('userTyping');
+    }
+  }
+
   emitTyping(conversationId, isTyping) {
     if (this.socket && this.isConnected) {
       this.socket.emit('typing', { conversationId, isTyping });
     }
   }
 
+  // ----------------- Call-related -----------------
+  onIncomingCall(callback) {
+    if (this.socket) {
+      this.socket.on('incomingCall', callback);
+    }
+  }
+
+  offIncomingCall() {
+    if (this.socket) {
+      this.socket.off('incomingCall');
+    }
+  }
+
+  onCallAnswered(callback) {
+    if (this.socket) {
+      this.socket.on('callAnswered', callback);
+    }
+  }
+
+  offCallAnswered() {
+    if (this.socket) {
+      this.socket.off('callAnswered');
+    }
+  }
+
+  onCallConnected(callback) {
+    if (this.socket) {
+      this.socket.on('callConnected', callback);
+    }
+  }
+
+  offCallConnected() {
+    if (this.socket) {
+      this.socket.off('callConnected');
+    }
+  }
+
+  onCallEnded(callback) {
+    if (this.socket) {
+      this.socket.on('callEnded', callback);
+    }
+  }
+
+  offCallEnded() {
+    if (this.socket) {
+      this.socket.off('callEnded');
+    }
+  }
+
+  onCallRejected(callback) {
+    if (this.socket) {
+      this.socket.on('callRejected', callback);
+    }
+  }
+
+  offCallRejected() {
+    if (this.socket) {
+      this.socket.off('callRejected');
+    }
+  }
+
+  onICECandidate(callback) {
+    if (this.socket) {
+      this.socket.on('iceCandidate', callback);
+    }
+  }
+
+  offICECandidate() {
+    if (this.socket) {
+      this.socket.off('iceCandidate');
+    }
+  }
+
+  emitCallOffer(data) {
+    if (this.socket && this.isConnected) {
+      this.socket.emit('callOffer', data);
+    }
+  }
+
+  emitCallAnswer(data) {
+    if (this.socket && this.isConnected) {
+      this.socket.emit('callAnswer', data);
+    }
+  }
+
+  emitICECandidate(data) {
+    if (this.socket && this.isConnected) {
+      this.socket.emit('iceCandidate', data);
+    }
+  }
+
+  emitEndCall(data) {
+    if (this.socket && this.isConnected) {
+      this.socket.emit('endCall', data);
+    }
+  }
+
+  emitRejectCall(data) {
+    if (this.socket && this.isConnected) {
+      this.socket.emit('rejectCall', data);
+    }
+  }
+
+  // ----------------- Helpers -----------------
   getConnectionStatus() {
     return this.isConnected;
   }
