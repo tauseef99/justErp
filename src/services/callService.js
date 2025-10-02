@@ -1,3 +1,4 @@
+// frontend/src/services/callService.js
 import axios from "axios";
 
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
@@ -17,9 +18,35 @@ api.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    console.log(`📞 API Request: ${config.method?.toUpperCase()} ${config.url}`, config.data);
     return config;
   },
   (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Response interceptor
+api.interceptors.response.use(
+  (response) => {
+    console.log(`✅ API Response: ${response.status} ${response.config.url}`, response.data);
+    return response;
+  },
+  (error) => {
+    console.error('❌ API Error:', {
+      url: error.config?.url,
+      method: error.config?.method,
+      status: error.response?.status,
+      data: error.response?.data,
+      message: error.message
+    });
+    
+    if (error.response?.status === 401) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      window.location.href = "/login";
+    }
+    
     return Promise.reject(error);
   }
 );
@@ -38,12 +65,12 @@ export const callAPI = {
     api.post("/calls/ice-candidate", candidateData),
 
   // End call
-  endCall: (callId) =>
-    api.post("/calls/end", { callId }),
+  endCall: (callData) =>
+    api.post("/calls/end", callData),
 
   // Reject call
-  rejectCall: (callId) =>
-    api.post("/calls/reject", { callId }),
+  rejectCall: (callData) =>
+    api.post("/calls/reject", callData),
 
   // Get call history
   getCallHistory: (conversationId) =>

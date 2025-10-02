@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import img1 from "../Assets/images/Buyer_Side.png";
 import img2 from "../Assets/images/Seller_Side.png";
-import clientandbuyer from "../Assets/images/Happy Buyer-Supplier.jpg"; 
+import handshake from "../Assets/images/Happy Buyer-Supplier.jpg"; 
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 
@@ -14,325 +15,421 @@ const HowJustERPsWorks = () => {
 
   return (
     <>
-    <Navbar/>
-    
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      {/* Animated Background Elements */}
-      <div className="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute top-10 left-10 w-72 h-72 bg-[#FFA500] opacity-5 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-10 right-10 w-96 h-96 bg-[#708238] opacity-5 rounded-full blur-3xl animate-pulse delay-1000"></div>
-      </div>
+      <Navbar />
 
-      {/* Header Section */}
-      <div
-        className={`relative bg-gradient-to-r from-[#708238] to-[#8a9c4a] text-white py-20 transition-all duration-1000 ${
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-10"
-        }`}
-      >
-        <div className="container mx-auto px-4 text-center">
-          <div className="inline-flex items-center justify-center w-20 h-20   rounded-full mb-6 ">
-            
-          </div>
-          <h1 className="text-6xl font-extrabold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-orange-200">
-            How JustERPs Works
-          </h1>
-          <p className="text-2xl max-w-3xl mx-auto leading-relaxed">
-            For Freelancers (ERP Consultants) & Buyers (The Client)
-          </p>
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="container mx-auto px-6 lg:px-12 py-16">
-        {/* Intro */}
-        <div
-          className={`bg-white rounded-3xl shadow-2xl p-10 mb-16 transform transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-          }`}
+      {/* Hero Section */}
+      <div className="relative w-full h-[70vh] min-h-[600px] max-h-[800px] overflow-hidden pt-[100px]">
+        <motion.div
+          initial={{ scale: 1.1, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+          className="absolute inset-0 w-full h-full"
         >
-          <p className="text-xl text-gray-700 leading-relaxed text-center">
+          <img
+            src={handshake}
+            alt="How JustERPs Works"
+            className="w-full h-full object-cover object-center"
+          />
+        </motion.div>
+
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+
+        {/* Content */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+          <motion.h2
+            initial={{ y: -30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 drop-shadow-2xl leading-tight"
+          >
+              Connecting Global Customers to Global ERP Consultants
+          </motion.h2>
+          <motion.p
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="text-lg md:text-xl lg:text-2xl text-gray-100 max-w-3xl mx-auto leading-relaxed font-medium drop-shadow-lg"
+          >
+            For Freelancers (ERP Consultants) & For Buyers (The Clients)
+          </motion.p>
+        </div>
+
+        {/* Bottom Gradient */}
+        <div className="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-t from-white to-transparent"></div>
+      </div>
+
+      {/* Intro Green Box */}
+      <div className="container mx-auto px-6 lg:px-20 py-24">
+        <motion.div
+          initial={{ opacity: 0, y: 100 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          viewport={{ once: true }}
+          className="bg-white border-4 border-[#708238] rounded-3xl shadow-2xl p-8 lg:p-16 text-center"
+        >
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#708238] mb-6 leading-tight">
+          
+            How JustERPs Works
+          </h2>
+          <p className="text-lg md:text-xl text-gray-700 leading-relaxed max-w-4xl mx-auto">
             JustERPs connects businesses with freelance ERP consultants for
             implementation, customization, training, and troubleshooting.
             Whether you're a freelancer or a buyer, here's how it works:
           </p>
-        </div>
+        </motion.div>
+      </div>
 
-        
+      {/* Buyer Steps */}
+      <div className="container mx-auto px-6 lg:px-20 py-24">
+        <h2 className="text-4xl md:text-5xl font-bold text-[#708238] mb-12 flex items-center justify-center gap-4">
+          <span className="w-12 h-12 flex items-center justify-center rounded-full border-4 border-[#708238] bg-white">
+            <span className="w-4 h-4 bg-orange-500 rotate-45"></span>
+          </span>
+          For Buyers (The Clients)
+        </h2>
 
-        {/* For Buyers */}
-        <div className="mb-20">
-          <h2
-            className={`text-5xl font-bold text-[#708238] mb-12 flex items-center justify-center transition-all duration-700 delay-200 ${
-              isVisible
-                ? "opacity-100 translate-x-0"
-                : "opacity-0 -translate-x-10"
-            }`}
-          >
-            <span className="bg-[#708238] text-white p-4 rounded-full mr-5 shadow-lg">
-              🔹
-            </span>
-            For Buyers (The Clients)
-          </h2>
-
-          <div className="space-y-8 max-w-4xl mx-auto">
-            {buyerSteps.map((step, index) => (
-              <div
-                key={index}
-                className={`bg-white rounded-2xl shadow-xl border-l-6 border-[#FFA500] p-8 transform transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer group ${
-                  isVisible
-                    ? "opacity-100 translate-x-0"
-                    : "opacity-0 -translate-x-10"
-                }`}
-                style={{ transitionDelay: `${300 + index * 120}ms` }}
-              >
-                <div className="flex items-start space-x-5">
-                  <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-[#FFA500] to-orange-400 rounded-full flex items-center justify-center text-white font-bold text-xl group-hover:scale-110 transition-transform duration-300">
-                    {index + 1}
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-2xl font-semibold text-gray-800 mb-3 group-hover:text-[#708238] transition-colors duration-300">
-                      {step.title}
-                    </h3>
-                    <div className="text-gray-600 leading-relaxed text-lg">
-                      {step.content}
-                    </div>
+        <div className="space-y-8 max-w-4xl mx-auto mb-16">
+          {buyerSteps.map((step, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, x: -60 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: index * 0.2 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-2xl shadow-xl border-2 border-[#FFA500] p-6 lg:p-8 hover:scale-105 hover:shadow-2xl transition-all duration-300"
+            >
+              <div className="flex items-start space-x-4 lg:space-x-5">
+                <div className="flex-shrink-0 w-12 h-12 lg:w-14 lg:h-14 border-4 border-[#708238] bg-white rounded-full flex items-center justify-center text-[#FFA500] font-bold text-lg lg:text-xl">
+                  {index + 1}
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl lg:text-2xl font-semibold text-gray-800 mb-3">
+                    {step.title}
+                  </h3>
+                  <div className="text-gray-600 leading-relaxed text-base lg:text-lg">
+                    {step.content}
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-        {/* Large Top Image - img1 */}
-        <div className="mb-20">
-          <div
-            className={`bg-gradient-to-br from-gray-100 to-white rounded-3xl shadow-2xl p-8 transform transition-all duration-1000 ${
-              isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
-            }`}
-          >
-            <img
-              src={img1}
-              alt="Buyer Side Process"
-              className="w-full h-auto max-h-[600px] object-contain rounded-2xl shadow-xl hover:scale-105 transition-transform duration-500"
-            />
-          </div>
+            </motion.div>
+          ))}
         </div>
 
-       
-
-        {/* For Freelancers */}
-        <div className="mb-20">
-          <h2
-            className={`text-5xl font-bold text-[#708238] mb-12 flex items-center justify-center transition-all duration-700 delay-200 ${
-              isVisible
-                ? "opacity-100 translate-x-0"
-                : "opacity-0 translate-x-10"
-            }`}
-          >
-            <span className="bg-[#708238] text-white p-4 rounded-full mr-5 shadow-lg">
-              🔹
-            </span>
-            For Freelancers
-          </h2>
-
-          <div className="space-y-8 max-w-4xl mx-auto">
-            {freelancerSteps.map((step, index) => (
-              <div
-                key={index}
-                className={`bg-white rounded-2xl shadow-xl border-l-6 border-[#708238] p-8 transform transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer group ${
-                  isVisible
-                    ? "opacity-100 translate-x-0"
-                    : "opacity-0 translate-x-10"
-                }`}
-                style={{ transitionDelay: `${300 + index * 120}ms` }}
-              >
-                <div className="flex items-start space-x-5">
-                  <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-[#708238] to-[#8a9c4a] rounded-full flex items-center justify-center text-white font-bold text-xl group-hover:scale-110 transition-transform duration-300">
-                    {index + 1}
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-2xl font-semibold text-gray-800 mb-3 group-hover:text-[#FFA500] transition-colors duration-300">
-                      {step.title}
-                    </h3>
-                    <div className="text-gray-600 leading-relaxed text-lg">
-                      {step.content}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-         {/* Large Middle Image - img2 */}
-        <div className="mb-20">
-          <div
-            className={`bg-gradient-to-br from-gray-100 to-white rounded-3xl shadow-2xl p-8 transform transition-all duration-1000 ${
-              isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
-            }`}
-          >
-            <img
-              src={img2}
-              alt="Seller Side Process"
-              className="w-full h-auto max-h-[600px] object-contain rounded-2xl shadow-xl hover:scale-105 transition-transform duration-500"
-            />
-          </div>
-        </div>
-
-        {/* Features */}
-        <div className="mb-20">
-          <h2
-            className={`text-5xl font-bold text-[#708238] mb-14 text-center transition-all duration-700 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-            }`}
-          >
-            ⚙️ JustERP's Unique Features
-          </h2>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
-            {features.map((feature, index) => (
-              <div
-                key={index}
-                className={`bg-gradient-to-br from-white to-gray-50 rounded-3xl shadow-xl p-8 transform transition-all duration-500 hover:scale-105 hover:shadow-2xl border border-gray-200 group ${
-                  isVisible
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-10"
-                }`}
-                style={{ transitionDelay: `${200 + index * 120}ms` }}
-              >
-                <div className="w-16 h-16 bg-gradient-to-br from-[#FFA500] to-orange-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <span className="text-white text-2xl">{feature.icon}</span>
-                </div>
-                <h3 className="text-2xl font-semibold text-gray-800 mb-4 group-hover:text-[#708238] transition-colors duration-300">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600 leading-relaxed text-lg">
-                  {feature.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Large Bottom Image - clientandbuyer */}
-        <div className="mb-20">
-          <div
-            className={`bg-gradient-to-br from-gray-100 to-white rounded-3xl shadow-2xl p-8 transform transition-all duration-1000 ${
-              isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
-            }`}
-          >
-            <img
-              src={clientandbuyer}
-              alt="Happy Buyer & Supplier Collaboration"
-              className="w-full h-auto max-h-[700px] object-contain rounded-2xl shadow-xl hover:scale-105 transition-transform duration-500"
-            />
-          </div>
-        </div>
-
-        {/* Final CTA Section */}
-        <div
-          className={`bg-gradient-to-r from-[#708238] to-[#8a9c4a] rounded-3xl shadow-2xl p-12 text-center transform transition-all duration-1000 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-          }`}
+        {/* Buyer Workflow Full Image */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1 }}
+          viewport={{ once: true }}
+          className="w-full max-w-6xl mx-auto"
         >
-          <h3 className="text-4xl font-bold text-white mb-6">
-            Ready to Get Started?
-          </h3>
-          <p className="text-xl text-white opacity-90 mb-8 max-w-2xl mx-auto">
-            Join thousands of businesses and freelancers who are already using JustERPs to transform their ERP implementation experience.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-white text-[#708238] px-8 py-4 rounded-2xl font-semibold text-lg hover:bg-gray-100 transform hover:scale-105 transition-all duration-300 shadow-lg">
-              Sign Up as Buyer
-            </button>
-            <button className="bg-[#FFA500] text-white px-8 py-4 rounded-2xl font-semibold text-lg hover:bg-orange-500 transform hover:scale-105 transition-all duration-300 shadow-lg">
-              Join as Freelancer
-            </button>
+          <img
+            src={img1}
+            alt="Buyer Workflow"
+            className="w-full h-auto object-contain rounded-3xl shadow-2xl"
+          />
+        </motion.div>
+      </div>
+
+      {/* Freelancer Steps */}
+      <div className="container mx-auto px-6 lg:px-20 py-24">
+        <h2 className="text-4xl md:text-5xl font-bold text-[#708238] mb-12 flex items-center justify-center gap-4">
+          <span className="w-12 h-12 flex items-center justify-center rounded-full border-4 border-[#708238] bg-white">
+            <span className="w-4 h-4 bg-orange-500 rotate-45"></span>
+          </span>
+          For Freelancers (ERP Consultants)
+        </h2>
+
+        <div className="space-y-8 max-w-4xl mx-auto mb-16">
+          {freelancerSteps.map((step, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, x: 60 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: index * 0.2 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-2xl shadow-xl border-2 border-[#708238] p-6 lg:p-8 hover:scale-105 hover:shadow-2xl transition-all duration-300"
+            >
+              <div className="flex items-start space-x-4 lg:space-x-5">
+                <div className="flex-shrink-0 w-12 h-12 lg:w-14 lg:h-14 border-4 border-[#708238] bg-white rounded-full flex items-center justify-center text-[#708238] font-bold text-lg lg:text-xl">
+                  {index + 1}
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl lg:text-2xl font-semibold text-gray-800 mb-3">
+                    {step.title}
+                  </h3>
+                  <div className="text-gray-600 leading-relaxed text-base lg:text-lg">
+                    {step.content}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Freelancer Workflow Full Image */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1 }}
+          viewport={{ once: true }}
+          className="w-full max-w-6xl mx-auto"
+        >
+          <img
+            src={img2}
+            alt="Freelancer Workflow"
+            className="w-full h-auto object-contain rounded-3xl shadow-2xl"
+          />
+        </motion.div>
+      </div>
+
+      {/* Unique Features Section */}
+      <div className="container mx-auto px-6 lg:px-20 py-24">
+        <motion.div
+          initial={{ opacity: 0, y: 60 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="bg-gradient-to-br from-[#708238] to-[#8a9c4a] rounded-3xl shadow-2xl p-8 lg:p-12"
+        >
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 flex items-center justify-center gap-4">
+             
+              JustERP's Unique Features Keep Buyers & Sellers Happy
+            </h2>
+            <p className="text-xl text-white opacity-90 max-w-3xl mx-auto">
+              Designed to create a seamless and secure experience for both parties
+            </p>
           </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  {uniqueFeatures.map((feature, index) => (
+    <motion.div
+      key={index}
+      initial={{ opacity: 0, scale: 0.9 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.6, delay: index * 0.1 }}
+      viewport={{ once: true }}
+      className="bg-white bg-opacity-95 rounded-2xl p-6 lg:p-8 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+    >
+      {/* Icon Wrapper with Orange Border */}
+      <div className="relative flex items-center justify-center w-20 h-20 mb-6 mx-auto rounded-full border-4 border-orange-500 bg-white shadow-md">
+        <div className="text-4xl text-[#708238]">{feature.icon}</div>
+        {/* Glow effect ring */}
+        <span className="absolute inset-0 rounded-full border-4 border-orange-300 animate-pulse opacity-50"></span>
+      </div>
+
+      <h3 className="text-xl font-bold text-gray-800 mb-3 text-center">
+        {feature.title}
+      </h3>
+      <p className="text-gray-600 leading-relaxed text-center">
+        {feature.description}
+      </p>
+    </motion.div>
+  ))}
+</div>
+
+        </motion.div>
+      </div>
+
+      {/* Tips for Success Section */}
+      <div className="container mx-auto px-6 lg:px-20 py-24">
+        <motion.div
+          initial={{ opacity: 0, y: 60 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl md:text-5xl font-bold text-[#708238] mb-4 flex items-center justify-center gap-4">
+            
+            Tips for Success
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Practical advice to help both buyers and freelancers get the most out of JustERPs
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+          {/* For Buyers */}
+          <motion.div
+            initial={{ opacity: 0, x: -60 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="bg-white rounded-3xl shadow-xl border-2 border-[#FFA500] p-8 lg:p-10"
+          >
+            <div className="text-center mb-8">
+              <h3 className="text-3xl font-bold text-[#FFA500] mb-4 flex items-center justify-center gap-3">
+                <span className="text-4xl">👥</span>
+                For Buyers
+              </h3>
+            </div>
+            <ul className="space-y-4">
+              {buyerTips.map((tip, index) => (
+                <li key={index} className="flex items-start space-x-4">
+                  <span className="flex-shrink-0 w-6 h-6 bg-[#FFA500] rounded-full flex items-center justify-center text-white text-sm font-bold mt-1">
+                    ✓
+                  </span>
+                  <span className="text-gray-700 text-lg leading-relaxed">{tip}</span>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+
+          {/* For Freelancers */}
+          <motion.div
+            initial={{ opacity: 0, x: 60 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="bg-white rounded-3xl shadow-xl border-2 border-[#708238] p-8 lg:p-10"
+          >
+            <div className="text-center mb-8">
+              <h3 className="text-3xl font-bold text-[#708238] mb-4 flex items-center justify-center gap-3">
+                <span className="text-4xl">💼</span>
+                For Freelancers
+              </h3>
+            </div>
+            <ul className="space-y-4">
+              {freelancerTips.map((tip, index) => (
+                <li key={index} className="flex items-start space-x-4">
+                  <span className="flex-shrink-0 w-6 h-6 bg-[#708238] rounded-full flex items-center justify-center text-white text-sm font-bold mt-1">
+                    ✓
+                  </span>
+                  <span className="text-gray-700 text-lg leading-relaxed">{tip}</span>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
         </div>
       </div>
-    </div>
-    <Footer/>
+
+      {/* Help Section */}
+      <div className="container mx-auto px-6 lg:px-20 py-24">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className=" rounded-3xl shadow-2xl p-8 lg:p-12 text-center"
+        >
+          <div className="flex items-center justify-center gap-4 mb-6">
+            
+            <h3 className="text-3xl lg:text-4xl font-bold text-gray-700">
+              Need Help?
+            </h3>
+          </div>
+          <p className="text-xl lg:text-2xl text-gray-700 opacity-95 mb-8 max-w-2xl mx-auto leading-relaxed">
+            Our support team is here to assist both freelancers and buyers. 
+            Visit our Contact Us page anytime for personalized assistance.
+          </p>
+          <button className="bg-white text-[#FFA500] px-8 lg:px-10 py-4 lg:py-5 rounded-2xl font-bold text-lg lg:text-xl hover:bg-gray-100 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
+            Contact Support Team
+          </button>
+        </motion.div>
+      </div>
+
+      {/* Final CTA */}
+      <div className="container mx-auto px-6 lg:px-20 py-24">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1 }}
+          viewport={{ once: true }}
+          className="bg-white rounded-3xl shadow-2xl p-8 lg:p-12 text-center"
+        >
+          <div className="flex items-center justify-center gap-4 mb-6">
+            
+            <h3 className="text-3xl lg:text-4xl font-bold text-gray-700">
+              Join Now
+            </h3>
+          </div>
+          <p className="text-lg lg:text-xl text-gray-700 opacity-90 mb-8 max-w-2xl mx-auto">
+            Start your journey with JustERPs today and experience the future of ERP consulting
+          </p>
+         <div className="flex flex-col sm:flex-row gap-6 justify-center">
+  <button className="w-64 bg-[#708238] text-white py-4 lg:py-5 rounded-2xl font-bold text-lg lg:text-xl hover:bg-gray-100 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-3">
+    Sign Up as Buyer
+  </button>
+  <button className="w-64 bg-[#FFA500] text-white py-4 lg:py-5 rounded-2xl font-bold text-lg lg:text-xl hover:bg-orange-600 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-3">
+    Join as ERP Consultant
+  </button>
+</div>
+
+        </motion.div>
+      </div>
+
+      <Footer />
     </>
   );
 };
 
 // Data
 const buyerSteps = [
-  { 
-    title: "Sign Up & Create Your Profile", 
-    content: <p>Register with your business email and set up a comprehensive business profile detailing your ERP needs and requirements.</p> 
-  },
-  { 
-    title: "Browse or Post a Project", 
-    content: <p>Browse through our curated list of freelance ERP consultants or post your specific project requirements to attract the right talent.</p> 
-  },
-  { 
-    title: "Evaluate & Hire", 
-    content: <p>Review freelancer profiles, portfolios, and ratings. Communicate through our secure chat system and hire the best-matched consultant.</p> 
-  },
-  { 
-    title: "Work in Progress", 
-    content: <p>Monitor project progress in real-time, receive regular updates, and provide feedback throughout the implementation process.</p> 
-  },
-  { 
-    title: "Approve & Pay", 
-    content: <p>Safely release payments through our secure escrow system only after you're completely satisfied with the delivered work.</p> 
-  },
+  { title: "Sign Up & Create Your Profile", content: "Register with your business email and set up a comprehensive business profile detailing your ERP needs." },
+  { title: "Browse or Post a Project", content: "Browse freelance ERP consultants or post your project requirements to attract the right talent." },
+  { title: "Evaluate & Hire", content: "Review profiles, portfolios, and ratings. Communicate securely and hire the best consultant." },
+  { title: "Work in Progress", content: "Monitor progress, receive updates, and provide feedback throughout the project." },
+  { title: "Approve & Pay", content: "Release payments through secure escrow only after you're satisfied with the work." },
 ];
 
 const freelancerSteps = [
-  { 
-    title: "Sign Up & Create a Profile", 
-    content: <p>Register and build a comprehensive profile showcasing your ERP expertise, skills, portfolio, certifications, and professional experience.</p> 
-  },
-  { 
-    title: "List Services or Browse Projects", 
-    content: <p>Create service packages highlighting your specialties or browse and bid on relevant ERP projects posted by businesses worldwide.</p> 
-  },
-  { 
-    title: "Communicate & Get Hired", 
-    content: <p>Respond promptly to client inquiries, discuss project scope and requirements in detail, and secure the job with competitive proposals.</p> 
-  },
-  { 
-    title: "Deliver Work", 
-    content: <p>Provide high-quality deliverables while maintaining clear communication and regular progress updates to ensure client satisfaction.</p> 
-  },
-  { 
-    title: "Get Paid", 
-    content: <p>Receive secure and timely payments through our protected system while building your reputation with client reviews and ratings.</p> 
-  },
+  { title: "Sign Up & Create a Profile", content: "Register and build a comprehensive profile showcasing ERP skills, portfolio, and certifications." },
+  { title: "List Services or Browse Projects", content: "Create service packages or browse ERP projects posted by businesses worldwide." },
+  { title: "Communicate & Get Hired", content: "Discuss project scope with clients and secure jobs through proposals." },
+  { title: "Deliver Work", content: "Provide high-quality deliverables with clear communication and updates." },
+  { title: "Get Paid", content: "Receive secure payments and build reputation with client reviews." },
 ];
 
-const features = [
+const uniqueFeatures = [
   { 
     icon: "🔒", 
     title: "Secure Escrow Payments", 
-    description: "Fully protected payment system ensuring both parties are secure with milestone-based releases and dispute protection." 
+    description: "Protection for both freelancers and buyers with funds held securely until project completion." 
   },
   { 
     icon: "⚖️", 
-    title: "Professional Dispute Resolution", 
-    description: "Expert mediation services to resolve conflicts fairly and efficiently, protecting both client and freelancer interests." 
+    title: "Dispute Resolution", 
+    description: "Fair mediation in case of disagreements to ensure both parties are treated fairly." 
   },
   { 
     icon: "✅", 
-    title: "Verified Profiles & Credentials", 
-    description: "Thoroughly vetted professionals with verified credentials, work history, and transparent client reviews and ratings." 
+    title: "Verified Profiles & Reviews", 
+    description: "Build trust with transparent feedback and verified professional profiles." 
   },
   { 
     icon: "💬", 
-    title: "Real-Time Communication", 
-    description: "Integrated messaging, video calls, and file sharing for seamless communication between clients and freelancers." 
+    title: "Real-Time Chat & Notifications", 
+    description: "Stay connected throughout the project with instant messaging and updates." 
   },
   { 
     icon: "🎯", 
-    title: "Custom Project Solutions", 
-    description: "Tailored project scoping and flexible engagement models to match specific business requirements and budgets." 
+    title: "Custom Offers", 
+    description: "Allow freelancers to tailor proposals to specific client needs and budgets." 
   },
   { 
-    icon: "📊", 
-    title: "Advanced Progress Tracking", 
-    description: "Comprehensive project management tools with milestone tracking, time monitoring, and progress reporting features." 
-  },
+    icon: "🌐", 
+    title: "Global Reach", 
+    description: "Connect with ERP consultants and clients from around the world seamlessly." 
+  }
+];
+
+const buyerTips = [
+  "Be clear and detailed in your project descriptions",
+  "Set realistic deadlines and budgets",
+  "Communicate frequently with your freelancer",
+  "Provide timely feedback and approvals",
+  "Use the escrow system for payment security"
+];
+
+const freelancerTips = [
+  "Keep your profile updated and professional",
+  "Be prompt and polite in communications",
+  "Meet deadlines and go the extra mile for good reviews",
+  "Showcase your portfolio with real case studies",
+  "Continuously update your ERP skills and certifications"
 ];
 
 export default HowJustERPsWorks;

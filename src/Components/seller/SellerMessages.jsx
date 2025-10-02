@@ -1,3 +1,4 @@
+// frontend/src/components/SellerMessages.jsx
 import React, { useState, useEffect, useRef } from "react";
 import { FiSearch, FiSend, FiPaperclip, FiSmile, FiMenu, FiX } from "react-icons/fi";
 import { IoCheckmarkDone } from "react-icons/io5";
@@ -41,7 +42,8 @@ const SellerMessages = () => {
     isCallActive,
     isCallInProgress,
     localStream,
-    remoteStream
+    remoteStream,
+    currentCall: webrtcCurrentCall
   } = useWebRTC(localVideoRef, remoteVideoRef);
 
   // Store user data in ref to avoid timing issues
@@ -73,7 +75,6 @@ const SellerMessages = () => {
         } catch (socketError) {
           console.error('❌ Seller: Socket connection failed:', socketError);
           setSocketStatus('error');
-          // Continue without socket
         }
 
         // Set up socket listeners
@@ -132,7 +133,6 @@ const SellerMessages = () => {
     
     if (activeConversation && message.conversationId === activeConversation._id) {
       setMessages(prev => {
-        // Avoid duplicates
         if (prev.some(msg => msg._id === message._id)) return prev;
         return [...prev, message];
       });
@@ -172,7 +172,6 @@ const SellerMessages = () => {
 
   const handleCallAnswered = (data) => {
     console.log('📞 Seller: Call answered by remote:', data);
-    // The call modal will handle the UI update
   };
 
   const handleCallEnded = (data) => {
@@ -192,10 +191,9 @@ const SellerMessages = () => {
 
   const handleRemoteICECandidate = (data) => {
     console.log('❄️ Seller: Remote ICE candidate received:', data);
-    // Handled by useWebRTC hook
   };
 
-  // Load conversations - FIXED: Better data structure handling
+  // Load conversations
   const loadConversations = async () => {
     try {
       console.log('📂 Seller: Loading conversations...');
@@ -224,15 +222,12 @@ const SellerMessages = () => {
       }
     } catch (error) {
       console.error('❌ Seller: Error loading conversations:', error);
-      if (error.response) {
-        console.error('Error response:', error.response.data);
-      }
       setConversations([]);
       setError('Failed to load conversations');
     }
   };
 
-  // Load messages for a conversation - FIXED: Better timeout and data handling
+  // Load messages for a conversation
   const loadMessages = async (conversationId) => {
     if (!conversationId) {
       console.error('❌ No conversation ID provided');
@@ -266,7 +261,6 @@ const SellerMessages = () => {
     } catch (error) {
       console.error('❌ Seller: Error loading messages:', error);
       
-      // Don't clear messages on timeout - keep existing ones
       if (error.code === 'ECONNABORTED') {
         console.warn('⚠️ Message load timeout - keeping existing messages');
         return;
@@ -274,7 +268,7 @@ const SellerMessages = () => {
       
       if (error.response) {
         console.error('Error response:', error.response.data);
-        if (error.response.status !== 408) { // 408 is timeout
+        if (error.response.status !== 408) {
           setMessages([]);
         }
       } else {
@@ -283,18 +277,16 @@ const SellerMessages = () => {
     }
   };
 
-  // Helper functions to safely access buyer data - FIXED: Better data access
+  // Helper functions to safely access buyer data
   const getBuyerName = (conversation) => {
     if (!conversation) return 'Unknown Buyer';
     
-    // Try different possible data structures
     if (conversation.buyer?.name) return conversation.buyer.name;
     if (conversation.buyer?.username) return conversation.buyer.username;
     if (conversation.buyer?.firstName) {
       return `${conversation.buyer.firstName}${conversation.buyer.lastName ? ' ' + conversation.buyer.lastName : ''}`;
     }
     
-    // Check if buyer data is nested differently
     if (conversation.participants && Array.isArray(conversation.participants)) {
       const buyer = conversation.participants.find(p => p.role === 'buyer' || p._id !== user?.id);
       if (buyer) return buyer.name || buyer.username || 'Buyer';
@@ -306,12 +298,10 @@ const SellerMessages = () => {
   const getBuyerImage = (conversation) => {
     if (!conversation) return null;
     
-    // Try different possible data structures
     if (conversation.buyer?.profileImage) return conversation.buyer.profileImage;
     if (conversation.buyer?.avatar) return conversation.buyer.avatar;
     if (conversation.buyer?.image) return conversation.buyer.image;
     
-    // Check if buyer data is nested differently
     if (conversation.participants && Array.isArray(conversation.participants)) {
       const buyer = conversation.participants.find(p => p.role === 'buyer' || p._id !== user?.id);
       if (buyer) return buyer.profileImage || buyer.avatar || buyer.image;
@@ -325,7 +315,6 @@ const SellerMessages = () => {
     
     if (conversation.buyer?.email) return conversation.buyer.email;
     
-    // Check if buyer data is nested differently
     if (conversation.participants && Array.isArray(conversation.participants)) {
       const buyer = conversation.participants.find(p => p.role === 'buyer' || p._id !== user?.id);
       if (buyer) return buyer.email || 'Not available';
@@ -382,11 +371,6 @@ const SellerMessages = () => {
       );
     } catch (error) {
       console.error('❌ Seller: Error sending message:', error);
-      if (error.response) {
-        console.error('Error response data:', error.response.data);
-        console.error('Error response status:', error.response.status);
-      }
-      // Restore message if failed
       setMessage(messageToSend);
       alert('Failed to send message. Please check console for details.');
     } finally {
@@ -394,7 +378,7 @@ const SellerMessages = () => {
     }
   };
 
-  // Call management functions
+  // Call management functions - FIXED VERSION
   const handleStartCall = async (callType) => {
     if (!activeConversation) {
       alert('Please select a conversation first');
@@ -408,12 +392,18 @@ const SellerMessages = () => {
 
     try {
       console.log(`📞 Seller: Starting ${callType} call...`);
+      
+      // Show call modal immediately to show "calling" state
+      setIsCallModalOpen(true);
+      setIsIncomingCall(false);
+      
       const call = await startCall(activeConversation._id, callType);
       setCurrentCall(call);
-      setIsIncomingCall(false);
-      setIsCallModalOpen(true);
+      
+      console.log('✅ Seller: Call initiated, waiting for answer...');
     } catch (error) {
       console.error('❌ Seller: Failed to start call:', error);
+      setIsCallModalOpen(false);
       alert(`Failed to start ${callType} call: ${error.message}`);
     }
   };
@@ -676,7 +666,7 @@ const SellerMessages = () => {
         <div className="flex-1 flex flex-col bg-white">
           {activeConversation ? (
             <>
-              {/* Chat Header - FIXED: Using helper functions */}
+              {/* Chat Header */}
               <div className="border-b p-4 flex justify-between items-center bg-white sticky top-0 z-10">
                 <div className="flex items-center space-x-3">
                   {getBuyerImage(activeConversation) ? (

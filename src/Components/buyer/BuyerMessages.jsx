@@ -1,3 +1,4 @@
+// frontend/src/components/BuyerMessages.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { FaSearch, FaPaperclip, FaSmile, FaPaperPlane, FaEllipsisV, FaStar, FaCheck, FaCheckDouble, FaClock, FaTrash, FaArchive, FaSpinner, FaUserCircle, FaTimes, FaPhone, FaVideo } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
@@ -5,10 +6,7 @@ import BuyerNavbar from './BuyerNavbar';
 import { messageAPI } from '../../services/messageService';
 import { jwtDecode } from "jwt-decode"; 
 import socketService from "../../services/socketService";
-
 import CallModal from '../CallModal.jsx';
-
-
 import useWebRTC from '../../hooks/useWebRTC.js';
 
 const BuyerMessages = () => {
@@ -35,7 +33,6 @@ const BuyerMessages = () => {
   const [isCallModalOpen, setIsCallModalOpen] = useState(false);
   const [currentCall, setCurrentCall] = useState(null);
   const [isIncomingCall, setIsIncomingCall] = useState(false);
-  const [callHistory, setCallHistory] = useState([]);
   
   // WebRTC refs and hooks
   const localVideoRef = useRef(null);
@@ -49,13 +46,14 @@ const BuyerMessages = () => {
     isCallActive,
     isCallInProgress,
     localStream,
-    remoteStream
+    remoteStream,
+    currentCall: webrtcCurrentCall
   } = useWebRTC(localVideoRef, remoteVideoRef);
 
   // Store user data in ref to avoid timing issues
   const userRef = useRef(null);
 
-  // Initialize - COMPLETELY FIXED VERSION
+  // Initialize
   useEffect(() => {
     const initializeChat = async () => {
       try {
@@ -72,7 +70,7 @@ const BuyerMessages = () => {
         const decoded = jwtDecode(token);
         console.log('👤 User decoded:', decoded);
         setUser(decoded);
-        userRef.current = decoded; // Store in ref for immediate access
+        userRef.current = decoded;
 
         // 1. Connect to socket with better error handling
         try {
@@ -87,7 +85,6 @@ const BuyerMessages = () => {
         } catch (socketError) {
           console.error('❌ Socket connection failed:', socketError);
           setSocketStatus('error');
-          // Continue without socket - we'll use fallback
         }
 
         // 2. Set up socket listeners
@@ -114,15 +111,11 @@ const BuyerMessages = () => {
           const sellerData = JSON.parse(storedSeller);
           setSelectedSeller(sellerData);
           
-          // Use the ref to ensure user data is available
           if (userRef.current) {
             console.log('👤 User data available via ref, processing seller immediately');
             handleSelectedSeller(sellerData);
             localStorage.removeItem('selectedSeller');
-            console.log('🗑️ Removed seller from localStorage');
           } else {
-            // Wait a bit if user data isn't available yet
-            console.log('⏳ User data not ready, waiting...');
             setTimeout(() => {
               if (userRef.current) {
                 handleSelectedSeller(sellerData);
@@ -174,14 +167,12 @@ const BuyerMessages = () => {
     
     if (activeConversation && message.conversationId === activeConversation._id) {
       setMessages(prev => {
-        // Avoid duplicates
         if (prev.some(msg => msg._id === message._id)) return prev;
         return [...prev, message];
       });
       scrollToBottom();
     }
     
-    // Update conversations list with proper unread count
     setConversations(prev => 
       prev.map(conv => {
         if (conv._id === message.conversationId) {
@@ -205,7 +196,6 @@ const BuyerMessages = () => {
 
   const handleUserTyping = (data) => {
     console.log('✍️ User typing:', data);
-    // You can implement typing indicators here
   };
 
   // Call-related socket handlers
@@ -218,7 +208,6 @@ const BuyerMessages = () => {
 
   const handleCallAnswered = (data) => {
     console.log('📞 Call answered by remote:', data);
-    // The call modal will handle the UI update
   };
 
   const handleCallEnded = (data) => {
@@ -238,7 +227,6 @@ const BuyerMessages = () => {
 
   const handleRemoteICECandidate = (data) => {
     console.log('❄️ Remote ICE candidate received:', data);
-    // Handled by useWebRTC hook
   };
 
   // Load conversations
@@ -252,7 +240,6 @@ const BuyerMessages = () => {
         console.log(`✅ Loaded ${response.data.length} conversations:`, response.data);
         setConversations(response.data);
         
-        // Auto-select first conversation if none selected and no seller from dashboard
         const hasSelectedSeller = localStorage.getItem('selectedSeller') || selectedSeller;
         if (!activeConversation && !hasSelectedSeller && response.data.length > 0) {
           setActiveConversation(response.data[0]);
@@ -264,23 +251,18 @@ const BuyerMessages = () => {
       }
     } catch (error) {
       console.error('❌ Error loading conversations:', error);
-      if (error.response) {
-        console.error('Error response:', error.response.data);
-      }
       setConversations([]);
     }
   };
 
-  // Handle selected seller from dashboard - FIXED VERSION
+  // Handle selected seller from dashboard
   const handleSelectedSeller = async (seller) => {
     try {
       console.log('🔄 STARTING: Handling selected seller:', seller);
       setProcessingSeller(true);
       
-      // Use ref instead of state to avoid timing issues
       const currentUser = userRef.current;
       if (!currentUser || !currentUser.id) {
-        console.error('❌ User data missing - using ref:', userRef.current);
         throw new Error('User data missing');
       }
 
@@ -288,11 +270,10 @@ const BuyerMessages = () => {
       console.log(`💬 Creating conversation between buyer ${currentUser.id} and seller ${sellerId}`);
 
       if (!sellerId) {
-        console.error('❌ Seller ID missing:', seller);
         throw new Error('Seller ID missing');
       }
 
-      // Check if conversation already exists in loaded conversations
+      // Check if conversation already exists
       const existingConversation = conversations.find(conv => 
         conv.seller?._id === sellerId || 
         conv.seller === sellerId ||
@@ -304,7 +285,6 @@ const BuyerMessages = () => {
         setActiveConversation(existingConversation);
         await loadMessages(existingConversation._id);
         
-        // Join conversation room if socket is connected
         if (socketStatus === 'connected') {
           socketService.joinConversation(existingConversation._id);
         }
@@ -313,7 +293,7 @@ const BuyerMessages = () => {
         return;
       }
 
-      // Try to create real conversation via API
+      // Create real conversation via API
       try {
         console.log('📞 Calling getOrCreateConversation API...');
         const response = await messageAPI.getOrCreateConversation(currentUser.id, sellerId);
@@ -322,7 +302,6 @@ const BuyerMessages = () => {
           const conversation = response.data;
           console.log('✅ Conversation created/retrieved:', conversation._id);
           
-          // Update conversations list
           setConversations(prev => {
             const exists = prev.some(c => c._id === conversation._id);
             if (exists) return prev;
@@ -332,7 +311,6 @@ const BuyerMessages = () => {
           setActiveConversation(conversation);
           await loadMessages(conversation._id);
           
-          // Set up socket listeners for this conversation
           if (socketStatus === 'connected') {
             socketService.joinConversation(conversation._id);
             console.log(`✅ Joined conversation room: ${conversation._id}`);
@@ -345,17 +323,10 @@ const BuyerMessages = () => {
         
       } catch (apiError) {
         console.error('❌ API error creating conversation:', apiError);
-        if (apiError.response) {
-          console.error('API error response:', apiError.response.data);
-          console.error('API error status:', apiError.response.status);
-        }
-        // Fallback to demo conversation if API fails
-        console.log('🔄 Falling back to demo conversation...');
         createDemoConversation(seller);
       }
     } catch (error) {
       console.error('❌ Error in handleSelectedSeller:', error);
-      console.log('🔄 Creating demo conversation due to error...');
       createDemoConversation(seller);
     } finally {
       setProcessingSeller(false);
@@ -411,7 +382,6 @@ const BuyerMessages = () => {
     try {
       console.log(`💬 Loading messages for conversation: ${conversationId}`);
       
-      // Check if it's a demo conversation
       if (conversationId.startsWith('demo-')) {
         console.log('🎭 Loading demo messages');
         setMessages([{
@@ -431,15 +401,11 @@ const BuyerMessages = () => {
       setMessages(response.data || []);
       scrollToBottom();
 
-      // Mark as read if not demo
       if (!conversationId.startsWith('demo-')) {
         await messageAPI.markAsRead(conversationId);
       }
     } catch (error) {
       console.error('❌ Error loading messages:', error);
-      if (error.response) {
-        console.error('Error response:', error.response.data);
-      }
       setMessages([]);
     }
   };
@@ -447,7 +413,6 @@ const BuyerMessages = () => {
   // Send message
   const handleSendMessage = async () => {
     if (newMessage.trim() === '' || !activeConversation) {
-      console.log('ℹ️ Message empty or no active conversation');
       return;
     }
 
@@ -455,10 +420,9 @@ const BuyerMessages = () => {
     setIsSending(true);
     
     const messageToSend = newMessage.trim();
-    setNewMessage(''); // Clear input immediately for better UX
+    setNewMessage('');
     
     try {
-      // For demo conversations, just add the message locally
       if (activeConversation._id.startsWith('demo-')) {
         console.log('🎭 Sending demo message');
         const newMsg = {
@@ -474,7 +438,6 @@ const BuyerMessages = () => {
         setMessages(prev => [...prev, newMsg]);
         scrollToBottom();
         
-        // Update conversation last message
         setConversations(prev => 
           prev.map(conv => 
             conv._id === activeConversation._id 
@@ -483,7 +446,6 @@ const BuyerMessages = () => {
           )
         );
         
-        // Simulate seller response after 2 seconds
         setTimeout(() => {
           const sellerResponse = {
             _id: `msg-${Date.now()}-response`,
@@ -502,7 +464,6 @@ const BuyerMessages = () => {
           scrollToBottom();
         }, 2000);
       } else {
-        // Real API call for non-demo conversations
         const messageData = {
           conversationId: activeConversation._id,
           receiverId: activeConversation.seller._id,
@@ -514,11 +475,9 @@ const BuyerMessages = () => {
         const response = await messageAPI.sendMessage(messageData);
         console.log('✅ Message sent successfully:', response.data);
         
-        // The message will appear via socket, but we can add it immediately for better UX
         setMessages(prev => [...prev, response.data]);
         scrollToBottom();
         
-        // Update conversation
         setConversations(prev => 
           prev.map(conv => 
             conv._id === activeConversation._id 
@@ -529,11 +488,6 @@ const BuyerMessages = () => {
       }
     } catch (error) {
       console.error('❌ Error sending message:', error);
-      if (error.response) {
-        console.error('Error response data:', error.response.data);
-        console.error('Error response status:', error.response.status);
-      }
-      // Restore message if failed
       setNewMessage(messageToSend);
       alert('Failed to send message. Please check console for details.');
     } finally {
@@ -541,7 +495,7 @@ const BuyerMessages = () => {
     }
   };
 
-  // Call management functions
+  // Call management functions - FIXED VERSION
   const handleStartCall = async (callType) => {
     if (!activeConversation || activeConversation._id.startsWith('demo-')) {
       alert('Cannot start calls in demo conversations');
@@ -555,12 +509,18 @@ const BuyerMessages = () => {
 
     try {
       console.log(`📞 Starting ${callType} call...`);
+      
+      // Show call modal immediately to show "calling" state
+      setIsCallModalOpen(true);
+      setIsIncomingCall(false);
+      
       const call = await startCall(activeConversation._id, callType);
       setCurrentCall(call);
-      setIsIncomingCall(false);
-      setIsCallModalOpen(true);
+      
+      console.log('✅ Call initiated, waiting for answer...');
     } catch (error) {
       console.error('❌ Failed to start call:', error);
+      setIsCallModalOpen(false);
       alert(`Failed to start ${callType} call: ${error.message}`);
     }
   };
@@ -652,7 +612,7 @@ const BuyerMessages = () => {
     }
   };
 
-  // Manual retry function for seller processing
+  // Manual retry functions
   const retrySellerProcessing = () => {
     if (selectedSeller) {
       console.log('🔄 Manually retrying seller processing:', selectedSeller.name);
@@ -660,7 +620,6 @@ const BuyerMessages = () => {
     }
   };
 
-  // Manual retry for socket connection
   const retrySocketConnection = async () => {
     try {
       setSocketStatus('connecting');
@@ -720,7 +679,7 @@ const BuyerMessages = () => {
                   onClick={retrySocketConnection}
                   className="ml-2 text-xs underline"
                 >
-                  Retry
+                  {/* Retry */}
                 </button>
               )}
             </div>
@@ -770,16 +729,16 @@ const BuyerMessages = () => {
         </div>
       )}
       
-      {/* Enhanced Debug info */}
+      {/* Debug info */}
       <div className="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-2 mx-4 mt-2 rounded text-xs">
         <strong>Debug Info:</strong> 
         User: {user?.id} | 
         Conversations: {conversations.length} | 
         Active: {activeConversation?._id} | 
         Socket: {socketStatus} |
-        Seller: {selectedSeller?.name || 'None'} |
+        Seller: {selectedSeller?.name || 'Amjad Hassan '} |
         Call: {isCallActive ? 'Active' : isCallInProgress ? 'In Progress' : 'None'}
-        {activeConversation?._id?.startsWith('demo-') && ' | 🎭 DEMO MODE'}
+        {activeConversation?._id?.startsWith('demo-') && ' |  DEMO MODE'}
         <br />
         {selectedSeller && !activeConversation && (
           <button 

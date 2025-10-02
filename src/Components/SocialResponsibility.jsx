@@ -92,27 +92,28 @@ const SocialResponsibility = () => {
       </div>
 
       {/* Intro Section */}
-      <div className="container mx-auto px-6 lg:px-20 py-24">
-        <motion.div
-          initial={{ opacity: 0, y: 100 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          viewport={{ once: true }}
-          className="bg-white rounded-3xl shadow-2xl p-10 lg:p-16 text-center"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold text-[#708238] mb-6">
-            More Than Just a Marketplace
-          </h2>
-          <p className="text-lg md:text-xl text-gray-700 leading-relaxed mb-8 max-w-4xl mx-auto">
-            JustERPs is more than a platform connecting businesses with top-tier
-            ERP consultants it's a catalyst for change. While our consultants
-            deliver exceptional project-based results across SAP, NetSuite,
-            Oracle, and beyond, our mission reaches further: to harness digital
-            transformation as a force for social good.
-          </p>
-          
-        </motion.div>
-      </div>
+     <div className="container mx-auto px-6 lg:px-20 py-24">
+  <motion.div
+    initial={{ opacity: 0, y: 100 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    transition={{ duration: 1 }}
+    viewport={{ once: true }}
+    className="bg-white rounded-3xl shadow-2xl p-10 lg:p-16 text-center 
+               transition-colors duration-500 hover:bg-[#708238] hover:text-white"
+  >
+    <h2 className="text-4xl md:text-5xl font-bold text-gray-700 mb-6 group-hover:text-white">
+      More Than Just a Marketplace
+    </h2>
+    <p className="text-lg md:text-xl text-gray-700 leading-relaxed mb-8 max-w-4xl mx-auto group-hover:text-white">
+      JustERPs is more than a platform connecting businesses with top-tier
+      ERP consultants it's a catalyst for change. While our consultants
+      deliver exceptional project-based results across SAP, NetSuite,
+      Oracle, and beyond, our mission reaches further: to harness digital
+      transformation as a force for social good.
+    </p>
+  </motion.div>
+</div>
+
 
       {/* Impact Model Section */}
       <div className="container mx-auto px-6 lg:px-20 py-24">
@@ -170,7 +171,7 @@ const SocialResponsibility = () => {
     How Your Consulting Work Creates Real-World Impact
   </h4>
   <p className="text-xl text-black text-center opacity-90 leading-relaxed">
-    Every hour worked on JustERPs fuels tangible social outcomes "For Example"
+    Every hour worked on JustERPs fuels tangible social outcomes For Example See below
   </p>
 </div>
 
@@ -306,18 +307,23 @@ const SocialResponsibility = () => {
           viewport={{ once: true }}
           className="bg-white rounded-3xl shadow-2xl p-12 lg:p-16"
         >
-          <div className="text-center max-w-4xl mx-auto">
-            <div className="text-6xl mb-4">💬</div>
-            <blockquote className="text-2xl italic text-gray-700 mb-6 leading-relaxed">
-              "Unlike traditional freelancing platforms that take commissions,
-              we turn them into life-changing opportunities. We don't just
-              optimize business systems—we optimize human potential."
-            </blockquote>
-            <div className="w-24 h-1 bg-[#FFA500] mx-auto mb-4"></div>
-            <p className="text-xl font-semibold text-[#708238]">
-              JustERPs Founder
-            </p>
-          </div>
+       <div className="text-center max-w-4xl mx-auto group">
+  <div className="text-6xl mb-4">💬</div>
+  <blockquote className="text-2xl italic text-gray-700 mb-6 leading-relaxed">
+    "Unlike traditional freelancing platforms that take commissions,
+    we turn them into life-changing opportunities. We don't just
+    optimize business systems—we optimize human potential."
+  </blockquote>
+
+  {/* underline effect */}
+  <div className="w-24 h-1 bg-gray-300 mx-auto mb-4 transition-colors duration-300 group-hover:bg-[#FFA500]"></div>
+
+  <p className="text-xl font-semibold text-[#708238]">
+    JustERPs Founder
+  </p>
+</div>
+
+
         </motion.div>
       </div>
 

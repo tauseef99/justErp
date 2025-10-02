@@ -1,228 +1,221 @@
-import React, { useEffect, useRef, useState } from 'react';
+// frontend/src/components/CallModal.jsx
+import React from 'react';
 import { FaPhone, FaVideo, FaMicrophone, FaMicrophoneSlash, FaVideoSlash, FaTimes, FaUser } from 'react-icons/fa';
-import useWebRTC from '../hooks/useWebRTC';
 
-const CallModal = ({ 
-  call, 
-  onClose, 
-  onAnswer, 
-  onReject, 
-  isIncoming = false,
-  isActive = false 
+const CallModal = ({
+  call,
+  isIncoming,
+  isActive,
+  onAnswer,
+  onReject,
+  onEnd,
+  onClose,
+  localVideoRef,
+  remoteVideoRef,
+  localStream,
+  remoteStream
 }) => {
-  const localVideoRef = useRef(null);
-  const remoteVideoRef = useRef(null);
-  const [isVideoEnabled, setIsVideoEnabled] = useState(true);
-  const [isAudioEnabled, setIsAudioEnabled] = useState(true);
-  const [callDuration, setCallDuration] = useState(0);
-
-  const {
-    answerCall,
-    endCall,
-    toggleVideo,
-    toggleAudio,
-    isCallActive,
-    localStream,
-    remoteStream
-  } = useWebRTC(localVideoRef, remoteVideoRef);
-
-  // Timer for call duration
-  useEffect(() => {
-    let interval;
-    if (isActive && isCallActive) {
-      interval = setInterval(() => {
-        setCallDuration(prev => prev + 1);
-      }, 1000);
-    }
-    return () => clearInterval(interval);
-  }, [isActive, isCallActive]);
-
-  // Format call duration
-  const formatDuration = (seconds) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-  };
-
-  const handleAnswer = async (type = 'audio') => {
-    try {
-      await answerCall(call, type);
-      if (onAnswer) onAnswer();
-    } catch (error) {
-      console.error('Error answering call:', error);
-      alert('Failed to answer call. Please try again.');
-    }
-  };
-
-  const handleEndCall = async () => {
-    await endCall();
-    if (onClose) onClose();
-  };
-
-  const handleReject = async () => {
-    try {
-      await onReject(call._id);
-      if (onClose) onClose();
-    } catch (error) {
-      console.error('Error rejecting call:', error);
-    }
-  };
-
-  const handleToggleVideo = async () => {
-    const enabled = await toggleVideo();
-    setIsVideoEnabled(enabled);
-  };
-
-  const handleToggleAudio = async () => {
-    const enabled = await toggleAudio();
-    setIsAudioEnabled(enabled);
-  };
-
-  const callerName = call?.caller?.name || 'Unknown Caller';
-  const callType = call?.callType || 'audio';
+  const isVideoCall = call?.callType === 'video';
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl w-full max-w-2xl overflow-hidden">
-        {/* Call Header */}
+      <div className="bg-white rounded-2xl max-w-md w-full mx-auto overflow-hidden shadow-2xl">
+        {/* Header */}
         <div className="bg-gradient-to-r from-[#708238] to-[#FFA500] p-6 text-white text-center">
-          <h2 className="text-2xl font-bold">
-            {isIncoming ? 'Incoming Call' : isActive ? 'Ongoing Call' : 'Outgoing Call'}
-          </h2>
-          <p className="text-white/80 mt-1">
-            {isIncoming ? callerName : `Calling ${call?.receiver?.name || 'Unknown'}`}
-          </p>
-          {isActive && (
-            <p className="text-xl font-mono mt-2">{formatDuration(callDuration)}</p>
-          )}
+          <div className="flex items-center justify-between mb-4">
+            <button
+              onClick={onClose}
+              className="text-white hover:text-gray-200 transition"
+            >
+              <FaTimes size={20} />
+            </button>
+            <h2 className="text-xl font-bold flex-1 text-center">
+              {isIncoming ? 'Incoming Call' : isActive ? 'Call in Progress' : 'Calling...'}
+            </h2>
+            <div className="w-6"></div> {/* Spacer for balance */}
+          </div>
+          
+          <div className="flex items-center justify-center space-x-3 mb-4">
+            <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+              {call?.caller?.profileImage ? (
+                <img 
+                  src={call.caller.profileImage} 
+                  alt={call.caller.name}
+                  className="w-14 h-14 rounded-full object-cover"
+                />
+              ) : (
+                <FaUser size={24} />
+              )}
+            </div>
+            <div className="text-left">
+              <h3 className="font-semibold text-lg">
+                {call?.caller?.name || 'Unknown User'}
+              </h3>
+              <p className="text-white text-opacity-80">
+                {isVideoCall ? 'Video Call' : 'Audio Call'}
+              </p>
+              <p className="text-white text-opacity-60 text-sm">
+                {isIncoming ? 'is calling you' : isActive ? 'Connected' : 'Ringing...'}
+              </p>
+            </div>
+          </div>
         </div>
 
-        {/* Video Area */}
-        <div className="relative bg-gray-900 aspect-video">
-          {/* Remote Video */}
-          {isActive && callType === 'video' ? (
-            <video
-              ref={remoteVideoRef}
-              autoPlay
-              playsInline
-              muted={false}
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center">
-              <div className="text-center">
-                <div className="w-20 h-20 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <FaUser className="text-3xl text-gray-400" />
-                </div>
-                <p className="text-white text-lg font-semibold">
-                  {isIncoming ? callerName : call?.receiver?.name}
-                </p>
-                <p className="text-gray-400">
-                  {isActive ? 'Call in progress' : isIncoming ? 'Incoming call...' : 'Calling...'}
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* Local Video Preview */}
-          {isActive && callType === 'video' && (
-            <div className="absolute bottom-4 right-4 w-32 h-24 bg-black rounded-lg overflow-hidden border-2 border-white">
+        {/* Video Feeds */}
+        {isVideoCall && (
+          <div className="relative bg-black h-64">
+            {/* Remote Video */}
+            {remoteStream && (
               <video
-                ref={localVideoRef}
+                ref={remoteVideoRef}
                 autoPlay
                 playsInline
-                muted
+                muted={false}
                 className="w-full h-full object-cover"
               />
+            )}
+            
+            {/* Local Video Preview */}
+            {localStream && (
+              <div className="absolute bottom-4 right-4 w-32 h-24 bg-gray-800 rounded-lg overflow-hidden border-2 border-white">
+                <video
+                  ref={localVideoRef}
+                  autoPlay
+                  playsInline
+                  muted
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
+            
+            {/* Placeholder when no video */}
+            {!remoteStream && !localStream && (
+              <div className="flex items-center justify-center h-full text-white">
+                <div className="text-center">
+                  <FaVideo size={48} className="mx-auto mb-2 opacity-50" />
+                  <p>Video feed will appear here</p>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Audio Only UI */}
+        {!isVideoCall && (
+          <div className="py-8 bg-gray-50">
+            <div className="flex justify-center mb-6">
+              <div className="w-24 h-24 bg-gradient-to-br from-[#708238] to-[#FFA500] rounded-full flex items-center justify-center">
+                {call?.caller?.profileImage ? (
+                  <img 
+                    src={call.caller.profileImage} 
+                    alt={call.caller.name}
+                    className="w-20 h-20 rounded-full object-cover"
+                  />
+                ) : (
+                  <FaUser size={32} className="text-white" />
+                )}
+              </div>
             </div>
-          )}
-        </div>
+            <div className="text-center">
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                {call?.caller?.name || 'Unknown User'}
+              </h3>
+              <p className="text-gray-600">
+                {isIncoming ? 'Incoming audio call' : isActive ? 'Audio call connected' : 'Calling...'}
+              </p>
+              {isActive && (
+                <div className="mt-4 flex justify-center space-x-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Call Controls */}
-        <div className="bg-white p-6">
-          <div className="flex justify-center space-x-4">
-            {isIncoming && !isActive ? (
+        <div className="p-6 bg-white">
+          <div className="flex justify-center space-x-6">
+            {isIncoming ? (
+              // Incoming call controls
               <>
-                {/* Incoming Call Controls */}
                 <button
-                  onClick={() => handleAnswer('audio')}
-                  className="bg-green-500 hover:bg-green-600 text-white p-4 rounded-full transition transform hover:scale-105"
+                  onClick={onReject}
+                  className="w-16 h-16 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center text-white transition transform hover:scale-105"
+                  title="Reject Call"
                 >
-                  <FaPhone className="text-xl" />
+                  <FaTimes size={24} />
                 </button>
                 <button
-                  onClick={() => handleAnswer('video')}
-                  className="bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-full transition transform hover:scale-105"
+                  onClick={() => onAnswer(call?.callType)}
+                  className="w-16 h-16 bg-green-500 hover:bg-green-600 rounded-full flex items-center justify-center text-white transition transform hover:scale-105"
+                  title="Answer Call"
                 >
-                  <FaVideo className="text-xl" />
-                </button>
-                <button
-                  onClick={handleReject}
-                  className="bg-red-500 hover:bg-red-600 text-white p-4 rounded-full transition transform hover:scale-105"
-                >
-                  <FaTimes className="text-xl" />
+                  <FaPhone size={20} />
                 </button>
               </>
             ) : isActive ? (
+              // Active call controls
               <>
-                {/* Active Call Controls */}
                 <button
-                  onClick={handleToggleAudio}
-                  className={`p-4 rounded-full transition transform hover:scale-105 ${
-                    isAudioEnabled 
-                      ? 'bg-gray-200 hover:bg-gray-300 text-gray-700' 
-                      : 'bg-red-500 hover:bg-red-600 text-white'
-                  }`}
+                  onClick={() => {/* Toggle mute - implement if needed */}}
+                  className="w-14 h-14 bg-gray-200 hover:bg-gray-300 rounded-full flex items-center justify-center text-gray-700 transition"
+                  title="Toggle Microphone"
                 >
-                  {isAudioEnabled ? <FaMicrophone /> : <FaMicrophoneSlash />}
+                  <FaMicrophone size={20} />
                 </button>
+                {isVideoCall && (
+                  <button
+                    onClick={() => {/* Toggle video - implement if needed */}}
+                    className="w-14 h-14 bg-gray-200 hover:bg-gray-300 rounded-full flex items-center justify-center text-gray-700 transition"
+                    title="Toggle Video"
+                  >
+                    <FaVideo size={20} />
+                  </button>
+                )}
                 <button
-                  onClick={handleEndCall}
-                  className="bg-red-500 hover:bg-red-600 text-white p-4 rounded-full transition transform hover:scale-105"
+                  onClick={onEnd}
+                  className="w-14 h-14 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center text-white transition"
+                  title="End Call"
                 >
-                  <FaPhone className="text-xl rotate-135" />
-                </button>
-                <button
-                  onClick={handleToggleVideo}
-                  className={`p-4 rounded-full transition transform hover:scale-105 ${
-                    isVideoEnabled && callType === 'video'
-                      ? 'bg-gray-200 hover:bg-gray-300 text-gray-700' 
-                      : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
-                  }`}
-                >
-                  {isVideoEnabled && callType === 'video' ? <FaVideo /> : <FaVideoSlash />}
+                  <FaTimes size={20} />
                 </button>
               </>
             ) : (
+              // Outgoing call controls (waiting for answer)
               <>
-                {/* Outgoing Call Controls */}
                 <button
-                  onClick={handleEndCall}
-                  className="bg-red-500 hover:bg-red-600 text-white p-4 rounded-full transition transform hover:scale-105"
+                  onClick={onEnd}
+                  className="w-16 h-16 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center text-white transition transform hover:scale-105"
+                  title="Cancel Call"
                 >
-                  <FaPhone className="text-xl rotate-135" />
+                  <FaTimes size={24} />
                 </button>
+                <div className="flex items-center">
+                  <div className="animate-pulse text-gray-600">
+                    <div className="flex space-x-1">
+                      <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                      <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                      <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                    </div>
+                    <p className="text-sm mt-2">Waiting for answer...</p>
+                  </div>
+                </div>
               </>
             )}
           </div>
 
-          {/* Control Labels */}
-          <div className="flex justify-center space-x-12 mt-4 text-sm text-gray-600">
-            {isIncoming && !isActive ? (
-              <>
-                <span>Audio Answer</span>
-                <span>Video Answer</span>
-                <span>Decline</span>
-              </>
-            ) : isActive ? (
-              <>
-                <span>{isAudioEnabled ? 'Mute' : 'Unmute'}</span>
-                <span>End Call</span>
-                <span>{isVideoEnabled ? 'Video Off' : 'Video On'}</span>
-              </>
-            ) : (
-              <span>Cancel Call</span>
-            )}
+          {/* Call duration or status */}
+          <div className="text-center mt-4">
+            <p className="text-sm text-gray-600">
+              {isActive 
+                ? 'Call in progress' 
+                : isIncoming 
+                  ? 'Answer the call to connect' 
+                  : 'Calling...'
+              }
+            </p>
           </div>
         </div>
       </div>
