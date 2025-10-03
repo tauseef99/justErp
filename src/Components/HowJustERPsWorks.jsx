@@ -36,24 +36,17 @@ const HowJustERPsWorks = () => {
         <div className="absolute inset-0 bg-black bg-opacity-40"></div>
 
         {/* Content */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-          <motion.h2
-            initial={{ y: -30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 drop-shadow-2xl leading-tight"
-          >
-              Connecting Global Customers to Global ERP Consultants
-          </motion.h2>
-          <motion.p
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="text-lg md:text-xl lg:text-2xl text-gray-100 max-w-3xl mx-auto leading-relaxed font-medium drop-shadow-lg"
-          >
-            For Freelancers (ERP Consultants) & For Buyers (The Clients)
-          </motion.p>
-        </div>
+       <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+  <motion.h2
+    initial={{ y: -30, opacity: 0 }}
+    animate={{ y: 0, opacity: 1 }}
+    transition={{ duration: 0.8, delay: 0.3 }}
+    className="text-xl md:text-3xl lg:text-4xl font-bold text-white mb-6 drop-shadow-2xl leading-snug max-w-3xl"
+  >
+    Connecting Global Customers <br /> to Global ERP Consultants
+  </motion.h2>
+</div>
+
 
         {/* Bottom Gradient */}
         <div className="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-t from-white to-transparent"></div>
@@ -73,116 +66,65 @@ const HowJustERPsWorks = () => {
             How JustERPs Works
           </h2>
           <p className="text-lg md:text-xl text-gray-700 leading-relaxed max-w-4xl mx-auto">
-            JustERPs connects businesses with freelance ERP consultants for
-            implementation, customization, training, and troubleshooting.
-            Whether you're a freelancer or a buyer, here's how it works:
+           Need to upgrade, customize, or optimize your ERP system? JustERPs directly connects you with
+skilled freelance ERP consultants for projects of any size from generating reports and designing
+dashboards to comprehensive training and system integration.
+Explore how it works, whether you&#39;re a Freelancer or a Buyer.
           </p>
         </motion.div>
       </div>
 
       {/* Buyer Steps */}
-      <div className="container mx-auto px-6 lg:px-20 py-24">
-        <h2 className="text-4xl md:text-5xl font-bold text-[#708238] mb-12 flex items-center justify-center gap-4">
-          <span className="w-12 h-12 flex items-center justify-center rounded-full border-4 border-[#708238] bg-white">
-            <span className="w-4 h-4 bg-orange-500 rotate-45"></span>
-          </span>
-          For Buyers (The Clients)
-        </h2>
+     <div className="container mx-auto px-6 lg:px-20 py-24 text-center">
+  <h2 className="text-4xl md:text-5xl font-bold text-[#708238] mb-6 flex items-center justify-center gap-4">
+    <span className="w-12 h-12 flex items-center justify-center rounded-full border-4 border-[#708238] bg-white">
+      <span className="w-4 h-4 bg-orange-500 rotate-45"></span>
+    </span>
+    For Buyers (The Client)
+  </h2>
 
-        <div className="space-y-8 max-w-4xl mx-auto mb-16">
-          {buyerSteps.map((step, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, x: -60 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: index * 0.2 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-2xl shadow-xl border-2 border-[#FFA500] p-6 lg:p-8 hover:scale-105 hover:shadow-2xl transition-all duration-300"
-            >
-              <div className="flex items-start space-x-4 lg:space-x-5">
-                <div className="flex-shrink-0 w-12 h-12 lg:w-14 lg:h-14 border-4 border-[#708238] bg-white rounded-full flex items-center justify-center text-[#FFA500] font-bold text-lg lg:text-xl">
-                  {index + 1}
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-xl lg:text-2xl font-semibold text-gray-800 mb-3">
-                    {step.title}
-                  </h3>
-                  <div className="text-gray-600 leading-relaxed text-base lg:text-lg">
-                    {step.content}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+  {/* Buyer Workflow Full Image */}
+  <motion.div
+    initial={{ opacity: 0, scale: 0.95 }}
+    whileInView={{ opacity: 1, scale: 1 }}
+    transition={{ duration: 1 }}
+    viewport={{ once: true }}
+    className="w-full max-w-4xl mx-auto"
+  >
+    <img
+      src={img1}
+      alt="Buyer Workflow"
+      className="w-full h-auto object-contain rounded-2xl shadow-2xl mx-auto"
+    />
+  </motion.div>
+</div>
 
-        {/* Buyer Workflow Full Image */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1 }}
-          viewport={{ once: true }}
-          className="w-full max-w-6xl mx-auto"
-        >
-          <img
-            src={img1}
-            alt="Buyer Workflow"
-            className="w-full h-auto object-contain rounded-3xl shadow-2xl"
-          />
-        </motion.div>
-      </div>
 
       {/* Freelancer Steps */}
-      <div className="container mx-auto px-6 lg:px-20 py-24">
-        <h2 className="text-4xl md:text-5xl font-bold text-[#708238] mb-12 flex items-center justify-center gap-4">
-          <span className="w-12 h-12 flex items-center justify-center rounded-full border-4 border-[#708238] bg-white">
-            <span className="w-4 h-4 bg-orange-500 rotate-45"></span>
-          </span>
-          For Freelancers (ERP Consultants)
-        </h2>
+     <div className="container mx-auto px-6 lg:px-20 py-24 text-center">
+  <h2 className="text-4xl md:text-5xl font-bold text-[#708238] mb-6 flex items-center justify-center gap-4">
+    <span className="w-12 h-12 flex items-center justify-center rounded-full border-4 border-[#708238] bg-white">
+      <span className="w-4 h-4 bg-orange-500 rotate-45"></span>
+    </span>
+    For Freelancers (The ERP Consultant)
+  </h2>
 
-        <div className="space-y-8 max-w-4xl mx-auto mb-16">
-          {freelancerSteps.map((step, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, x: 60 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: index * 0.2 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-2xl shadow-xl border-2 border-[#708238] p-6 lg:p-8 hover:scale-105 hover:shadow-2xl transition-all duration-300"
-            >
-              <div className="flex items-start space-x-4 lg:space-x-5">
-                <div className="flex-shrink-0 w-12 h-12 lg:w-14 lg:h-14 border-4 border-[#708238] bg-white rounded-full flex items-center justify-center text-[#708238] font-bold text-lg lg:text-xl">
-                  {index + 1}
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-xl lg:text-2xl font-semibold text-gray-800 mb-3">
-                    {step.title}
-                  </h3>
-                  <div className="text-gray-600 leading-relaxed text-base lg:text-lg">
-                    {step.content}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+  {/* Freelancer Workflow Full Image */}
+  <motion.div
+    initial={{ opacity: 0, scale: 0.95 }}
+    whileInView={{ opacity: 1, scale: 1 }}
+    transition={{ duration: 1 }}
+    viewport={{ once: true }}
+    className="w-full max-w-4xl mx-auto"
+  >
+    <img
+      src={img2}
+      alt="Freelancer Workflow"
+      className="w-full h-auto object-contain rounded-2xl shadow-2xl mx-auto"
+    />
+  </motion.div>
+</div>
 
-        {/* Freelancer Workflow Full Image */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1 }}
-          viewport={{ once: true }}
-          className="w-full max-w-6xl mx-auto"
-        >
-          <img
-            src={img2}
-            alt="Freelancer Workflow"
-            className="w-full h-auto object-contain rounded-3xl shadow-2xl"
-          />
-        </motion.div>
-      </div>
 
       {/* Unique Features Section */}
       <div className="container mx-auto px-6 lg:px-20 py-24">
@@ -262,7 +204,7 @@ const HowJustERPsWorks = () => {
           >
             <div className="text-center mb-8">
               <h3 className="text-3xl font-bold text-[#FFA500] mb-4 flex items-center justify-center gap-3">
-                <span className="text-4xl">👥</span>
+                <span className="text-4xl">👤</span>
                 For Buyers
               </h3>
             </div>
@@ -325,35 +267,39 @@ const HowJustERPsWorks = () => {
             Our support team is here to assist both freelancers and buyers. 
             Visit our Contact Us page anytime for personalized assistance.
           </p>
-          <button className="bg-white text-[#FFA500] px-8 lg:px-10 py-4 lg:py-5 rounded-2xl font-bold text-lg lg:text-xl hover:bg-gray-100 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
-            Contact Support Team
-          </button>
+          <button className="bg-white text-[#FFA500] px-8 lg:px-10 py-4 lg:py-5 rounded-2xl font-bold text-lg lg:text-xl 
+  hover:bg-[#708238] hover:text-white transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
+  Contact Support Team
+</button>
+
         </motion.div>
       </div>
 
       {/* Final CTA */}
       <div className="container mx-auto px-6 lg:px-20 py-24">
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1 }}
-          viewport={{ once: true }}
-          className="bg-white rounded-3xl shadow-2xl p-8 lg:p-12 text-center"
-        >
+  initial={{ opacity: 0, scale: 0.9 }}
+  whileInView={{ opacity: 1, scale: 1 }}
+  transition={{ duration: 1 }}
+  viewport={{ once: true }}
+  className="bg-white rounded-3xl p-8 lg:p-12 text-center"
+  style={{ boxShadow: "0 10px 30px rgba(255, 165, 0, 0.6)" }} // orange shadow
+>
           <div className="flex items-center justify-center gap-4 mb-6">
             
             <h3 className="text-3xl lg:text-4xl font-bold text-gray-700">
               Join Now
             </h3>
           </div>
-          <p className="text-lg lg:text-xl text-gray-700 opacity-90 mb-8 max-w-2xl mx-auto">
-            Start your journey with JustERPs today and experience the future of ERP consulting
-          </p>
+          <p className="text-lg lg:text-xl text-gray-700 opacity-90 mb-8 mx-auto whitespace-nowrap">
+  Start your journey with JustERPs today and experience the future of ERP consulting
+</p>
+
          <div className="flex flex-col sm:flex-row gap-6 justify-center">
-  <button className="w-64 bg-[#708238] text-white py-4 lg:py-5 rounded-2xl font-bold text-lg lg:text-xl hover:bg-gray-100 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-3">
+  <button className="w-64 bg-[#708238] text-white py-4 lg:py-5 rounded-2xl font-bold text-lg lg:text-xl hover:bg-gray-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-3">
     Sign Up as Buyer
   </button>
-  <button className="w-64 bg-[#FFA500] text-white py-4 lg:py-5 rounded-2xl font-bold text-lg lg:text-xl hover:bg-orange-600 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-3">
+  <button className="w-64 bg-[#FFA500] text-white py-4 lg:py-5 rounded-2xl font-bold text-lg lg:text-xl hover:bg-gray-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-3">
     Join as ERP Consultant
   </button>
 </div>

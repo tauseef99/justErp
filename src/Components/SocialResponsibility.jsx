@@ -99,7 +99,7 @@ const SocialResponsibility = () => {
     transition={{ duration: 1 }}
     viewport={{ once: true }}
     className="bg-white rounded-3xl shadow-2xl p-10 lg:p-16 text-center 
-               transition-colors duration-500 hover:bg-[#708238] hover:text-white"
+               transition-colors duration-500 hover:bg-[#708238] group"
   >
     <h2 className="text-4xl md:text-5xl font-bold text-gray-700 mb-6 group-hover:text-white">
       More Than Just a Marketplace
@@ -113,6 +113,7 @@ const SocialResponsibility = () => {
     </p>
   </motion.div>
 </div>
+
 
 
       {/* Impact Model Section */}
@@ -171,7 +172,7 @@ const SocialResponsibility = () => {
     How Your Consulting Work Creates Real-World Impact
   </h4>
   <p className="text-xl text-black text-center opacity-90 leading-relaxed">
-    Every hour worked on JustERPs fuels tangible social outcomes For Example See below
+    Every hour worked on JustERPs creates tangible social outcomes. See the impact below
   </p>
 </div>
 
@@ -299,33 +300,33 @@ const SocialResponsibility = () => {
       </div> */}
 
       {/* Founder Quote */}
-      <div className="container mx-auto px-6 lg:px-20 py-24">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1 }}
-          viewport={{ once: true }}
-          className="bg-white rounded-3xl shadow-2xl p-12 lg:p-16"
-        >
-       <div className="text-center max-w-4xl mx-auto group">
-  <div className="text-6xl mb-4">💬</div>
-  <blockquote className="text-2xl italic text-gray-700 mb-6 leading-relaxed">
-    "Unlike traditional freelancing platforms that take commissions,
-    we turn them into life-changing opportunities. We don't just
-    optimize business systems—we optimize human potential."
-  </blockquote>
+     <div className="container mx-auto px-6 lg:px-20 py-24">
+  <motion.div
+    initial={{ opacity: 0, scale: 0.9 }}
+    whileInView={{ opacity: 1, scale: 1 }}
+    transition={{ duration: 1 }}
+    viewport={{ once: true }}
+    className="bg-white rounded-3xl p-12 lg:p-16"
+    style={{ boxShadow: "0 10px 30px rgba(255,165,0,0.5)" }} // 🔥 orange shadow
+  >
+    <div className="text-center max-w-4xl mx-auto group">
+      <div className="text-6xl mb-4">💬</div>
+      <blockquote className="text-2xl italic text-gray-700 mb-6 leading-relaxed">
+        "Unlike traditional freelancing platforms that take commissions,
+        we turn them into life-changing opportunities. We don't just
+        optimize business systems—we optimize human potential."
+      </blockquote>
 
-  {/* underline effect */}
-  <div className="w-24 h-1 bg-gray-300 mx-auto mb-4 transition-colors duration-300 group-hover:bg-[#FFA500]"></div>
+      {/* underline effect */}
+      <div className="w-24 h-1 bg-gray-300 mx-auto mb-4 transition-colors duration-300 group-hover:bg-[#FFA500]"></div>
 
-  <p className="text-xl font-semibold text-[#708238]">
-    JustERPs Founder
-  </p>
+      <p className="text-xl font-semibold text-[#708238]">
+        JustERPs Founder
+      </p>
+    </div>
+  </motion.div>
 </div>
 
-
-        </motion.div>
-      </div>
 
       {/* Dual Impact Section */}
       <div className="container mx-auto px-6 lg:px-20 py-24">
