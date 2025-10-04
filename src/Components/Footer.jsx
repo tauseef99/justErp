@@ -22,7 +22,7 @@ const footerData = [
   {
     heading: "For ERP Freelancers",
     links: [
-      { name: "Join as Freelancer ERP Consultant", href: "/services" },
+      { name: "Join as Freelancer ERP Consultant", href: "/join/as/consultant" },
       { name: "JustERPs ProjectTeams", href: "/projects" },
     ],
   },
