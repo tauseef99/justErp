@@ -22,6 +22,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import HowJustERPsWorks from "./Components/HowJustERPsWorks";
 import SocialResponsibility from "./Components/SocialResponsibility";
 import JoinAsConsultant from "./Components/JoinAsConsultant";
+import ReferralBonus from "./Components/ReferralBonus";
+import PersonalDataProtection from "./Components/PersonalDataProtection";
 
 function App() {
   return (
@@ -45,6 +47,8 @@ function App() {
         <Route path="/how/erp/works" element={<HowJustERPsWorks/>}/>
         <Route path="/social/responsibility" element={<SocialResponsibility/>}/>
         <Route path="/join/as/consultant" element={<JoinAsConsultant/>}/>
+        <Route path="/referral/bonus" element={<ReferralBonus/>}/>
+        <Route path="/personal/data/protection" element={<PersonalDataProtection/>}/>
 
 
 

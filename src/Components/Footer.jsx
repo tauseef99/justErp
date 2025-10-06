@@ -55,8 +55,8 @@ const footerData = [
       { name: "Customer Support", href: "/about" },
       { name: "Privacy Policy & Term of Services", href: "/about" },
       { name: "Social Responsibility", href: "/social/responsibility" },
-      { name: "Refer to Friend Bonus", href: "/about" },
-      { name: "Personal Data Protection", href: "/about" },
+      { name: "Refer to a Consultant Bonus", href: "/referral/bonus" },
+      { name: "Personal Data Protection", href: "/personal/data/protection" },
 
     ],
   },

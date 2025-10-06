@@ -28,22 +28,25 @@ const JoinAsConsultant = () => {
             />
             <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent flex items-center justify-start">
               <div className="text-left px-8 lg:px-20 max-w-2xl">
-                <motion.h1
-                  initial={{ y: -50, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 1, delay: 0.3 }}
-                  className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 leading-tight"
-                >
-                  Join as <span className="text-[#FFA500]">ERP Freelancer</span>
-                </motion.h1>
-                <motion.p
-                  initial={{ y: 50, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 1, delay: 0.6 }}
-                  className="text-xl md:text-2xl text-gray-100 leading-relaxed mb-8"
-                >
-                  You've Earned Your Expertise. Now, It's Time to Leverage It.
-                </motion.p>
+              <motion.h1
+  initial={{ y: -50, opacity: 0 }}
+  animate={{ y: 0, opacity: 1 }}
+  transition={{ duration: 1, delay: 0.3 }}
+  className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 leading-tight whitespace-nowrap"
+>
+  Join as <span className="text-[#FFA500]">ERP Freelancer</span>
+</motion.h1>
+
+<motion.p
+  initial={{ y: 50, opacity: 0 }}
+  animate={{ y: 0, opacity: 1 }}
+  transition={{ duration: 1, delay: 0.6 }}
+  className="text-xl md:text-2xl text-gray-100 leading-relaxed mb-8 whitespace-nowrap"
+>
+  You've Earned Your Expertise. Now, It's Time to Leverage It.
+</motion.p>
+
+
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: "120px" }}
@@ -81,9 +84,7 @@ const JoinAsConsultant = () => {
               transition={{ delay: 0.3 }}
               className="inline-block mb-6"
             >
-              <span className="bg-gradient-to-r from-[#708238] to-[#5f7030] text-white px-6 py-2 rounded-full text-sm font-semibold shadow-lg">
-                Your Journey Has Prepared You for This Moment
-              </span>
+             
             </motion.div>
             
             <h2 className="text-4xl md:text-5xl font-black text-gray-800 mb-8 leading-tight">
@@ -167,50 +168,55 @@ const JoinAsConsultant = () => {
         </section>
 
         {/* Journey Section */}
-        <section className="container mx-auto px-6 lg:px-20 py-28">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1 }}
-            viewport={{ once: true }}
-            className="grid lg:grid-cols-2 gap-16 items-center"
-          >
-            <motion.div
-              initial={{ opacity: 0, x: -60 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1 }}
-              viewport={{ once: true }}
-              className="relative"
-            >
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-                <img
-                  src={img2}
-                  alt="ERP Consultant Journey"
-                  className="w-full h-[500px] object-cover transform hover:scale-105 transition duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-              </div>
-              <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-[#FFA500] rounded-2xl transform -rotate-12 z-10"></div>
-              <div className="absolute -top-6 -right-6 w-20 h-20 bg-[#708238] rounded-2xl transform rotate-12 z-10"></div>
-            </motion.div>
+       <section className="container mx-auto px-6 lg:px-20 py-28">
+  <motion.div
+    initial={{ opacity: 0, scale: 0.9 }}
+    whileInView={{ opacity: 1, scale: 1 }}
+    transition={{ duration: 1 }}
+    viewport={{ once: true }}
+    className="grid lg:grid-cols-2 gap-16 items-center"
+  >
+    {/* Left Side - Image */}
+    <motion.div
+      initial={{ opacity: 0, x: -60 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      transition={{ duration: 1 }}
+      viewport={{ once: true }}
+      className="relative"
+    >
+      <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+        <img
+          src={img2}
+          alt="ERP Consultant Journey"
+          className="w-full h-[500px] object-cover transform hover:scale-105 transition duration-700"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+      </div>
+      <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-[#FFA500] rounded-2xl transform -rotate-12 z-10"></div>
+      <div className="absolute -top-6 -right-6 w-20 h-20 bg-[#708238] rounded-2xl transform rotate-12 z-10"></div>
+    </motion.div>
 
-            <div>
-              <h2 className="text-4xl md:text-5xl font-black text-gray-800 mb-8 leading-tight">
-                Your Journey Has Prepared You for This Moment
-              </h2>
-              <div className="space-y-6 text-lg text-gray-700 leading-relaxed">
-                <p>
-                  You have the experience. You have the solutions. We provide the 
-                  platform, the projects, and the support.
-                </p>
-                
-                <p className="text-2xl font-bold text-[#708238] italic">
-                  Stop earning what you're given. Start earning what you deserve.
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        </section>
+    {/* Right Side - Text */}
+    <div>
+      <h2 className="text-4xl md:text-5xl font-black text-gray-800 mb-8 leading-tight text-center lg:text-left">
+        Your Journey Has Prepared You for This Moment
+      </h2>
+
+      <div className="space-y-6 text-lg text-gray-700 leading-relaxed text-center lg:text-left">
+        <p>
+          You have the experience. You have the solutions. We provide the 
+          platform, the projects, and the support.
+        </p>
+
+        <p className="text-2xl font-bold text-[#708238] italic break-words">
+          Stop earning what you're given. Start earning  
+          <span className="underline decoration-orange-500 underline-offset-4"> what you deserve.</span>
+        </p>
+      </div>
+    </div>
+  </motion.div>
+</section>
+
 
         {/* Final CTA */}
         <section className="container mx-auto px-6 lg:px-20 pb-28">
@@ -231,29 +237,33 @@ const JoinAsConsultant = () => {
               <p className="text-xl mb-12 max-w-2xl mx-auto leading-relaxed opacity-90">
                 Your expertise is your greatest asset. It's time to put it to work for you.
               </p>
-              <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-                <motion.button
-                  whileHover={{ 
-                    scale: 1.05, 
-                    backgroundColor: "#e59400",
-                    boxShadow: "0 20px 40px rgba(255, 165, 0, 0.4)"
-                  }}
-                  whileTap={{ scale: 0.95 }}
-                  className="bg-gradient-to-r from-[#FFA500] to-[#e59400] text-white font-bold py-5 px-12 rounded-2xl shadow-2xl transition-all duration-300 text-lg"
-                >
-                  Join Now - It's Free
-                </motion.button>
-                <motion.button
-                  whileHover={{ 
-                    scale: 1.05,
-                    boxShadow: "0 20px 40px rgba(255, 255, 255, 0.2)"
-                  }}
-                  whileTap={{ scale: 0.95 }}
-                  className="border-2 border-white text-white font-bold py-5 px-12 rounded-2xl transition-all duration-300 text-lg hover:bg-white hover:text-[#708238]"
-                >
-                  Schedule a Call
-                </motion.button>
-              </div>
+             <div className="w-full flex justify-center">
+  <div className="flex flex-col sm:flex-row gap-6 items-center">
+    <motion.button
+      whileHover={{ 
+        scale: 1.05, 
+        backgroundColor: "#e59400",
+        boxShadow: "0 20px 40px rgba(255, 165, 0, 0.4)"
+      }}
+      whileTap={{ scale: 0.95 }}
+      className="bg-gradient-to-r from-[#FFA500] to-[#e59400] text-white font-bold py-5 px-12 rounded-2xl shadow-2xl transition-all duration-300 text-lg"
+    >
+      Join Now - It's Free
+    </motion.button>
+
+    <motion.button
+      whileHover={{ 
+        scale: 1.05,
+        boxShadow: "0 20px 40px rgba(255, 165, 0, 0.4)"
+      }}
+      whileTap={{ scale: 0.95 }}
+      className="bg-gradient-to-r from-[#FFA500] to-[#e59400] text-white font-bold py-5 px-12 rounded-2xl shadow-2xl transition-all duration-300 text-lg"
+    >
+      Schedule a Call
+    </motion.button>
+  </div>
+</div>
+
               <p className="text-sm mt-8 opacity-70">
                 No upfront costs • Flexible commitment • Global opportunities
               </p>
