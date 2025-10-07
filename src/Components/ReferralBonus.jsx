@@ -132,26 +132,32 @@ const ReferralBonus = () => {
             
             {/* Optimized Image Container for Diagram */}
             <motion.div
-              initial={{ opacity: 0, x: 60 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1 }}
-              viewport={{ once: true }}
-              className="relative rounded-3xl overflow-hidden shadow-2xl"
-            >
-              <div className="w-full h-[500px] lg:h-[650px] flex items-center justify-center bg-gray-50">
-                <img
-                  src={img2}
-                  alt="Referral Bonus Program Diagram"
-                  className="w-full h-full object-contain p-4 transform hover:scale-105 transition duration-700"
-                  style={{ 
-                    maxWidth: '100%',
-                    maxHeight: '100%',
-                    objectFit: 'contain'
-                  }}
-                />
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none"></div>
-            </motion.div>
+  initial={{ opacity: 0, x: 60 }}
+  whileInView={{ opacity: 1, x: 0 }}
+  transition={{ duration: 1 }}
+  viewport={{ once: true }}
+  className="relative rounded-3xl"
+>
+  <div
+    className="w-full h-[500px] lg:h-[650px] flex items-center justify-center bg-gray-50 rounded-3xl"
+    style={{ boxShadow: "0 0 40px 12px rgba(255, 165, 0, 0.7)" }}
+  >
+    <img
+      src={img2}
+      alt="Referral Bonus Program Diagram"
+      className="w-full h-full object-contain p-4 transform hover:scale-105 transition duration-700"
+      style={{ 
+        maxWidth: '100%',
+        maxHeight: '100%',
+        objectFit: 'contain'
+      }}
+    />
+  </div>
+
+  <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none rounded-3xl"></div>
+</motion.div>
+
+
           </div>
         </section>
 

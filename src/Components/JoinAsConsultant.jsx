@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import Navbar from "../Components/Navbar";
 import Footer from "../Components/Footer";
 
-// Replace these with your actual images
+
 import img1 from "../Assets/images/ERP-Consultant.jpeg";
 import img2 from "../Assets/images/handsome-man-by-car.jpg";
 import img3 from "../Assets/images/business-man-by-car-talking-phone.jpg";
@@ -34,7 +34,7 @@ const JoinAsConsultant = () => {
   transition={{ duration: 1, delay: 0.3 }}
   className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 leading-tight whitespace-nowrap"
 >
-  Join as <span className="text-[#FFA500]">ERP Freelancer</span>
+  Join as <span className="text-[#FFA500]"><br/>ERP Freelancer</span>
 </motion.h1>
 
 <motion.p
@@ -198,22 +198,28 @@ const JoinAsConsultant = () => {
 
     {/* Right Side - Text */}
     <div>
-      <h2 className="text-4xl md:text-5xl font-black text-gray-800 mb-8 leading-tight text-center lg:text-left">
-        Your Journey Has Prepared You for This Moment
-      </h2>
+  <h2 className="text-4xl md:text-5xl font-black text-gray-800 mb-8 leading-tight text-center lg:text-left">
+    Your Journey Has Prepared You for This Moment
+  </h2>
 
-      <div className="space-y-6 text-lg text-gray-700 leading-relaxed text-center lg:text-left">
-        <p>
-          You have the experience. You have the solutions. We provide the 
-          platform, the projects, and the support.
-        </p>
+  <div className="space-y-6 text-lg text-gray-700 leading-relaxed text-center lg:text-left">
+    <p>
+      You have the experience. You have the solutions. We provide the 
+      platform, the projects, and the support.
+    </p>
 
-        <p className="text-2xl font-bold text-[#708238] italic break-words">
-          Stop earning what you're given. Start earning  
-          <span className="underline decoration-orange-500 underline-offset-4"> what you deserve.</span>
-        </p>
-      </div>
-    </div>
+   <p className="text-[10px] sm:text-xs md:text-sm lg:text-base font-bold text-[#708238] italic inline-block">
+  Stop earning what you're given. 
+  <span className="underline decoration-orange-500 underline-offset-4">
+     Start earning what you deserve.
+  </span>
+</p>
+
+
+
+  </div>
+</div>
+
   </motion.div>
 </section>
 
@@ -238,30 +244,20 @@ const JoinAsConsultant = () => {
                 Your expertise is your greatest asset. It's time to put it to work for you.
               </p>
              <div className="w-full flex justify-center">
-  <div className="flex flex-col sm:flex-row gap-6 items-center">
-    <motion.button
-      whileHover={{ 
-        scale: 1.05, 
-        backgroundColor: "#e59400",
-        boxShadow: "0 20px 40px rgba(255, 165, 0, 0.4)"
-      }}
-      whileTap={{ scale: 0.95 }}
-      className="bg-gradient-to-r from-[#FFA500] to-[#e59400] text-white font-bold py-5 px-12 rounded-2xl shadow-2xl transition-all duration-300 text-lg"
-    >
-      Join Now - It's Free
-    </motion.button>
+  <div className="flex justify-center">
+  <motion.button
+    whileHover={{ 
+      scale: 1.05, 
+      backgroundColor: "#e59400",
+      boxShadow: "0 20px 40px rgba(255, 165, 0, 0.4)"
+    }}
+    whileTap={{ scale: 0.95 }}
+    className="bg-gradient-to-r from-[#FFA500] to-[#e59400] text-white font-bold py-5 px-12 rounded-2xl shadow-2xl transition-all duration-300 text-lg"
+  >
+    Join Now - It's Free
+  </motion.button>
+</div>
 
-    <motion.button
-      whileHover={{ 
-        scale: 1.05,
-        boxShadow: "0 20px 40px rgba(255, 165, 0, 0.4)"
-      }}
-      whileTap={{ scale: 0.95 }}
-      className="bg-gradient-to-r from-[#FFA500] to-[#e59400] text-white font-bold py-5 px-12 rounded-2xl shadow-2xl transition-all duration-300 text-lg"
-    >
-      Schedule a Call
-    </motion.button>
-  </div>
 </div>
 
               <p className="text-sm mt-8 opacity-70">
