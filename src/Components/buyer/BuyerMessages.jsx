@@ -1,13 +1,15 @@
 // frontend/src/components/BuyerMessages.jsx
 import React, { useState, useEffect, useRef } from 'react';
-import { FaSearch, FaPaperclip, FaSmile, FaPaperPlane, FaEllipsisV, FaStar, FaCheck, FaCheckDouble, FaClock, FaTrash, FaArchive, FaSpinner, FaUserCircle, FaTimes, FaPhone, FaVideo } from 'react-icons/fa';
+import { FaSearch, FaPaperclip, FaSmile, FaPaperPlane, FaEllipsisV, FaStar, FaCheck, FaCheckDouble, FaClock, FaTrash, FaArchive, FaSpinner, FaUserCircle, FaTimes, FaPhone, FaVideo, FaDollarSign, FaExclamationTriangle } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import BuyerNavbar from './BuyerNavbar';
 import { messageAPI } from '../../services/messageService';
+import { offerAPI, paymentAPI } from '../../services/offerService';
 import { jwtDecode } from "jwt-decode"; 
 import socketService from "../../services/socketService";
 import CallModal from '../CallModal.jsx';
 import useWebRTC from '../../hooks/useWebRTC.js';
+import OfferMessage from '../common/OfferMessage';
 
 const BuyerMessages = () => {
   const navigate = useNavigate();
@@ -28,6 +30,11 @@ const BuyerMessages = () => {
   const [socketStatus, setSocketStatus] = useState('disconnected');
   const [selectedSeller, setSelectedSeller] = useState(null);
   const [processingSeller, setProcessingSeller] = useState(false);
+  
+  // Offer-related states
+  const [offers, setOffers] = useState([]);
+  const [isLoadingOffers, setIsLoadingOffers] = useState(false);
+  const [processingOffer, setProcessingOffer] = useState(null);
   
   // Call-related states
   const [isCallModalOpen, setIsCallModalOpen] = useState(false);
@@ -161,6 +168,13 @@ const BuyerMessages = () => {
     }
   }, [user]);
 
+  // Load offers when active conversation changes
+  useEffect(() => {
+    if (activeConversation && activeConversation._id) {
+      loadOffersForConversation(activeConversation._id);
+    }
+  }, [activeConversation]);
+
   // Socket event handlers
   const handleNewMessage = (message) => {
     console.log('📨 New message received via socket:', message);
@@ -252,6 +266,118 @@ const BuyerMessages = () => {
     } catch (error) {
       console.error('❌ Error loading conversations:', error);
       setConversations([]);
+    }
+  };
+
+  // Load offers for conversation
+  const loadOffersForConversation = async (conversationId) => {
+    if (!conversationId || conversationId.startsWith('demo-')) return;
+    
+    try {
+      setIsLoadingOffers(true);
+      console.log(`📦 Loading offers for conversation: ${conversationId}`);
+      const response = await offerAPI.getOffersByConversation(conversationId);
+      console.log('✅ Offers loaded:', response.data);
+      setOffers(response.data?.offers || []);
+    } catch (error) {
+      console.error('❌ Error loading offers:', error);
+      setOffers([]);
+    } finally {
+      setIsLoadingOffers(false);
+    }
+  };
+
+  // Handle offer actions (accept/reject)
+  const handleOfferAction = async (offerId, action) => {
+    try {
+      console.log(`🔄 ${action} offer: ${offerId}`);
+      setProcessingOffer(offerId);
+      
+      let response;
+      if (action === 'accept') {
+        response = await offerAPI.acceptOffer(offerId);
+      } else {
+        response = await offerAPI.rejectOffer(offerId);
+      }
+      
+      console.log(`✅ Offer ${action}ed:`, response.data);
+      
+      // Update offer in messages and offers list
+      const updatedOffer = response.data.offer;
+      
+      setMessages(prev => 
+        prev.map(msg => 
+          msg.type === 'offer' && msg.offer._id === offerId 
+            ? { ...msg, offer: updatedOffer }
+            : msg
+        )
+      );
+      
+      setOffers(prev => 
+        prev.map(offer => 
+          offer._id === offerId ? updatedOffer : offer
+        )
+      );
+      
+      // Send notification message
+      if (activeConversation) {
+        const actionText = action === 'accept' ? 'accepted' : 'rejected';
+        const messageData = {
+          conversationId: activeConversation._id,
+          receiverId: activeConversation.seller?._id,
+          message: `I've ${actionText} your offer: ${updatedOffer.title} - $${updatedOffer.price}`
+        };
+        
+        await messageAPI.sendMessage(messageData);
+      }
+      
+      return updatedOffer;
+    } catch (error) {
+      console.error(`❌ Error ${action}ing offer:`, error);
+      alert(`Failed to ${action} offer. Please try again.`);
+      throw error;
+    } finally {
+      setProcessingOffer(null);
+    }
+  };
+
+  // Handle offer payment
+  const handleOfferPayment = async (offerId) => {
+    try {
+      console.log(`💳 Processing payment for offer: ${offerId}`);
+      setProcessingOffer(offerId);
+      
+      const offer = offers.find(o => o._id === offerId);
+      if (!offer) {
+        throw new Error('Offer not found');
+      }
+      
+      // Create Stripe checkout session
+      const paymentData = {
+        amount: offer.price,
+        currency: offer.currency || 'usd',
+        offerId: offer._id,
+        buyerId: user.id,
+        sellerId: offer.sellerId._id,
+        description: `Payment for: ${offer.title}`
+      };
+      
+      console.log('💳 Creating checkout session:', paymentData);
+      const response = await paymentAPI.createCheckoutSession(paymentData);
+      
+      if (response.data.url) {
+        // Redirect to Stripe Checkout
+        window.location.href = response.data.url;
+      } else {
+        throw new Error('No checkout URL received');
+      }
+      
+    } catch (error) {
+      console.error('❌ Error processing payment:', error);
+      alert('Failed to process payment. Please try again.');
+      throw error;
+    } finally {
+      setProcessingOffer(null);
     }
   };
 
@@ -398,7 +524,30 @@ const BuyerMessages = () => {
 
       const response = await messageAPI.getMessages(conversationId);
       console.log('✅ Messages loaded:', response.data);
-      setMessages(response.data || []);
+      
+      // Transform messages to include offer messages
+      const messagesData = response.data || [];
+      const transformedMessages = messagesData.map(msg => {
+        // Check if message contains offer data
+        if (msg.offerId || msg.message?.includes('custom offer')) {
+          return {
+            ...msg,
+            type: 'offer',
+            offer: msg.offerId || {
+              _id: `demo-offer-${msg._id}`,
+              title: 'Custom Offer',
+              description: 'This is a custom offer from the seller',
+              price: 99,
+              status: 'sent',
+              deliveryTime: 7,
+              revisions: 1
+            }
+          };
+        }
+        return msg;
+      });
+      
+      setMessages(transformedMessages);
       scrollToBottom();
 
       if (!conversationId.startsWith('demo-')) {
@@ -736,8 +885,9 @@ const BuyerMessages = () => {
         Conversations: {conversations.length} | 
         Active: {activeConversation?._id} | 
         Socket: {socketStatus} |
-        Seller: {selectedSeller?.name || 'Amjad Hassan '} |
-        Call: {isCallActive ? 'Active' : isCallInProgress ? 'In Progress' : 'None'}
+        Seller: {selectedSeller?.name || 'None'} |
+        Call: {isCallActive ? 'Active' : isCallInProgress ? 'In Progress' : 'None'} |
+        Offers: {offers.length}
         {activeConversation?._id?.startsWith('demo-') && ' |  DEMO MODE'}
         <br />
         {selectedSeller && !activeConversation && (
@@ -1015,25 +1165,37 @@ const BuyerMessages = () => {
                             </div>
                           )}
                           
-                          <div 
-                            className={`max-w-md rounded-2xl px-4 py-3 ${
-                              message.sender?._id === user?.id 
-                                ? 'bg-[#708238] text-white rounded-br-none' 
-                                : 'bg-white text-gray-800 rounded-bl-none border border-gray-200'
-                            }`}
-                          >
-                            <p className="text-sm">{message.message}</p>
-                            <div className={`flex items-center text-xs mt-2 ${
-                              message.sender?._id === user?.id ? 'text-[#FFA500]' : 'text-gray-500'
-                            }`}>
-                              <span>{new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                              {message.sender?._id === user?.id && (
-                                <span className="ml-2">
-                                  {message.isRead ? <FaCheckDouble className="text-[#FFA500]" /> : <FaCheck className="text-current" />}
-                                </span>
-                              )}
+                          {/* Render offer message differently */}
+                          {message.type === 'offer' ? (
+                            <OfferMessage 
+                              offer={message.offer}
+                              currentUser={user}
+                              onAccept={(offerId) => handleOfferAction(offerId, 'accept')}
+                              onReject={(offerId) => handleOfferAction(offerId, 'reject')}
+                              onPay={handleOfferPayment}
+                              isProcessing={processingOffer === message.offer._id}
+                            />
+                          ) : (
+                            <div 
+                              className={`max-w-md rounded-2xl px-4 py-3 ${
+                                message.sender?._id === user?.id 
+                                  ? 'bg-[#708238] text-white rounded-br-none' 
+                                  : 'bg-white text-gray-800 rounded-bl-none border border-gray-200'
+                              }`}
+                            >
+                              <p className="text-sm">{message.message}</p>
+                              <div className={`flex items-center text-xs mt-2 ${
+                                message.sender?._id === user?.id ? 'text-[#FFA500]' : 'text-gray-500'
+                              }`}>
+                                <span>{new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                {message.sender?._id === user?.id && (
+                                  <span className="ml-2">
+                                    {message.isRead ? <FaCheckDouble className="text-[#FFA500]" /> : <FaCheck className="text-current" />}
+                                  </span>
+                                )}
+                              </div>
                             </div>
-                          </div>
+                          )}
                         </div>
                       </div>
                     ))}
@@ -1145,7 +1307,7 @@ const BuyerMessages = () => {
           isIncoming={isIncomingCall}
           isActive={isCallActive}
           onAnswer={handleAnswerCall}
-          onReject={handleRejectCall}
+          onReject={handleCallRejected}
           onEnd={handleEndCall}
           onClose={handleCloseCallModal}
           localVideoRef={localVideoRef}

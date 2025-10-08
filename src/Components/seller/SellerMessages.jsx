@@ -1,15 +1,18 @@
 // frontend/src/components/SellerMessages.jsx
 import React, { useState, useEffect, useRef } from "react";
-import { FiSearch, FiSend, FiPaperclip, FiSmile, FiMenu, FiX } from "react-icons/fi";
+import { FiSearch, FiSend, FiPaperclip, FiSmile, FiMenu, FiX, FiDollarSign } from "react-icons/fi";
 import { IoCheckmarkDone } from "react-icons/io5";
 import { BsThreeDotsVertical, BsStarFill } from "react-icons/bs";
 import { FaSpinner, FaUserCircle, FaPhone, FaVideo } from "react-icons/fa";
 import SellerLayout from "../../Pages/layouts/SellerLayout";
 import { messageAPI } from "../../services/messageService";
+import { offerAPI, paymentAPI } from "../../services/offerService";
 import socketService from "../../services/socketService";
 import { jwtDecode } from 'jwt-decode';
 import CallModal from '../CallModal.jsx';
 import useWebRTC from '../../hooks/useWebRTC.js';
+import CustomOfferModal from './CustomOfferModal';
+import OfferMessage from '../common/OfferMessage';
 
 const SellerMessages = () => {
   const [message, setMessage] = useState("");
@@ -23,6 +26,11 @@ const SellerMessages = () => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
   const messagesEndRef = useRef(null);
+
+  // Custom Offer States
+  const [showOfferModal, setShowOfferModal] = useState(false);
+  const [offers, setOffers] = useState([]);
+  const [isLoadingOffers, setIsLoadingOffers] = useState(false);
 
   // Call-related states
   const [isCallModalOpen, setIsCallModalOpen] = useState(false);
@@ -126,6 +134,13 @@ const SellerMessages = () => {
       userRef.current = user;
     }
   }, [user]);
+
+  // Load offers when active conversation changes
+  useEffect(() => {
+    if (activeConversation && activeConversation._id) {
+      loadOffersForConversation(activeConversation._id);
+    }
+  }, [activeConversation]);
 
   // Socket event handlers
   const handleNewMessage = (message) => {
@@ -274,6 +289,126 @@ const SellerMessages = () => {
       } else {
         console.warn('⚠️ Network error - keeping existing messages');
       }
+    }
+  };
+
+  // Load offers for conversation
+  const loadOffersForConversation = async (conversationId) => {
+    if (!conversationId) return;
+    
+    try {
+      setIsLoadingOffers(true);
+      console.log(`📦 Seller: Loading offers for conversation: ${conversationId}`);
+      const response = await offerAPI.getOffersByConversation(conversationId);
+      console.log('✅ Seller: Offers loaded:', response.data);
+      setOffers(response.data || []);
+    } catch (error) {
+      console.error('❌ Seller: Error loading offers:', error);
+      setOffers([]);
+    } finally {
+      setIsLoadingOffers(false);
+    }
+  };
+
+  // Handle sending custom offer
+  const handleSendCustomOffer = async (offerData) => {
+    try {
+      console.log('📦 Seller: Sending custom offer:', offerData);
+      
+      const response = await offerAPI.createOffer(offerData);
+      console.log('✅ Seller: Offer created:', response.data);
+      
+      // Add offer to messages
+      const offerMessage = {
+        _id: `offer-${Date.now()}`,
+        type: 'offer',
+        offer: response.data,
+        sender: user,
+        createdAt: new Date(),
+        isRead: false
+      };
+      
+      setMessages(prev => [...prev, offerMessage]);
+      scrollToBottom();
+      
+      // Send message notification
+      if (activeConversation) {
+        const messageData = {
+          conversationId: activeConversation._id,
+          receiverId: activeConversation.buyer?._id,
+          message: `I've sent you a custom offer: ${offerData.title} - $${offerData.price}`,
+          offerId: response.data._id
+        };
+        
+        await messageAPI.sendMessage(messageData);
+      }
+      
+      return response.data;
+    } catch (error) {
+      console.error('❌ Seller: Error sending custom offer:', error);
+      throw error;
+    }
+  };
+
+  // Handle offer actions (accept/reject from buyer)
+  const handleOfferAction = async (offerId, action) => {
+    try {
+      console.log(`🔄 Seller: ${action} offer: ${offerId}`);
+      
+      let response;
+      if (action === 'accept') {
+        response = await offerAPI.acceptOffer(offerId);
+      } else {
+        response = await offerAPI.rejectOffer(offerId);
+      }
+      
+      console.log(`✅ Seller: Offer ${action}ed:`, response.data);
+      
+      // Update offer in messages
+      setMessages(prev => 
+        prev.map(msg => 
+          msg.type === 'offer' && msg.offer._id === offerId 
+            ? { ...msg, offer: response.data }
+            : msg
+        )
+      );
+      
+      // Reload offers
+      if (activeConversation) {
+        loadOffersForConversation(activeConversation._id);
+      }
+      
+      return response.data;
+    } catch (error) {
+      console.error(`❌ Seller: Error ${action}ing offer:`, error);
+      throw error;
+    }
+  };
+
+  // Handle offer payment (for buyer)
+  const handleOfferPayment = async (offerId) => {
+    try {
+      console.log(`💳 Seller: Processing payment for offer: ${offerId}`);
+      
+      // This would be handled by the buyer, but we can track it
+      const offer = offers.find(o => o._id === offerId);
+      if (offer) {
+        console.log('✅ Seller: Payment initiated for offer:', offer.title);
+        // In a real scenario, you'd redirect to Stripe checkout
+        // For now, we'll just update the status
+        const updatedOffer = { ...offer, status: 'paid' };
+        
+        setMessages(prev => 
+          prev.map(msg => 
+            msg.type === 'offer' && msg.offer._id === offerId 
+              ? { ...msg, offer: updatedOffer }
+              : msg
+          )
+        );
+      }
+    } catch (error) {
+      console.error('❌ Seller: Error processing payment:', error);
+      throw error;
     }
   };
 
@@ -693,6 +828,16 @@ const SellerMessages = () => {
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">
+                  {/* Custom Offer Button */}
+                  <button
+                    onClick={() => setShowOfferModal(true)}
+                    className="bg-[#708238] hover:bg-[#5a6a2d] text-white px-4 py-2 rounded-lg text-sm font-medium transition flex items-center space-x-2"
+                    title="Send Custom Offer"
+                  >
+                    <FiDollarSign />
+                    <span>Send Offer</span>
+                  </button>
+
                   {/* Call Buttons */}
                   <button
                     onClick={() => handleStartCall('audio')}
@@ -754,15 +899,27 @@ const SellerMessages = () => {
                             <IoCheckmarkDone className="text-xs text-[#708238]" />
                           )}
                         </div>
-                        <div
-                          className={`px-4 py-3 rounded-2xl ${
-                            msg.sender?._id === user?.id
-                              ? "bg-[#708238] text-white"
-                              : "bg-white text-gray-800 border border-gray-200"
-                          }`}
-                        >
-                          <p className="text-sm">{msg.message}</p>
-                        </div>
+                        
+                        {/* Render offer message differently */}
+                        {msg.type === 'offer' ? (
+                          <OfferMessage 
+                            offer={msg.offer}
+                            currentUser={user}
+                            onAccept={(offerId) => handleOfferAction(offerId, 'accept')}
+                            onReject={(offerId) => handleOfferAction(offerId, 'reject')}
+                            onPay={handleOfferPayment}
+                          />
+                        ) : (
+                          <div
+                            className={`px-4 py-3 rounded-2xl ${
+                              msg.sender?._id === user?.id
+                                ? "bg-[#708238] text-white"
+                                : "bg-white text-gray-800 border border-gray-200"
+                            }`}
+                          >
+                            <p className="text-sm">{msg.message}</p>
+                          </div>
+                        )}
                       </div>
                     </div>
                   ))
@@ -860,6 +1017,37 @@ const SellerMessages = () => {
                 </div>
               </div>
 
+              {/* Active Offers Section */}
+              {offers.length > 0 && (
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-800 mb-3">
+                    Active Offers
+                  </h3>
+                  <div className="space-y-3">
+                    {offers.slice(0, 3).map((offer) => (
+                      <div key={offer._id} className="bg-white border border-gray-200 rounded-lg p-3">
+                        <div className="flex justify-between items-start mb-2">
+                          <h4 className="text-sm font-semibold text-gray-800 truncate">
+                            {offer.title}
+                          </h4>
+                          <span className="text-xs font-bold text-[#708238]">
+                            ${offer.price}
+                          </span>
+                        </div>
+                        <div className={`text-xs px-2 py-1 rounded-full inline-block ${
+                          offer.status === 'sent' ? 'bg-blue-100 text-blue-800' :
+                          offer.status === 'accepted' ? 'bg-green-100 text-green-800' :
+                          offer.status === 'rejected' ? 'bg-red-100 text-red-800' :
+                          'bg-gray-100 text-gray-800'
+                        }`}>
+                          {offer.status}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <div>
                 <h3 className="text-lg font-semibold text-gray-800 mb-3">
                   About {getBuyerName(activeConversation)}
@@ -899,6 +1087,16 @@ const SellerMessages = () => {
           remoteVideoRef={remoteVideoRef}
           localStream={localStream}
           remoteStream={remoteStream}
+        />
+      )}
+
+      {/* Custom Offer Modal */}
+      {activeConversation && (
+        <CustomOfferModal
+          isOpen={showOfferModal}
+          onClose={() => setShowOfferModal(false)}
+          buyer={activeConversation.buyer || { _id: activeConversation.buyerId, name: getBuyerName(activeConversation) }}
+          onSendOffer={handleSendCustomOffer}
         />
       )}
     </SellerLayout>

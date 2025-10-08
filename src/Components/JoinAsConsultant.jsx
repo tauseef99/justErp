@@ -168,7 +168,7 @@ const JoinAsConsultant = () => {
         </section>
 
         {/* Journey Section */}
-       <section className="container mx-auto px-6 lg:px-20 py-28">
+    <section className="container mx-auto px-6 lg:px-20 py-28">
   <motion.div
     initial={{ opacity: 0, scale: 0.9 }}
     whileInView={{ opacity: 1, scale: 1 }}
@@ -190,38 +190,41 @@ const JoinAsConsultant = () => {
           alt="ERP Consultant Journey"
           className="w-full h-[500px] object-cover transform hover:scale-105 transition duration-700"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
       </div>
+
       <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-[#FFA500] rounded-2xl transform -rotate-12 z-10"></div>
       <div className="absolute -top-6 -right-6 w-20 h-20 bg-[#708238] rounded-2xl transform rotate-12 z-10"></div>
     </motion.div>
 
     {/* Right Side - Text */}
     <div>
-  <h2 className="text-4xl md:text-5xl font-black text-gray-800 mb-8 leading-tight text-center lg:text-left">
-    Your Journey Has Prepared You for This Moment
-  </h2>
+      <h2 className="text-4xl md:text-5xl font-black text-gray-800 mb-8 leading-tight text-center lg:text-left">
+        Your Journey Has Prepared You for This Moment
+      </h2>
 
-  <div className="space-y-6 text-lg text-gray-700 leading-relaxed text-center lg:text-left">
-    <p>
-      You have the experience. You have the solutions. We provide the 
-      platform, the projects, and the support.
-    </p>
-
-   <p className="text-[10px] sm:text-xs md:text-sm lg:text-base font-bold text-[#708238] italic inline-block">
-  Stop earning what you're given. 
-  <span className="underline decoration-orange-500 underline-offset-4">
-     Start earning what you deserve.
-  </span>
-</p>
-
-
-
-  </div>
-</div>
-
+      <div className="space-y-6 text-lg text-gray-700 leading-relaxed text-center lg:text-left">
+        <p>
+          You have the experience. You have the solutions. We provide the 
+          platform, the projects, and the support.
+        </p>
+      </div>
+    </div>
   </motion.div>
+
+  {/* Tagline BELOW Section */}
+  <div className="mt-16">
+    <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl 
+      font-extrabold text-center italic leading-snug">
+      Stop earning what you're given.{" "}
+      <span className="text-orange-500">
+        Start earning what you deserve.
+      </span>
+    </p>
+  </div>
 </section>
+
+
 
 
         {/* Final CTA */}
