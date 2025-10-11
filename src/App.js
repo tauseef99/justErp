@@ -24,6 +24,10 @@ import SocialResponsibility from "./Components/SocialResponsibility";
 import JoinAsConsultant from "./Components/JoinAsConsultant";
 import ReferralBonus from "./Components/ReferralBonus";
 import PersonalDataProtection from "./Components/PersonalDataProtection";
+import PaymentSuccess from './Components/payment/PaymentSuccess';
+import PaymentCancel from './Components/payment/PaymentCancel';
+import CustomerService from "./Components/CustomerService";
+import TermsOfService from "./Components/TermsOfService";
 
 function App() {
   return (
@@ -49,6 +53,10 @@ function App() {
         <Route path="/join/as/consultant" element={<JoinAsConsultant/>}/>
         <Route path="/referral/bonus" element={<ReferralBonus/>}/>
         <Route path="/personal/data/protection" element={<PersonalDataProtection/>}/>
+        <Route path="/payment-success" element={<PaymentSuccess />} />
+        <Route path="/payment-cancel" element={<PaymentCancel />} />
+        <Route path="/customer/services" element={<CustomerService />} />
+        <Route path="/terms/services" element={<TermsOfService />} />
 
 
 

@@ -287,99 +287,168 @@ const BuyerMessages = () => {
     }
   };
 
-  // Handle offer actions (accept/reject)
-  const handleOfferAction = async (offerId, action) => {
-    try {
-      console.log(`🔄 ${action} offer: ${offerId}`);
-      setProcessingOffer(offerId);
+  // ✅ FIXED: Handle offer actions (accept/reject)
+  
+// ✅ FIXED: Complete handleOfferAction with better debugging
+const handleOfferAction = async (offerId, action) => {
+  try {
+    console.log(`🔄 ${action.toUpperCase()} OFFER REQUEST:`, {
+      offerId,
+      userId: user?.id,
+      userEmail: user?.email,
+      action
+    });
+
+    // Validate required data
+    if (!offerId) {
+      throw new Error('Offer ID is required');
+    }
+
+    if (!user?.id) {
+      throw new Error('User authentication required. Please log in again.');
+    }
+
+    // Prepare payload with userId
+    const payload = { 
+      userId: user.id 
+    };
+
+    console.log(`📤 Sending ${action} request with payload:`, payload);
+
+    setProcessingOffer(offerId);
+    
+    let response;
+    if (action === 'accept') {
+      response = await offerAPI.acceptOffer(offerId, payload);
       
-      let response;
-      if (action === 'accept') {
-        response = await offerAPI.acceptOffer(offerId);
-      } else {
-        response = await offerAPI.rejectOffer(offerId);
+      // Handle payment session redirect
+      const paymentSession = response.data?.paymentSession || response.data?.data?.paymentSession;
+      if (paymentSession && paymentSession.url) {
+        console.log('💳 Payment session created, redirecting to:', paymentSession.url);
+        window.location.href = paymentSession.url;
+        return; // Exit early since we're redirecting
       }
-      
-      console.log(`✅ Offer ${action}ed:`, response.data);
-      
-      // Update offer in messages and offers list
-      const updatedOffer = response.data.offer;
-      
-      setMessages(prev => 
-        prev.map(msg => 
-          msg.type === 'offer' && msg.offer._id === offerId 
-            ? { ...msg, offer: updatedOffer }
-            : msg
-        )
-      );
-      
-      setOffers(prev => 
-        prev.map(offer => 
-          offer._id === offerId ? updatedOffer : offer
-        )
-      );
-      
-      // Send notification message
-      if (activeConversation) {
-        const actionText = action === 'accept' ? 'accepted' : 'rejected';
+    } else if (action === 'reject') {
+      response = await offerAPI.rejectOffer(offerId, payload);
+    } else {
+      throw new Error(`Unknown action: ${action}`);
+    }
+
+    console.log(`✅ Offer ${action}ed successfully:`, response.data);
+
+    // Handle different response structures
+    const updatedOffer = response.data?.data || response.data?.offer || response.data;
+
+    if (!updatedOffer) {
+      throw new Error('No offer data received from server');
+    }
+
+    // Update local state
+    setOffers(prev => 
+      prev.map(offer => 
+        offer._id === offerId ? updatedOffer : offer
+      )
+    );
+
+    setMessages(prev => 
+      prev.map(msg => 
+        msg.type === 'offer' && msg.offer?._id === offerId 
+          ? { ...msg, offer: updatedOffer }
+          : msg
+      )
+    );
+
+    // Send notification message for reject
+    if (activeConversation && action === 'reject') {
+      try {
         const messageData = {
           conversationId: activeConversation._id,
           receiverId: activeConversation.seller?._id,
-          message: `I've ${actionText} your offer: ${updatedOffer.title} - $${updatedOffer.price}`
+          message: `I've rejected your offer: ${updatedOffer.title} - $${updatedOffer.price}`
         };
         
         await messageAPI.sendMessage(messageData);
+        console.log('✅ Rejection notification sent');
+      } catch (notificationError) {
+        console.error('❌ Error sending rejection notification:', notificationError);
+        // Don't throw here, just log the error
       }
-      
-      return updatedOffer;
-    } catch (error) {
-      console.error(`❌ Error ${action}ing offer:`, error);
-      alert(`Failed to ${action} offer. Please try again.`);
-      throw error;
-    } finally {
-      setProcessingOffer(null);
     }
-  };
 
-  // Handle offer payment
-  const handleOfferPayment = async (offerId) => {
-    try {
-      console.log(`💳 Processing payment for offer: ${offerId}`);
-      setProcessingOffer(offerId);
-      
-      const offer = offers.find(o => o._id === offerId);
-      if (!offer) {
-        throw new Error('Offer not found');
-      }
-      
-      // Create Stripe checkout session
-      const paymentData = {
-        amount: offer.price,
-        currency: offer.currency || 'usd',
-        offerId: offer._id,
-        buyerId: user.id,
-        sellerId: offer.sellerId._id,
-        description: `Payment for: ${offer.title}`
-      };
-      
-      console.log('💳 Creating checkout session:', paymentData);
-      const response = await paymentAPI.createCheckoutSession(paymentData);
-      
-      if (response.data.url) {
-        // Redirect to Stripe Checkout
-        window.location.href = response.data.url;
-      } else {
-        throw new Error('No checkout URL received');
-      }
-      
-    } catch (error) {
-      console.error('❌ Error processing payment:', error);
-      alert('Failed to process payment. Please try again.');
-      throw error;
-    } finally {
-      setProcessingOffer(null);
+    // Show success message
+    if (action === 'reject') {
+      alert('Offer rejected successfully!');
+    } else if (action === 'accept') {
+      alert('Offer accepted! Preparing payment...');
     }
-  };
+    
+    return updatedOffer;
+
+  } catch (error) {
+    console.error(`❌ Error ${action}ing offer:`, error);
+    
+    // Enhanced error message
+    const errorMessage = error.response?.data?.error || 
+                        error.response?.data?.message || 
+                        error.response?.data?.details || 
+                        error.message || 
+                        `Failed to ${action} offer`;
+    
+    alert(`Error: ${errorMessage}`);
+    throw error;
+  } finally {
+    setProcessingOffer(null);
+  }
+};
+
+  
+ 
+// Handle offer payment (manual payment trigger)
+const handleOfferPayment = async (offerId) => {
+  try {
+    console.log(`💳 Processing payment for offer: ${offerId}`);
+    setProcessingOffer(offerId);
+    
+    const offer = offers.find(o => o._id === offerId);
+    if (!offer) {
+      throw new Error('Offer not found');
+    }
+    
+    // Only create payment session for accepted offers
+    if (offer.status !== 'accepted') {
+      throw new Error('Offer must be accepted before payment');
+    }
+    
+    // Create Stripe checkout session
+    const paymentData = {
+      amount: offer.price,
+      currency: offer.currency || 'usd',
+      offerId: offer._id,
+      buyerId: user.id, // Make sure user.id is included
+      sellerId: offer.sellerId._id,
+      description: `Payment for: ${offer.title}`
+    };
+    
+    console.log('💳 Creating checkout session:', paymentData);
+    const response = await paymentAPI.createCheckoutSession(paymentData);
+    
+    if (response.data?.url || response.data?.session?.url) {
+      // Redirect to Stripe Checkout
+      const paymentUrl = response.data.url || response.data.session.url;
+      console.log('🔗 Redirecting to payment:', paymentUrl);
+      window.location.href = paymentUrl;
+    } else {
+      throw new Error('No checkout URL received');
+    }
+    
+  } catch (error) {
+    console.error('❌ Error processing payment:', error);
+    alert('Failed to process payment. Please try again.');
+    throw error;
+  } finally {
+    setProcessingOffer(null);
+  }
+};
 
   // Handle selected seller from dashboard
   const handleSelectedSeller = async (seller) => {
@@ -828,7 +897,7 @@ const BuyerMessages = () => {
                   onClick={retrySocketConnection}
                   className="ml-2 text-xs underline"
                 >
-                  {/* Retry */}
+                  Retry
                 </button>
               )}
             </div>

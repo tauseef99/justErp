@@ -107,6 +107,13 @@ class SocketService {
     }
   }
 
+  // Message events
+  sendMessage(messageData) {
+    if (this.socket && this.isConnected) {
+      this.socket.emit('sendMessage', messageData);
+    }
+  }
+
   onNewMessage(callback) {
     if (this.socket) {
       this.socket.on('newMessage', callback);
@@ -137,7 +144,6 @@ class SocketService {
     }
   }
 
-  // ADDED: Missing offUserTyping method
   offUserTyping() {
     if (this.socket) {
       this.socket.off('userTyping');
@@ -147,6 +153,74 @@ class SocketService {
   emitTyping(conversationId, isTyping) {
     if (this.socket && this.isConnected) {
       this.socket.emit('typing', { conversationId, isTyping });
+    }
+  }
+
+  // ----------------- Offer-related -----------------
+  // ADDED: Offer event listeners
+  onOfferCreated(callback) {
+    if (this.socket) {
+      this.socket.on('offerCreated', callback);
+    }
+  }
+
+  offOfferCreated() {
+    if (this.socket) {
+      this.socket.off('offerCreated');
+    }
+  }
+
+  onOfferUpdated(callback) {
+    if (this.socket) {
+      this.socket.on('offerUpdated', callback);
+    }
+  }
+
+  offOfferUpdated() {
+    if (this.socket) {
+      this.socket.off('offerUpdated');
+    }
+  }
+
+  onOfferAccepted(callback) {
+    if (this.socket) {
+      this.socket.on('offerAccepted', callback);
+    }
+  }
+
+  offOfferAccepted() {
+    if (this.socket) {
+      this.socket.off('offerAccepted');
+    }
+  }
+
+  onOfferRejected(callback) {
+    if (this.socket) {
+      this.socket.on('offerRejected', callback);
+    }
+  }
+
+  offOfferRejected() {
+    if (this.socket) {
+      this.socket.off('offerRejected');
+    }
+  }
+
+  emitCreateOffer(offerData) {
+    if (this.socket && this.isConnected) {
+      this.socket.emit('createOffer', offerData);
+    }
+  }
+
+  emitAcceptOffer(offerData) {
+    if (this.socket && this.isConnected) {
+      this.socket.emit('acceptOffer', offerData);
+    }
+  }
+
+  emitRejectOffer(offerData) {
+    if (this.socket && this.isConnected) {
+      this.socket.emit('rejectOffer', offerData);
     }
   }
 
@@ -223,6 +297,19 @@ class SocketService {
     }
   }
 
+  // ADDED: Missing call event for ice-candidate (different naming)
+  onIceCandidate(callback) {
+    if (this.socket) {
+      this.socket.on('ice-candidate', callback);
+    }
+  }
+
+  offIceCandidate() {
+    if (this.socket) {
+      this.socket.off('ice-candidate');
+    }
+  }
+
   emitCallOffer(data) {
     if (this.socket && this.isConnected) {
       this.socket.emit('callOffer', data);
@@ -241,6 +328,13 @@ class SocketService {
     }
   }
 
+  // ADDED: Alternative ice-candidate emit method
+  emitIceCandidate(data) {
+    if (this.socket && this.isConnected) {
+      this.socket.emit('ice-candidate', data);
+    }
+  }
+
   emitEndCall(data) {
     if (this.socket && this.isConnected) {
       this.socket.emit('endCall', data);
@@ -253,20 +347,71 @@ class SocketService {
     }
   }
 
-  // ----------------- Helpers -----------------
+  // ADDED: Start call method
+  emitStartCall(data) {
+    if (this.socket && this.isConnected) {
+      this.socket.emit('startCall', data);
+    }
+  }
+
+  // ----------------- Payment-related -----------------
+  // ADDED: Payment event listeners
+  onPaymentSuccess(callback) {
+    if (this.socket) {
+      this.socket.on('paymentSuccess', callback);
+    }
+  }
+
+  offPaymentSuccess() {
+    if (this.socket) {
+      this.socket.off('paymentSuccess');
+    }
+  }
+
+  onPaymentFailed(callback) {
+    if (this.socket) {
+      this.socket.on('paymentFailed', callback);
+    }
+  }
+
+  offPaymentFailed() {
+    if (this.socket) {
+      this.socket.off('paymentFailed');
+    }
+  }
+
+  // ----------------- Notification-related -----------------
+  // ADDED: Notification event listeners
+  onNotification(callback) {
+    if (this.socket) {
+      this.socket.on('notification', callback);
+    }
+  }
+
+  offNotification() {
+    if (this.socket) {
+      this.socket.off('notification');
+    }
+  }
+
+  // ----------------- Connection Status -----------------
   getConnectionStatus() {
-    return this.isConnected;
+    return this.isConnected && this.socket?.connected;
+  }
+
+  getSocketId() {
+    return this.socket?.id;
   }
 
   waitForConnection(timeout = 5000) {
     return new Promise((resolve, reject) => {
-      if (this.isConnected) {
+      if (this.isConnected && this.socket?.connected) {
         resolve(true);
         return;
       }
 
       const checkInterval = setInterval(() => {
-        if (this.isConnected) {
+        if (this.isConnected && this.socket?.connected) {
           clearInterval(checkInterval);
           resolve(true);
         }
@@ -276,6 +421,44 @@ class SocketService {
         clearInterval(checkInterval);
         reject(new Error('Connection timeout'));
       }, timeout);
+    });
+  }
+
+  // ----------------- Cleanup Methods -----------------
+  // ADDED: Comprehensive cleanup method
+  removeAllListeners() {
+    if (this.socket) {
+      this.socket.removeAllListeners();
+      console.log('✅ Removed all socket listeners');
+    }
+  }
+
+  // ADDED: Safe cleanup for specific events
+  cleanupEventListeners() {
+    const cleanupMethods = [
+      'offNewMessage',
+      'offConversationUpdated',
+      'offUserTyping',
+      'offOfferCreated',
+      'offOfferUpdated',
+      'offOfferAccepted',
+      'offOfferRejected',
+      'offIncomingCall',
+      'offCallAnswered',
+      'offCallConnected',
+      'offCallEnded',
+      'offCallRejected',
+      'offICECandidate',
+      'offIceCandidate',
+      'offPaymentSuccess',
+      'offPaymentFailed',
+      'offNotification'
+    ];
+
+    cleanupMethods.forEach(method => {
+      if (typeof this[method] === 'function') {
+        this[method]();
+      }
     });
   }
 }

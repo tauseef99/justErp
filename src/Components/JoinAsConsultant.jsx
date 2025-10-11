@@ -168,7 +168,7 @@ const JoinAsConsultant = () => {
         </section>
 
         {/* Journey Section */}
-    <section className="container mx-auto px-6 lg:px-20 py-28">
+  <section className="container mx-auto px-6 lg:px-20 py-28">
   <motion.div
     initial={{ opacity: 0, scale: 0.9 }}
     whileInView={{ opacity: 1, scale: 1 }}
@@ -199,11 +199,11 @@ const JoinAsConsultant = () => {
 
     {/* Right Side - Text */}
     <div>
-      <h2 className="text-4xl md:text-5xl font-black text-gray-800 mb-8 leading-tight text-center lg:text-left">
+      <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-gray-800 mb-8 leading-tight text-center lg:text-left">
         Your Journey Has Prepared You for This Moment
       </h2>
 
-      <div className="space-y-6 text-lg text-gray-700 leading-relaxed text-center lg:text-left">
+      <div className="space-y-6 text-base md:text-lg text-gray-700 leading-relaxed text-center lg:text-left">
         <p>
           You have the experience. You have the solutions. We provide the 
           platform, the projects, and the support.
@@ -214,15 +214,18 @@ const JoinAsConsultant = () => {
 
   {/* Tagline BELOW Section */}
   <div className="mt-16">
-    <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl 
-      font-extrabold text-center italic leading-snug">
-      Stop earning what you're given.{" "}
-      <span className="text-orange-500">
-        Start earning what you deserve.
-      </span>
-    </p>
+    <p
+  className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-center italic whitespace-nowrap"
+>
+  Stop earning what you're given.{" "}
+  <span className="text-orange-500">
+    Start earning what you deserve.
+  </span>
+</p>
+
   </div>
 </section>
+
 
 
 

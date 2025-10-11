@@ -37,16 +37,18 @@ const subNavItems = [
 ];
 
 const aboutDropdownItems = [
-  "ERP Training",
-  "SAP Ariba",
-  "JD Edward",
-  "Project Management",
-  "SAP Signavio",
-  "SuccessFactors",
-  "HCM",
-  "Epicor",
-  "Oddo",
+  "How JustERPs works",
+  "How to hire ERP Consultant",
+  "Join as Freelancer ERP Consultant",
+  "Personal Data Protection",
+  "Refer to a Consultant Bonus",
+  "Customer Support",
+  "Social Responsibility",
+  "Privacy Policy & Term of Use",
+  "Protecting Data in ERP Implementation",
+  "Categories",
 ];
+
 
 function Navbar() {
   const [isSticky, setIsSticky] = useState(false);
