@@ -6,8 +6,8 @@ import Footer from "../Components/Footer";
 
 // Temporary images (to be replaced later)
 import img1 from "../Assets/images/CS1.jpg";
-import img2 from "../Assets/images/CS2.jpg";
-import img3 from "../Assets/images/CustomerService.png";
+import img2 from "../Assets/images/CustomerService.png";
+// import img3 from "../Assets/images/CS2.jpg";
 
 const CustomerService = () => {
   return (
@@ -36,13 +36,14 @@ const CustomerService = () => {
             Customer Service
           </motion.h1>
           <motion.p
-            initial={{ y: 50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 1, delay: 0.3 }}
-            className="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto leading-relaxed"
-          >
-            Our Commitment to Service Excellence
-          </motion.p>
+  initial={{ y: 50, opacity: 0 }}
+  animate={{ y: 0, opacity: 1 }}
+  transition={{ duration: 1, delay: 0.3 }}
+  className="text-2xl md:text-3xl font-semibold text-[#FFA500] max-w-3xl mx-auto leading-relaxed"
+>
+  Our Commitment to Service Excellence
+</motion.p>
+
         </div>
       </div>
 
@@ -114,11 +115,11 @@ const CustomerService = () => {
         viewport={{ once: true }}
         className="my-12"
       >
-        <img
+        {/* <img
           src={img3}
           alt="Customer Support"
           className="w-full h-[400px] object-cover shadow-2xl rounded-3xl"
-        />
+        /> */}
       </motion.div>
 
       {/* ========================== */}

@@ -29,18 +29,13 @@ export const offerAPI = {
     }
   },
 
-  // ✅ FIXED: Accept an offer with user ID in payload
-  acceptOffer: async (offerId, data = {}) => {
+  // ✅ FIXED: Accept an offer - no userId in payload needed
+  acceptOffer: async (offerId) => {
     try {
-      console.log(`✅ Accepting offer: ${offerId}`, data);
+      console.log(`✅ Accepting offer: ${offerId}`);
       
-      // Ensure we have user ID in the payload
-      const payload = {
-        userId: data.userId,
-        ...data
-      };
-      
-      const response = await api.patch(`/api/offers/${offerId}/accept`, payload);
+      // ✅ FIXED: No payload needed - userId comes from auth token
+      const response = await api.patch(`/api/offers/${offerId}/accept`);
       console.log('✅ Offer accepted successfully:', response.data);
       return response;
     } catch (error) {
@@ -57,18 +52,13 @@ export const offerAPI = {
     }
   },
 
-  // ✅ FIXED: Reject an offer with user ID in payload
-  rejectOffer: async (offerId, data = {}) => {
+  // ✅ FIXED: Reject an offer - no userId in payload needed
+  rejectOffer: async (offerId) => {
     try {
-      console.log(`❌ Rejecting offer: ${offerId}`, data);
+      console.log(`❌ Rejecting offer: ${offerId}`);
       
-      // Ensure we have user ID in the payload
-      const payload = {
-        userId: data.userId,
-        ...data
-      };
-      
-      const response = await api.patch(`/api/offers/${offerId}/reject`, payload);
+      // ✅ FIXED: No payload needed - userId comes from auth token
+      const response = await api.patch(`/api/offers/${offerId}/reject`);
       console.log('✅ Offer rejected successfully:', response.data);
       return response;
     } catch (error) {

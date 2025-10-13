@@ -23,7 +23,7 @@ const footerData = [
     heading: "For ERP Freelancers",
     links: [
       { name: "Join as Freelancer ERP Consultant", href: "/join/as/consultant" },
-      { name: "JustERPs ProjectTeams", href: "/projects" },
+      { name: "JustERPs ProjectTeams", href: "/erp/team" },
     ],
   },
   {
@@ -44,6 +44,7 @@ const footerData = [
             { name: "Techno-Functional Consultant", href: "/join" },
         { name: "Project Manager", href: "/join" },
           { name: "Team Lead", href: "/join" },
+          { name: "View full list of all categories", href: "/join" },
 
     ],
   },

@@ -335,106 +335,121 @@ const SellerMessages = () => {
     }
   };
 
-  // Handle sending custom offer - FIXED VERSION
-  const handleSendCustomOffer = async (offerData) => {
-    try {
-      console.log('📦 Seller: Sending custom offer:', offerData);
-      
-      // Ensure conversationId is included
-      const offerPayload = {
-        ...offerData,
-        conversationId: activeConversation._id,
-        buyerId: activeConversation.buyer?._id || getBuyerId(activeConversation)
-      };
-      
-      const response = await offerAPI.createOffer(offerPayload);
-      console.log('✅ Seller: Offer created:', response.data);
-      
-      const newOffer = response.data?.data || response.data;
-      
-      // Add offer to local state
-      setOffers(prev => [newOffer, ...prev]);
-      
-      // Create offer message for display
-      const offerMessage = {
-        _id: `offer-${Date.now()}`,
-        type: 'offer',
-        offer: newOffer,
-        sender: user,
-        createdAt: new Date(),
-        isRead: false,
-        message: `I've sent you a custom offer: ${newOffer.title} - $${newOffer.price}`
-      };
-      
-      setMessages(prev => [...prev, offerMessage]);
-      scrollToBottom();
-      
-      // Send notification message
-      if (activeConversation) {
-        const messageData = {
-          conversationId: activeConversation._id,
-          receiverId: activeConversation.buyer?._id || getBuyerId(activeConversation),
-          message: `I've sent you a custom offer: ${newOffer.title} - $${newOffer.price}`,
-          offerId: newOffer._id
-        };
-        
-        await messageAPI.sendMessage(messageData);
-      }
-      
-      return newOffer;
-    } catch (error) {
-      console.error('❌ Seller: Error sending custom offer:', error);
-      throw error;
-    }
-  };
-
- // In SellerMessages.jsx - Update the handleOfferAction function
-const handleOfferAction = async (offerId, action) => {
+const handleSendCustomOffer = async (offerData) => {
   try {
-    console.log(`🔄 Seller: ${action} offer: ${offerId} by user: ${user?.id}`);
+    console.log('📦 Seller: Sending REAL custom offer:', offerData);
     
-    if (!user?.id) {
-      throw new Error('User ID not found. Please log in again.');
+    // Create the offer payload with correct field names
+    const offerPayload = {
+      title: offerData.title,
+      description: offerData.description,
+      price: offerData.price,
+      deliveryDays: offerData.deliveryDays,
+      conversationId: activeConversation._id,
+      buyerId: getBuyerId(activeConversation),
+      sellerId: user?.id,
+      revisions: offerData.revisions || 1,
+      requirements: offerData.requirements || [],
+      inclusions: offerData.inclusions || []
+    };
+
+    console.log('📦 Seller: Sending offer with payload:', offerPayload);
+
+    const response = await offerAPI.createOffer(offerPayload);
+    console.log('✅ Seller: REAL Offer created:', response.data);
+
+    const newOffer = response.data?.data || response.data;
+    
+    if (!newOffer) {
+      throw new Error('No offer data received from server');
     }
 
-    let response;
-    const payload = { 
-      userId: user.id // Make sure this is included
-    };
-    
-    if (action === 'accept') {
-      response = await offerAPI.acceptOffer(offerId, payload);
-    } else {
-      response = await offerAPI.rejectOffer(offerId, payload);
+    console.log('🔄 New REAL offer created with ID:', newOffer._id);
+
+    // ✅ Socket emission with error handling - don't throw for socket errors
+    try {
+      if (socketService.getConnectionStatus && socketService.getConnectionStatus()) {
+        socketService.emitNewOffer(newOffer);
+        console.log('📡 Socket event emitted for new offer');
+      } else {
+        console.warn('⚠️ Socket not connected, skipping socket emission');
+        // Don't throw - this is not critical
+      }
+    } catch (socketError) {
+      console.warn('⚠️ Socket emission failed (non-critical):', socketError);
+      // Don't rethrow - offer was created successfully
     }
+
+    // Update local state
+    setOffers(prev => [...prev, newOffer]);
     
-    console.log(`✅ Seller: Offer ${action}ed:`, response.data);
-    
-    const updatedOffer = response.data?.data || response.data;
-    
-    // Update offer in offers list
-    setOffers(prev => 
-      prev.map(offer => 
-        offer._id === offerId ? updatedOffer : offer
-      )
-    );
-    
-    // Update offer in messages
-    setMessages(prev => 
-      prev.map(msg => 
-        msg.type === 'offer' && msg.offer._id === offerId 
-          ? { ...msg, offer: updatedOffer }
-          : msg
-      )
-    );
-    
-    return updatedOffer;
+    // Create a message for the offer
+    const offerMessage = {
+      _id: `temp-${Date.now()}`,
+      type: 'offer',
+      offer: newOffer,
+      sender: { _id: user?.id },
+      conversationId: activeConversation._id,
+      createdAt: new Date().toISOString(),
+      message: `New offer: ${newOffer.title} - $${newOffer.price}`
+    };
+
+    setMessages(prev => [...prev, offerMessage]);
+    scrollToBottom();
+
+    return newOffer;
   } catch (error) {
-    console.error(`❌ Seller: Error ${action}ing offer:`, error);
-    alert(`Failed to ${action} offer: ${error.response?.data?.message || error.message}`);
+    console.error('❌ Seller: Error sending REAL custom offer:', error);
     throw error;
   }
 };
+  // In SellerMessages.jsx - Update the handleOfferAction function
+  const handleOfferAction = async (offerId, action) => {
+    try {
+      console.log(`🔄 Seller: ${action} offer: ${offerId} by user: ${user?.id}`);
+      
+      if (!user?.id) {
+        throw new Error('User ID not found. Please log in again.');
+      }
+
+      let response;
+      const payload = { 
+        userId: user.id // Make sure this is included
+      };
+      
+      if (action === 'accept') {
+        response = await offerAPI.acceptOffer(offerId, payload);
+      } else {
+        response = await offerAPI.rejectOffer(offerId, payload);
+      }
+      
+      console.log(`✅ Seller: Offer ${action}ed:`, response.data);
+      
+      const updatedOffer = response.data?.data || response.data;
+      
+      // Update offer in offers list
+      setOffers(prev => 
+        prev.map(offer => 
+          offer._id === offerId ? updatedOffer : offer
+        )
+      );
+      
+      // Update offer in messages
+      setMessages(prev => 
+        prev.map(msg => 
+          msg.type === 'offer' && msg.offer._id === offerId 
+            ? { ...msg, offer: updatedOffer }
+            : msg
+        )
+      );
+      
+      return updatedOffer;
+    } catch (error) {
+      console.error(`❌ Seller: Error ${action}ing offer:`, error);
+      alert(`Failed to ${action} offer: ${error.response?.data?.message || error.message}`);
+      throw error;
+    }
+  };
 
   // Helper functions to safely access buyer data
   const getBuyerId = (conversation) => {
@@ -601,49 +616,49 @@ const handleOfferAction = async (offerId, action) => {
     }
   };
 
-// Add this function to your SellerMessages.jsx in the component
-const handleOfferPayment = async (offerId) => {
-  try {
-    console.log(`💳 Processing payment for offer: ${offerId}`);
-    
-    // Find the offer
-    const offer = offers.find(o => o._id === offerId);
-    if (!offer) {
-      throw new Error('Offer not found');
+  // Add this function to your SellerMessages.jsx in the component
+  const handleOfferPayment = async (offerId) => {
+    try {
+      console.log(`💳 Processing payment for offer: ${offerId}`);
+      
+      // Find the offer
+      const offer = offers.find(o => o._id === offerId);
+      if (!offer) {
+        throw new Error('Offer not found');
+      }
+
+      // If there's a payment session URL, redirect to Stripe
+      if (offer.paymentSession?.url) {
+        console.log('🔗 Redirecting to Stripe checkout:', offer.paymentSession.url);
+        window.open(offer.paymentSession.url, '_blank');
+        return;
+      }
+
+      // Otherwise create a new payment session
+      console.log('💳 Creating new payment session for offer:', offerId);
+      const paymentData = {
+        offerId: offerId,
+        amount: offer.price,
+        currency: offer.currency || 'usd',
+        successUrl: `${window.location.origin}/payment/success?offer_id=${offerId}`,
+        cancelUrl: `${window.location.origin}/payment/cancel?offer_id=${offerId}`
+      };
+
+      const response = await paymentAPI.createCheckoutSession(paymentData);
+      
+      if (response.data?.session?.url) {
+        console.log('🔗 Redirecting to Stripe checkout');
+        window.open(response.data.session.url, '_blank');
+      } else {
+        throw new Error('No payment URL received');
+      }
+
+    } catch (error) {
+      console.error('❌ Error processing payment:', error);
+      alert(`Payment failed: ${error.message}`);
+      throw error;
     }
-
-    // If there's a payment session URL, redirect to Stripe
-    if (offer.paymentSession?.url) {
-      console.log('🔗 Redirecting to Stripe checkout:', offer.paymentSession.url);
-      window.open(offer.paymentSession.url, '_blank');
-      return;
-    }
-
-    // Otherwise create a new payment session
-    console.log('💳 Creating new payment session for offer:', offerId);
-    const paymentData = {
-      offerId: offerId,
-      amount: offer.price,
-      currency: offer.currency || 'usd',
-      successUrl: `${window.location.origin}/payment/success?offer_id=${offerId}`,
-      cancelUrl: `${window.location.origin}/payment/cancel?offer_id=${offerId}`
-    };
-
-    const response = await paymentAPI.createCheckoutSession(paymentData);
-    
-    if (response.data?.session?.url) {
-      console.log('🔗 Redirecting to Stripe checkout');
-      window.open(response.data.session.url, '_blank');
-    } else {
-      throw new Error('No payment URL received');
-    }
-
-  } catch (error) {
-    console.error('❌ Error processing payment:', error);
-    alert(`Payment failed: ${error.message}`);
-    throw error;
-  }
-};
+  };
 
   const handleEndCall = async () => {
     await endCall();

@@ -6,8 +6,8 @@ import Footer from "../Components/Footer";
 
 // Replace these with your actual image assets
 import imgHero from "../Assets/images/Terms2.png";
-import imgA from "../Assets/images/Cookies.jpeg";
-import imgB from "../Assets/images/Terms.png";
+// import imgA from "../Assets/images/Cookies.jpeg";
+// import imgB from "../Assets/images/Terms.png";
 import imgC from "../Assets/images/Policy.jpg";
 
 /**
@@ -113,7 +113,7 @@ const TermsOfService = () => {
 
       {/* IMAGE BANNER */}
       <section className="my-12 container mx-auto px-6 lg:px-20">
-        <motion.img
+        {/* <motion.img
           src={imgA}
           alt="Support channels"
           initial={{ opacity: 0, y: 20 }}
@@ -121,7 +121,7 @@ const TermsOfService = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
           className="w-full h-[380px] object-cover rounded-3xl shadow-xl"
-        />
+        /> */}
       </section>
 
       {/* ACCORDION SECTIONS */}
@@ -259,7 +259,7 @@ const TermsOfService = () => {
 
         {/* IMAGE BANNER 2 */}
         <div className="my-8">
-          <motion.img
+          {/* <motion.img
             src={imgB}
             alt="Guidelines"
             initial={{ opacity: 0, y: 20 }}
@@ -267,7 +267,7 @@ const TermsOfService = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
             className="w-full h-[360px] object-cover rounded-3xl shadow-xl"
-          />
+          /> */}
         </div>
 
         {/* 5. Orders */}
@@ -383,7 +383,7 @@ const TermsOfService = () => {
 
         {/* IMAGE BANNER 4 */}
         <div className="my-8">
-          <motion.img
+          {/* <motion.img
             src={imgA}
             alt="Support channels"
             initial={{ opacity: 0, y: 20 }}
@@ -391,7 +391,7 @@ const TermsOfService = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
             className="w-full h-[360px] object-cover rounded-3xl shadow-xl"
-          />
+          /> */}
         </div>
       </main>
 

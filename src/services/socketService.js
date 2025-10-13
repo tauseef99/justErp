@@ -157,7 +157,29 @@ class SocketService {
   }
 
   // ----------------- Offer-related -----------------
-  // ADDED: Offer event listeners
+  // ✅ ADDED: Missing onNewOffer and offNewOffer methods
+  onNewOffer(callback) {
+    if (this.socket) {
+      this.socket.on('newOffer', callback);
+      console.log('📡 Socket: newOffer listener added');
+    }
+  }
+
+  offNewOffer() {
+    if (this.socket) {
+      this.socket.off('newOffer');
+      console.log('📡 Socket: newOffer listener removed');
+    }
+  }
+
+  emitNewOffer(offerData) {
+    if (this.socket && this.isConnected) {
+      this.socket.emit('newOffer', offerData);
+      console.log('📡 Socket: newOffer emitted', offerData);
+    }
+  }
+
+  // Existing offer methods
   onOfferCreated(callback) {
     if (this.socket) {
       this.socket.on('offerCreated', callback);
@@ -439,6 +461,7 @@ class SocketService {
       'offNewMessage',
       'offConversationUpdated',
       'offUserTyping',
+      'offNewOffer', // ✅ Added this
       'offOfferCreated',
       'offOfferUpdated',
       'offOfferAccepted',

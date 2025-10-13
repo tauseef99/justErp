@@ -99,6 +99,9 @@ const BuyerMessages = () => {
         socketService.onConversationUpdated(handleConversationUpdated);
         socketService.onUserTyping(handleUserTyping);
         
+        // ✅ FIXED: Add listener for new offers
+        socketService.onNewOffer(handleNewOffer);
+        
         // Call-related socket listeners
         socketService.onIncomingCall(handleIncomingCall);
         socketService.onCallAnswered(handleCallAnswered);
@@ -147,6 +150,7 @@ const BuyerMessages = () => {
       socketService.offNewMessage();
       socketService.offConversationUpdated();
       socketService.offUserTyping();
+      socketService.offNewOffer(); // ✅ Clean up offer listener
       socketService.offIncomingCall();
       socketService.offCallAnswered();
       socketService.offCallEnded();
@@ -201,6 +205,68 @@ const BuyerMessages = () => {
         return conv;
       })
     );
+  };
+
+  // ✅ FIXED: Add handler for new offers via socket
+  const handleNewOffer = (newOffer) => {
+    console.log('📦 New offer received via socket:', newOffer);
+    
+    if (activeConversation && newOffer.conversationId === activeConversation._id) {
+      console.log('🎯 New offer belongs to active conversation');
+      
+      // Add offer to offers list
+      setOffers(prev => {
+        const exists = prev.some(offer => offer._id === newOffer._id);
+        if (exists) {
+          console.log('🔄 Offer already exists, updating...');
+          return prev.map(offer => offer._id === newOffer._id ? newOffer : offer);
+        }
+        console.log('🆕 Adding new offer to offers list');
+        return [newOffer, ...prev];
+      });
+      
+      // Add offer as message if it doesn't exist
+      const offerMessage = {
+        _id: `offer-msg-${newOffer._id}`,
+        type: 'offer',
+        offer: newOffer,
+        sender: newOffer.sellerId,
+        createdAt: newOffer.createdAt || new Date(),
+        isRead: false,
+        message: `New offer: ${newOffer.title} - $${newOffer.price}`
+      };
+      
+      setMessages(prev => {
+        const exists = prev.some(msg => 
+          msg.type === 'offer' && msg.offer?._id === newOffer._id
+        );
+        if (exists) {
+          console.log('🔄 Offer message already exists, updating...');
+          return prev.map(msg => 
+            msg.type === 'offer' && msg.offer?._id === newOffer._id 
+              ? { ...msg, offer: newOffer } 
+              : msg
+          );
+        }
+        console.log('🆕 Adding new offer message to chat');
+        return [...prev, offerMessage];
+      });
+      
+      scrollToBottom();
+      
+      // Update conversation last message
+      setConversations(prev => 
+        prev.map(conv => 
+          conv._id === activeConversation._id 
+            ? { 
+                ...conv, 
+                lastMessage: `New offer: ${newOffer.title} - $${newOffer.price}`,
+                lastMessageAt: new Date()
+              }
+            : conv
+        )
+      );
+    }
   };
 
   const handleConversationUpdated = () => {
@@ -269,186 +335,225 @@ const BuyerMessages = () => {
     }
   };
 
-  // Load offers for conversation
+  // ✅ FIXED: Load REAL offers from backend
   const loadOffersForConversation = async (conversationId) => {
-    if (!conversationId || conversationId.startsWith('demo-')) return;
+    if (!conversationId || conversationId.startsWith('demo-')) {
+      console.log('🎭 Skipping offers load for demo conversation');
+      return;
+    }
     
     try {
       setIsLoadingOffers(true);
-      console.log(`📦 Loading offers for conversation: ${conversationId}`);
+      console.log(`📦 Loading REAL offers for conversation: ${conversationId}`);
+      
       const response = await offerAPI.getOffersByConversation(conversationId);
-      console.log('✅ Offers loaded:', response.data);
-      setOffers(response.data?.offers || []);
+      console.log('✅ REAL Offers loaded from backend:', response.data);
+      
+      // ✅ FIXED: Handle the response structure correctly
+      const offersData = response.data?.data || response.data || [];
+      
+      if (Array.isArray(offersData)) {
+        console.log(`🎯 Found ${offersData.length} REAL offers:`, offersData.map(o => ({
+          id: o._id,
+          title: o.title,
+          price: o.price,
+          status: o.status,
+          isDemo: o._id?.startsWith('demo-offer-') || false
+        })));
+        
+        setOffers(offersData);
+      } else {
+        console.error('❌ Invalid offers data structure:', offersData);
+        setOffers([]);
+      }
     } catch (error) {
-      console.error('❌ Error loading offers:', error);
+      console.error('❌ Error loading REAL offers:', error);
       setOffers([]);
     } finally {
       setIsLoadingOffers(false);
     }
   };
 
-  // ✅ FIXED: Handle offer actions (accept/reject)
-  
-// ✅ FIXED: Complete handleOfferAction with better debugging
-const handleOfferAction = async (offerId, action) => {
-  try {
-    console.log(`🔄 ${action.toUpperCase()} OFFER REQUEST:`, {
-      offerId,
-      userId: user?.id,
-      userEmail: user?.email,
-      action
-    });
+  // ✅ FIXED: Handle both real and demo offers
+  const handleOfferAction = async (offerId, action) => {
+    try {
+      console.log(`=== 🚀 START ${action.toUpperCase()} OFFER FLOW ===`);
+      console.log('📋 Offer Details:', {
+        offerId: offerId,
+        offerIdType: typeof offerId,
+        isDemoOffer: offerId?.startsWith('demo-offer-'),
+        user: {
+          id: user?.id,
+          email: user?.email,
+          role: user?.role
+        },
+        action: action
+      });
 
-    // Validate required data
-    if (!offerId) {
-      throw new Error('Offer ID is required');
-    }
+      // Validate required data
+      if (!offerId) {
+        console.error('❌ Missing offer ID');
+        throw new Error('Offer ID is required');
+      }
 
-    if (!user?.id) {
-      throw new Error('User authentication required. Please log in again.');
-    }
+      if (!user?.id) {
+        console.error('❌ Missing user authentication');
+        throw new Error('User authentication required. Please log in again.');
+      }
 
-    // Prepare payload with userId
-    const payload = { 
-      userId: user.id 
-    };
-
-    console.log(`📤 Sending ${action} request with payload:`, payload);
-
-    setProcessingOffer(offerId);
-    
-    let response;
-    if (action === 'accept') {
-      response = await offerAPI.acceptOffer(offerId, payload);
+      // Check if this is a demo offer
+      const isDemoOffer = offerId.startsWith('demo-offer-');
       
-      // Handle payment session redirect
-      const paymentSession = response.data?.paymentSession || response.data?.data?.paymentSession;
-      if (paymentSession && paymentSession.url) {
-        console.log('💳 Payment session created, redirecting to:', paymentSession.url);
-        window.location.href = paymentSession.url;
-        return; // Exit early since we're redirecting
+      if (isDemoOffer && action === 'accept') {
+        console.log('🎭 Demo offer detected - cannot process payment');
+        alert('This is a demo offer. Please ask the seller to send a real offer to proceed with payment.');
+        return;
       }
-    } else if (action === 'reject') {
-      response = await offerAPI.rejectOffer(offerId, payload);
-    } else {
-      throw new Error(`Unknown action: ${action}`);
-    }
 
-    console.log(`✅ Offer ${action}ed successfully:`, response.data);
+      // Log the exact offer from state
+      const currentOffer = offers.find(o => o._id === offerId);
+      console.log('🔍 Current offer from state:', currentOffer);
 
-    // Handle different response structures
-    const updatedOffer = response.data?.data || response.data?.offer || response.data;
-
-    if (!updatedOffer) {
-      throw new Error('No offer data received from server');
-    }
-
-    // Update local state
-    setOffers(prev => 
-      prev.map(offer => 
-        offer._id === offerId ? updatedOffer : offer
-      )
-    );
-
-    setMessages(prev => 
-      prev.map(msg => 
-        msg.type === 'offer' && msg.offer?._id === offerId 
-          ? { ...msg, offer: updatedOffer }
-          : msg
-      )
-    );
-
-    // Send notification message for reject
-    if (activeConversation && action === 'reject') {
-      try {
-        const messageData = {
-          conversationId: activeConversation._id,
-          receiverId: activeConversation.seller?._id,
-          message: `I've rejected your offer: ${updatedOffer.title} - $${updatedOffer.price}`
-        };
+      setProcessingOffer(offerId);
+      
+      let response;
+      console.log(`📤 Making API call to ${action} offer...`);
+      
+      if (action === 'accept') {
+        response = await offerAPI.acceptOffer(offerId);
+        console.log('✅ Accept offer API response:', response.data);
         
-        await messageAPI.sendMessage(messageData);
-        console.log('✅ Rejection notification sent');
-      } catch (notificationError) {
-        console.error('❌ Error sending rejection notification:', notificationError);
-        // Don't throw here, just log the error
+        // ✅ FIXED: Handle payment session redirect properly
+        const paymentSession = response.data?.paymentSession || response.data?.data?.paymentSession;
+        console.log('💳 Payment session data:', paymentSession);
+        
+        if (paymentSession && paymentSession.url) {
+          console.log('🔗 Redirecting to Stripe checkout:', paymentSession.url);
+          alert('Redirecting to secure payment page...');
+          window.location.href = paymentSession.url;
+          return; // Exit early since we're redirecting
+        } else {
+          console.warn('⚠️ No payment session URL received');
+          alert('Payment session created but no redirect URL. Please contact support.');
+        }
+      } else if (action === 'reject') {
+        response = await offerAPI.rejectOffer(offerId);
+        console.log('✅ Reject offer API response:', response.data);
+      } else {
+        throw new Error(`Unknown action: ${action}`);
       }
-    }
 
-    // Show success message
-    if (action === 'reject') {
-      alert('Offer rejected successfully!');
-    } else if (action === 'accept') {
-      alert('Offer accepted! Preparing payment...');
-    }
-    
-    return updatedOffer;
+      // Handle different response structures
+      const updatedOffer = response.data?.data || response.data?.offer || response.data;
+      console.log('🔄 Updated offer data:', updatedOffer);
 
-  } catch (error) {
-    console.error(`❌ Error ${action}ing offer:`, error);
-    
-    // Enhanced error message
-    const errorMessage = error.response?.data?.error || 
+      if (!updatedOffer) {
+        console.error('❌ No offer data received from server');
+        throw new Error('No offer data received from server');
+      }
+
+      // Update local state
+      console.log('🔄 Updating local state with new offer data...');
+      setOffers(prev => 
+        prev.map(offer => 
+          offer._id === offerId ? updatedOffer : offer
+        )
+      );
+
+      setMessages(prev => 
+        prev.map(msg => 
+          msg.type === 'offer' && msg.offer?._id === offerId 
+            ? { ...msg, offer: updatedOffer }
+            : msg
+        )
+      );
+
+      // Show success message
+      if (action === 'reject') {
+        alert('✅ Offer rejected successfully!');
+      } else if (action === 'accept') {
+        alert('✅ Offer accepted! Processing payment...');
+      }
+      
+      console.log(`=== ✅ SUCCESS ${action.toUpperCase()} OFFER FLOW ===`);
+      return updatedOffer;
+
+    } catch (error) {
+      console.error(`=== ❌ ERROR ${action.toUpperCase()} OFFER FLOW ===`);
+      console.error('Error details:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+        stack: error.stack
+      });
+      
+      // Enhanced error message
+      let errorMessage = error.response?.data?.error || 
                         error.response?.data?.message || 
                         error.response?.data?.details || 
                         error.message || 
                         `Failed to ${action} offer`;
-    
-    alert(`Error: ${errorMessage}`);
-    throw error;
-  } finally {
-    setProcessingOffer(null);
-  }
-};
-
+      
+      // Special handling for demo offers
+      if (error.response?.data?.isDemo) {
+        errorMessage = "This is a demo offer. Please ask the seller to send a real offer to proceed with payment.";
+      }
+      
+      console.error('🚨 Final error message:', errorMessage);
+      alert(`Error: ${errorMessage}`);
+      throw error;
+    } finally {
+      setProcessingOffer(null);
+      console.log(`=== 🏁 END ${action.toUpperCase()} OFFER FLOW ===`);
+    }
+  };
   
- 
-// Handle offer payment (manual payment trigger)
-const handleOfferPayment = async (offerId) => {
-  try {
-    console.log(`💳 Processing payment for offer: ${offerId}`);
-    setProcessingOffer(offerId);
-    
-    const offer = offers.find(o => o._id === offerId);
-    if (!offer) {
-      throw new Error('Offer not found');
+  // Handle offer payment (manual payment trigger)
+  const handleOfferPayment = async (offerId) => {
+    try {
+      console.log(`💳 Processing payment for offer: ${offerId}`);
+      setProcessingOffer(offerId);
+      
+      const offer = offers.find(o => o._id === offerId);
+      if (!offer) {
+        throw new Error('Offer not found');
+      }
+      
+      // Only create payment session for accepted offers
+      if (offer.status !== 'accepted') {
+        throw new Error('Offer must be accepted before payment');
+      }
+      
+      // Create Stripe checkout session
+      const paymentData = {
+        amount: offer.price,
+        currency: offer.currency || 'usd',
+        offerId: offer._id,
+        buyerId: user.id, // Make sure user.id is included
+        sellerId: offer.sellerId._id,
+        description: `Payment for: ${offer.title}`
+      };
+      
+      console.log('💳 Creating checkout session:', paymentData);
+      const response = await paymentAPI.createCheckoutSession(paymentData);
+      
+      if (response.data?.url || response.data?.session?.url) {
+        // Redirect to Stripe Checkout
+        const paymentUrl = response.data.url || response.data.session.url;
+        console.log('🔗 Redirecting to payment:', paymentUrl);
+        window.location.href = paymentUrl;
+      } else {
+        throw new Error('No checkout URL received');
+      }
+      
+    } catch (error) {
+      console.error('❌ Error processing payment:', error);
+      alert('Failed to process payment. Please try again.');
+      throw error;
+    } finally {
+      setProcessingOffer(null);
     }
-    
-    // Only create payment session for accepted offers
-    if (offer.status !== 'accepted') {
-      throw new Error('Offer must be accepted before payment');
-    }
-    
-    // Create Stripe checkout session
-    const paymentData = {
-      amount: offer.price,
-      currency: offer.currency || 'usd',
-      offerId: offer._id,
-      buyerId: user.id, // Make sure user.id is included
-      sellerId: offer.sellerId._id,
-      description: `Payment for: ${offer.title}`
-    };
-    
-    console.log('💳 Creating checkout session:', paymentData);
-    const response = await paymentAPI.createCheckoutSession(paymentData);
-    
-    if (response.data?.url || response.data?.session?.url) {
-      // Redirect to Stripe Checkout
-      const paymentUrl = response.data.url || response.data.session.url;
-      console.log('🔗 Redirecting to payment:', paymentUrl);
-      window.location.href = paymentUrl;
-    } else {
-      throw new Error('No checkout URL received');
-    }
-    
-  } catch (error) {
-    console.error('❌ Error processing payment:', error);
-    alert('Failed to process payment. Please try again.');
-    throw error;
-  } finally {
-    setProcessingOffer(null);
-  }
-};
+  };
 
   // Handle selected seller from dashboard
   const handleSelectedSeller = async (seller) => {
@@ -572,7 +677,7 @@ const handleOfferPayment = async (offerId) => {
     console.log('✅ Demo conversation created and active');
   };
 
-  // Load messages for a conversation
+  // ✅ FIXED: Load messages and transform REAL offers
   const loadMessages = async (conversationId) => {
     try {
       console.log(`💬 Loading messages for conversation: ${conversationId}`);
@@ -592,41 +697,71 @@ const handleOfferPayment = async (offerId) => {
       }
 
       const response = await messageAPI.getMessages(conversationId);
-      console.log('✅ Messages loaded:', response.data);
+      console.log('✅ REAL Messages loaded:', response.data);
       
-      // Transform messages to include offer messages
       const messagesData = response.data || [];
-      const transformedMessages = messagesData.map(msg => {
-        // Check if message contains offer data
-        if (msg.offerId || msg.message?.includes('custom offer')) {
-          return {
-            ...msg,
-            type: 'offer',
-            offer: msg.offerId || {
-              _id: `demo-offer-${msg._id}`,
-              title: 'Custom Offer',
-              description: 'This is a custom offer from the seller',
-              price: 99,
-              status: 'sent',
-              deliveryTime: 7,
-              revisions: 1
-            }
-          };
-        }
-        return msg;
-      });
       
-      setMessages(transformedMessages);
+      // ✅ FIXED: Also load REAL offers and add them as offer messages
+      try {
+        const offersResponse = await offerAPI.getOffersByConversation(conversationId);
+        const realOffers = offersResponse.data?.data || [];
+        
+        console.log(`🔄 Adding ${realOffers.length} REAL offers to messages`);
+        
+        // Create offer messages for each real offer
+        const offerMessages = realOffers.map(offer => ({
+          _id: `offer-msg-${offer._id}`,
+          type: 'offer',
+          offer: offer,
+          sender: offer.sellerId,
+          createdAt: offer.createdAt,
+          isRead: false,
+          message: `Custom Offer: ${offer.title} - $${offer.price}`
+        }));
+        
+        // Combine regular messages with offer messages
+        const allMessages = [...messagesData, ...offerMessages];
+        
+        // Sort by creation date
+        allMessages.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        
+        setMessages(allMessages);
+      } catch (offerError) {
+        console.error('❌ Error loading offers for messages:', offerError);
+        setMessages(messagesData);
+      }
+      
       scrollToBottom();
 
-      if (!conversationId.startsWith('demo-')) {
-        await messageAPI.markAsRead(conversationId);
-      }
+      // Mark as read
+      await messageAPI.markAsRead(conversationId);
     } catch (error) {
       console.error('❌ Error loading messages:', error);
       setMessages([]);
     }
   };
+
+  // Add this function to your BuyerMessages.jsx
+  const debugRealOffers = () => {
+    console.log('=== 🔍 DEBUG REAL OFFERS ===');
+    console.log('Active Conversation:', activeConversation);
+    console.log('All Offers from State:', offers);
+    console.log('All Messages from State:', messages);
+    
+    const realOffers = offers.filter(offer => !offer._id?.startsWith('demo-offer-'));
+    const demoOffers = offers.filter(offer => offer._id?.startsWith('demo-offer-'));
+    
+    console.log(`Real Offers: ${realOffers.length}`, realOffers);
+    console.log(`Demo Offers: ${demoOffers.length}`, demoOffers);
+    console.log('=== 🏁 END DEBUG REAL OFFERS ===');
+  };
+
+  // Call this when offers or messages change
+  useEffect(() => {
+    if (offers.length > 0 || messages.length > 0) {
+      debugRealOffers();
+    }
+  }, [offers, messages]);
 
   // Send message
   const handleSendMessage = async () => {

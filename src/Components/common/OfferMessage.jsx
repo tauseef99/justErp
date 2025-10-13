@@ -1,12 +1,13 @@
 // frontend/src/components/common/OfferMessage.jsx
 import React from 'react';
-import { FaDollarSign, FaClock, FaCheck, FaTimes, FaCreditCard, FaExclamationTriangle, FaSpinner, FaArrowRight } from 'react-icons/fa';
+import { FaDollarSign, FaClock, FaCheck, FaTimes, FaCreditCard, FaExclamationTriangle, FaSpinner, FaArrowRight, FaInfoCircle } from 'react-icons/fa';
 
 const OfferMessage = ({ offer, currentUser, onAccept, onReject, onPay, isProcessing }) => {
   const isBuyer = currentUser?.role === 'buyer' || !offer.sellerId?._id;
-  const canAccept = isBuyer && offer.status === 'sent';
-  const canPay = isBuyer && offer.status === 'accepted';
-  const hasPendingPayment = isBuyer && offer.status === 'accepted' && offer.paymentSessionId;
+  const isDemoOffer = offer._id?.startsWith('demo-offer-') || offer.isDemo;
+  const canAccept = isBuyer && offer.status === 'sent' && !isDemoOffer;
+  const canPay = isBuyer && offer.status === 'accepted' && !isDemoOffer;
+  const hasPendingPayment = isBuyer && offer.status === 'accepted' && offer.paymentSessionId && !isDemoOffer;
   
   const getStatusColor = (status) => {
     switch(status) {
@@ -40,18 +41,70 @@ const OfferMessage = ({ offer, currentUser, onAccept, onReject, onPay, isProcess
     }).format(price);
   };
 
+  // Handle offer actions with demo offer check
+  const handleAccept = () => {
+    if (isDemoOffer) {
+      alert('This is a demo offer. Please ask the seller to send a real offer to proceed with payment.');
+      return;
+    }
+    onAccept(offer._id);
+  };
+
+  const handleReject = () => {
+    if (isDemoOffer) {
+      // For demo offers, we can still "reject" them locally
+      alert('Demo offer rejected. Ask the seller to send a real offer.');
+      return;
+    }
+    onReject(offer._id);
+  };
+
+  const handlePay = () => {
+    if (isDemoOffer) {
+      alert('This is a demo offer. Please ask the seller to send a real offer to proceed with payment.');
+      return;
+    }
+    onPay(offer._id);
+  };
+
   return (
-    <div className="bg-white border-2 border-[#708238]/20 rounded-xl p-4 max-w-md shadow-sm">
+    <div className={`border-2 rounded-xl p-4 max-w-md shadow-sm ${
+      isDemoOffer 
+        ? 'bg-yellow-50 border-yellow-200' 
+        : 'bg-white border-[#708238]/20'
+    }`}>
+      {/* Demo Offer Warning */}
+      {isDemoOffer && (
+        <div className="mb-4 p-3 bg-yellow-100 border border-yellow-300 rounded-lg">
+          <div className="flex items-center">
+            <FaInfoCircle className="text-yellow-600 mr-2" />
+            <span className="text-yellow-800 font-medium text-sm">Demo Offer</span>
+          </div>
+          <p className="text-yellow-700 text-xs mt-1">
+            This is a demo offer. Ask the seller to send a real offer to proceed with payment.
+          </p>
+        </div>
+      )}
+
       {/* Offer Header */}
       <div className="flex justify-between items-start mb-3">
         <div>
           <h3 className="font-semibold text-gray-800 text-lg">{offer.title}</h3>
-          <div className={`text-xs px-2 py-1 rounded-full mt-1 ${getStatusColor(offer.status)}`}>
-            {getStatusText(offer.status)}
+          <div className="flex items-center space-x-2 mt-1">
+            <div className={`text-xs px-2 py-1 rounded-full ${getStatusColor(offer.status)}`}>
+              {getStatusText(offer.status)}
+            </div>
+            {isDemoOffer && (
+              <div className="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-600">
+                Demo
+              </div>
+            )}
           </div>
         </div>
         <div className="text-right">
-          <div className="text-2xl font-bold text-[#708238]">
+          <div className={`text-2xl font-bold ${
+            isDemoOffer ? 'text-gray-500' : 'text-[#708238]'
+          }`}>
             {formatPrice(offer.price, offer.currency)}
           </div>
           <div className="text-xs text-gray-500">{offer.currency?.toUpperCase() || 'USD'}</div>
@@ -104,15 +157,19 @@ const OfferMessage = ({ offer, currentUser, onAccept, onReject, onPay, isProcess
         )}
       </div>
 
-      {/* ✅ FIXED: Action Buttons with better flow */}
+      {/* ✅ FIXED: Action Buttons with Demo Offer Handling */}
       {isBuyer && (
         <div className="flex space-x-2">
           {canAccept && (
             <>
               <button
-                onClick={() => onAccept(offer._id)}
-                disabled={isProcessing}
-                className="flex-1 bg-[#708238] hover:bg-[#5a6a2d] text-white py-2 px-4 rounded-lg text-sm font-medium transition disabled:opacity-50 flex items-center justify-center"
+                onClick={handleAccept}
+                disabled={isProcessing || isDemoOffer}
+                className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition disabled:opacity-50 flex items-center justify-center ${
+                  isDemoOffer 
+                    ? 'bg-gray-400 text-gray-200 cursor-not-allowed' 
+                    : 'bg-[#708238] hover:bg-[#5a6a2d] text-white'
+                }`}
               >
                 {isProcessing ? (
                   <>
@@ -127,12 +184,16 @@ const OfferMessage = ({ offer, currentUser, onAccept, onReject, onPay, isProcess
                 )}
               </button>
               <button
-                onClick={() => onReject(offer._id)}
+                onClick={handleReject}
                 disabled={isProcessing}
-                className="flex-1 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg text-sm font-medium transition disabled:opacity-50 flex items-center justify-center"
+                className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition disabled:opacity-50 flex items-center justify-center ${
+                  isDemoOffer
+                    ? 'bg-gray-300 text-gray-600 hover:bg-gray-400'
+                    : 'bg-red-500 hover:bg-red-600 text-white'
+                }`}
               >
                 <FaTimes className="mr-2" />
-                Reject
+                {isDemoOffer ? 'Ignore Demo' : 'Reject'}
               </button>
             </>
           )}
@@ -140,9 +201,13 @@ const OfferMessage = ({ offer, currentUser, onAccept, onReject, onPay, isProcess
           {/* Show payment button for accepted offers without session */}
           {canPay && !hasPendingPayment && (
             <button
-              onClick={() => onPay(offer._id)}
-              disabled={isProcessing}
-              className="flex-1 bg-[#FFA500] hover:bg-[#e59400] text-white py-2 px-4 rounded-lg text-sm font-medium transition disabled:opacity-50 flex items-center justify-center"
+              onClick={handlePay}
+              disabled={isProcessing || isDemoOffer}
+              className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition disabled:opacity-50 flex items-center justify-center ${
+                isDemoOffer
+                  ? 'bg-gray-400 text-gray-200 cursor-not-allowed'
+                  : 'bg-[#FFA500] hover:bg-[#e59400] text-white'
+              }`}
             >
               {isProcessing ? (
                 <>
@@ -161,12 +226,20 @@ const OfferMessage = ({ offer, currentUser, onAccept, onReject, onPay, isProcess
           {/* Show pending payment status */}
           {hasPendingPayment && (
             <button
-              onClick={() => window.location.reload()} // Simple reload to check status
+              onClick={() => window.location.reload()}
               className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium transition flex items-center justify-center"
             >
               <FaArrowRight className="mr-2" />
               Complete Payment
             </button>
+          )}
+
+          {/* Demo offer message */}
+          {isDemoOffer && offer.status === 'sent' && (
+            <div className="flex-1 bg-gray-100 text-gray-600 py-2 px-4 rounded-lg text-sm text-center">
+              <FaInfoCircle className="inline mr-2" />
+              Demo - Ask for Real Offer
+            </div>
           )}
 
           {offer.status === 'paid' && (
@@ -179,7 +252,7 @@ const OfferMessage = ({ offer, currentUser, onAccept, onReject, onPay, isProcess
           {offer.status === 'rejected' && (
             <div className="flex-1 bg-red-100 text-red-800 py-2 px-4 rounded-lg text-sm font-medium text-center">
               <FaTimes className="inline mr-2" />
-              Offer Rejected
+              {isDemoOffer ? 'Demo Rejected' : 'Offer Rejected'}
             </div>
           )}
 
@@ -201,22 +274,55 @@ const OfferMessage = ({ offer, currentUser, onAccept, onReject, onPay, isProcess
 
       {!isBuyer && offer.status === 'sent' && (
         <div className="text-xs text-gray-500 text-center py-2">
-          Waiting for buyer's response...
+          {isDemoOffer ? 'Demo offer - Send a real offer for payment' : 'Waiting for buyer\'s response...'}
         </div>
       )}
 
       {/* Offer Metadata */}
       <div className="mt-3 pt-3 border-t border-gray-100 text-xs text-gray-500">
         <div className="flex justify-between">
-          <span>Offer ID: {offer._id?.substring(0, 8)}...</span>
+          <span>
+            {isDemoOffer ? 'Demo ID: ' : 'Offer ID: '}
+            {offer._id?.substring(0, 8)}...
+          </span>
           <span>Sent: {new Date(offer.createdAt).toLocaleDateString()}</span>
         </div>
-        {offer.paymentSessionId && (
+        
+        {offer.paymentSessionId && !isDemoOffer && (
           <div className="mt-1 text-blue-600">
             Payment session: {offer.paymentSessionId.substring(0, 8)}...
           </div>
         )}
+
+        {/* Real vs Demo indicator */}
+        <div className="mt-1">
+          {isDemoOffer ? (
+            <span className="text-yellow-600">⚠️ This is a demo offer for testing</span>
+          ) : (
+            <span className="text-green-600">✅ Real offer - Ready for payment</span>
+          )}
+        </div>
+
+        {/* Seller info for buyers */}
+        {isBuyer && offer.sellerId && (
+          <div className="mt-2 p-2 bg-gray-50 rounded">
+            <span className="font-medium">From: </span>
+            {offer.sellerId.name || offer.sellerId.username || 'Seller'}
+          </div>
+        )}
       </div>
+
+      {/* Debug info (remove in production) */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="mt-2 p-2 bg-blue-50 border border-blue-200 rounded text-xs">
+          <div className="font-medium text-blue-800">Debug Info:</div>
+          <div>ID: {offer._id}</div>
+          <div>Type: {isDemoOffer ? 'Demo Offer' : 'Real Offer'}</div>
+          <div>Buyer: {isBuyer ? 'Yes' : 'No'}</div>
+          <div>Status: {offer.status}</div>
+          <div>Can Accept: {canAccept ? 'Yes' : 'No'}</div>
+        </div>
+      )}
     </div>
   );
 };

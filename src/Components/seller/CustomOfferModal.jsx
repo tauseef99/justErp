@@ -14,12 +14,14 @@ const CustomOfferModal = ({ isOpen, onClose, buyer, onSendOffer }) => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
 
   if (!isOpen) return null;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError(null);
     
     try {
       // Filter out empty requirements and inclusions
@@ -34,8 +36,12 @@ const CustomOfferModal = ({ isOpen, onClose, buyer, onSendOffer }) => {
         price: parseFloat(formData.price)
       };
 
+      console.log('📦 Modal: Sending offer data:', offerData);
+      
       await onSendOffer(offerData);
-      onClose();
+      
+      // If we get here without error, the offer was sent successfully
+      console.log('✅ Modal: Offer sent successfully');
       
       // Reset form
       setFormData({
@@ -47,9 +53,35 @@ const CustomOfferModal = ({ isOpen, onClose, buyer, onSendOffer }) => {
         requirements: [''],
         inclusions: ['']
       });
+      
+      onClose();
+      
     } catch (error) {
-      console.error('Error sending offer:', error);
-      alert('Failed to send offer. Please try again.');
+      console.error('❌ Modal: Error sending offer:', error);
+      
+      // Check if it's a socket-related error (non-critical)
+      const errorMessage = error.message || '';
+      const isSocketError = errorMessage.includes('socket') || 
+                           errorMessage.includes('Socket') || 
+                           errorMessage.includes('notification failed');
+      
+      if (isSocketError) {
+        console.log('⚠️ Modal: Non-critical socket error, offer was created');
+        // Offer was created successfully, just close the modal
+        setFormData({
+          title: '',
+          description: '',
+          price: '',
+          deliveryDays: 7,
+          revisions: 1,
+          requirements: [''],
+          inclusions: ['']
+        });
+        onClose();
+      } else {
+        // Show error for actual API failures
+        setError(errorMessage || 'Failed to send offer. Please try again.');
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -124,6 +156,13 @@ const CustomOfferModal = ({ isOpen, onClose, buyer, onSendOffer }) => {
           </div>
         </div>
 
+        {/* Error Display */}
+        {error && (
+          <div className="mx-6 mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+            {error}
+          </div>
+        )}
+
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* Offer Title */}
@@ -185,7 +224,7 @@ const CustomOfferModal = ({ isOpen, onClose, buyer, onSendOffer }) => {
                 required
                 min="1"
                 value={formData.deliveryDays}
-                onChange={(e) => setFormData(prev => ({ ...prev, deliveryDays: parseInt(e.target.value) }))}
+                onChange={(e) => setFormData(prev => ({ ...prev, deliveryDays: parseInt(e.target.value) || 7 }))}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#708238] focus:border-transparent"
               />
             </div>
