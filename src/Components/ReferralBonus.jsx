@@ -15,7 +15,7 @@ const ReferralBonus = () => {
         
         {/* Hero Section */}
         <div className="relative w-full overflow-hidden">
-          <motion.div
+          <motion.div 
             initial={{ scale: 1.1, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 1.5 }}
@@ -112,54 +112,53 @@ const ReferralBonus = () => {
 
         {/* Rules & Image Section */}
         <section className="container mx-auto px-6 lg:px-20 py-28">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -60 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-4xl md:text-5xl font-black text-gray-800 mb-8 leading-tight">
-                Program Rules & Guidelines
-              </h2>
-              <ul className="space-y-4 text-lg text-gray-700 leading-relaxed list-inside">
-                <li>Referrals must be <strong>new, verified consultants</strong> (no duplicate accounts).</li>
-                <li>Credits are <strong>non-transferable</strong> and expire after 12 months.</li>
-                <li>Fraudulent referrals (fake or self-referrals) will result in forfeiture.</li>
-                <li>JustERPs reserves the right to modify or terminate the program with prior notice.</li>
-              </ul>
-            </motion.div>
-            
-            {/* Optimized Image Container for Diagram */}
-            <motion.div
-  initial={{ opacity: 0, x: 60 }}
-  whileInView={{ opacity: 1, x: 0 }}
-  transition={{ duration: 1 }}
-  viewport={{ once: true }}
-  className="relative rounded-3xl"
->
-  <div
-    className="w-full h-[500px] lg:h-[650px] flex items-center justify-center bg-gray-50 rounded-3xl"
-    style={{ boxShadow: "0 0 40px 12px rgba(255, 165, 0, 0.7)" }}
+  <motion.div
+    initial={{ opacity: 0, y: 40 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    transition={{ duration: 1 }}
+    viewport={{ once: true }}
+    className="text-center"
   >
-    <img
-      src={img2}
-      alt="Referral Bonus Program Diagram"
-      className="w-full h-full object-contain p-4 transform hover:scale-105 transition duration-700"
-      style={{ 
-        maxWidth: '100%',
-        maxHeight: '100%',
-        objectFit: 'contain'
-      }}
-    />
-  </div>
+    {/* Title */}
+    <h2 className="text-4xl md:text-5xl font-extrabold text-gray-800 mb-4">
+      Program Rules & Guidelines
+    </h2>
 
-  <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none rounded-3xl"></div>
-</motion.div>
+    {/* Subtitle */}
+    <p className="text-lg md:text-xl text-gray-700 mb-12">
+      Referral must be new, verified consultant... with prior notice
+    </p>
 
+    {/* Image section */}
+    <div
+      className="mx-auto rounded-3xl overflow-hidden bg-white shadow-lg p-4 lg:p-8 max-w-5xl mb-12"
+      style={{ boxShadow: "0 0 40px 10px rgba(255, 165, 0, 0.5)" }}
+    >
+      <img
+        src={img2}
+        alt="Referral Program Diagram"
+        className="w-full h-auto object-contain transform hover:scale-105 transition duration-700"
+      />
+    </div>
 
-          </div>
-        </section>
+    {/* Program Rules List */}
+    <ul className="space-y-4 text-lg text-gray-700 leading-relaxed list-inside max-w-3xl mx-auto text-left">
+      <li>
+        Referrals must be <strong>new, verified consultants</strong> (no duplicate accounts).
+      </li>
+      <li>
+        Credits are <strong>non-transferable</strong> and expire after 12 months.
+      </li>
+      <li>
+        Fraudulent referrals (fake or self-referrals) will result in forfeiture.
+      </li>
+      <li>
+        JustERPs reserves the right to modify or terminate the program with prior notice.
+      </li>
+    </ul>
+  </motion.div>
+</section>
+
 
         {/* Additional Diagram Explanation Section */}
         <section className="container mx-auto px-6 lg:px-20 pb-16">

@@ -16,7 +16,7 @@ const footerData = [
       // { name: "How to hire ERP Consultant", href: "/docs/How_to_hire_ERP_Consultant.pdf" },
 
       { name: "How JustERPs work?", href: "/how/erp/works" },
-      { name: "FAQ’s", href: "/categories/hr-management" },
+      { name: "FAQ’s", href: "/faq" },
     ],
   },
   {

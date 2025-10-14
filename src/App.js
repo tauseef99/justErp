@@ -28,7 +28,7 @@ import PaymentSuccess from './Components/payment/PaymentSuccess';
 import PaymentCancel from './Components/payment/PaymentCancel';
 import CustomerService from "./Components/CustomerService";
 import TermsOfService from "./Components/TermsOfService";
-
+import FAQ from "./Components/FAQ";
 import ProjectTeams from './Components/ProjectTeams';
 
 
@@ -61,6 +61,7 @@ function App() {
         <Route path="/customer/services" element={<CustomerService />} />
         <Route path="/terms/services" element={<TermsOfService />} />
         <Route path="/erp/team" element={<ProjectTeams />} />
+        <Route path="/faq" element={<FAQ />} />
 
 
 
