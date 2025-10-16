@@ -111,7 +111,7 @@ const ReferralBonus = () => {
         </section>
 
         {/* Rules & Image Section */}
-        <section className="container mx-auto px-6 lg:px-20 py-28">
+      <section className="container mx-auto px-6 lg:px-20 py-28">
   <motion.div
     initial={{ opacity: 0, y: 40 }}
     whileInView={{ opacity: 1, y: 0 }}
@@ -120,29 +120,12 @@ const ReferralBonus = () => {
     className="text-center"
   >
     {/* Title */}
-    <h2 className="text-4xl md:text-5xl font-extrabold text-gray-800 mb-4">
+    <h2 className="text-4xl md:text-5xl font-extrabold text-gray-800 mb-10">
       Program Rules & Guidelines
     </h2>
 
-    {/* Subtitle */}
-    <p className="text-lg md:text-xl text-gray-700 mb-12">
-      Referral must be new, verified consultant... with prior notice
-    </p>
-
-    {/* Image section */}
-    <div
-      className="mx-auto rounded-3xl overflow-hidden bg-white shadow-lg p-4 lg:p-8 max-w-5xl mb-12"
-      style={{ boxShadow: "0 0 40px 10px rgba(255, 165, 0, 0.5)" }}
-    >
-      <img
-        src={img2}
-        alt="Referral Program Diagram"
-        className="w-full h-auto object-contain transform hover:scale-105 transition duration-700"
-      />
-    </div>
-
-    {/* Program Rules List */}
-    <ul className="space-y-4 text-lg text-gray-700 leading-relaxed list-inside max-w-3xl mx-auto text-left">
+    {/* Rules List */}
+    <ul className="space-y-4 text-lg text-gray-700 leading-relaxed  list-inside max-w-3xl mx-auto text-left mb-12">
       <li>
         Referrals must be <strong>new, verified consultants</strong> (no duplicate accounts).
       </li>
@@ -156,8 +139,21 @@ const ReferralBonus = () => {
         JustERPs reserves the right to modify or terminate the program with prior notice.
       </li>
     </ul>
+
+    {/* Image Section */}
+    <div
+      className="mx-auto rounded-3xl overflow-hidden bg-white shadow-lg p-4 lg:p-8 max-w-5xl"
+      style={{ boxShadow: "0 0 40px 10px rgba(255, 165, 0, 0.5)" }}
+    >
+      <img
+        src={img2}
+        alt="Referral Program Diagram"
+        className="w-full h-auto object-contain transform hover:scale-105 transition duration-700"
+      />
+    </div>
   </motion.div>
 </section>
+
 
 
         {/* Additional Diagram Explanation Section */}

@@ -1,3 +1,4 @@
+//frontend/src/Component/payment/PaymentCancel.jsx
 import React from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { FaTimesCircle } from 'react-icons/fa';

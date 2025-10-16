@@ -41,7 +41,7 @@ const CustomerService = () => {
   transition={{ duration: 1, delay: 0.3 }}
   className="text-2xl md:text-3xl font-semibold text-[#FFA500] max-w-3xl mx-auto leading-relaxed"
 >
-  Our Commitment to Service Excellence
+  Our Commitment To Service Excellence
 </motion.p>
 
         </div>

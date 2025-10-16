@@ -79,14 +79,16 @@ const TermsOfService = () => {
           >
             Terms of Service
           </motion.h1>
+         
+
           <motion.p
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.9, delay: 0.15 }}
-            className="mt-4 text-lg md:text-xl text-gray-100 max-w-3xl"
-          >
-            Last updated: October 10, 2025 — Please read carefully before using the site.
-          </motion.p>
+                initial={{ y: 50, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 1, delay: 0.5 }}
+                className="text-xl md:text-2xl text-gray-100 leading-relaxed mb-8 opacity-95 max-w-4xl"
+              >
+                Please read carefully before using the site.— Last Updated: <span className="text-[#FFA500] font-semibold">6-October-2025</span>
+              </motion.p>
         </div>
       </header>
 
@@ -377,7 +379,7 @@ const TermsOfService = () => {
         <section className="bg-gradient-to-r from-[#708238] to-[#FFA500] text-white rounded-3xl p-10 md:p-14 shadow-2xl">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">Acknowledgement</h3>
           <p className="text-lg md:text-xl leading-relaxed">
-            By continuing to use JustERPs, you acknowledge that you have read, understood, and agreed to abide by these Terms of Service. For further clarification, contact us at <strong>legal@JustERPs.com</strong>.
+            By continuing to use JustERPs, you acknowledge that you have read, understood, and agreed to abide by these Terms of Service. For further clarification, contact us at <strong>legal@JustERPs.com</strong>
           </p>
         </section>
 

@@ -46,34 +46,43 @@ const FAQ = () => {
       <Navbar />
 
       {/* HERO */}
-      <header className="relative w-full h-[400px] overflow-hidden">
-        <motion.img
-          src={imgHero}
-          alt="FAQ Hero"
-          initial={{ scale: 1.1, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1.2 }}
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-[#708238]/25 flex flex-col items-center justify-center text-center px-6">
-          <motion.h1
-            initial={{ y: -30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.9 }}
-            className="text-5xl md:text-6xl font-extrabold text-white drop-shadow-lg"
-          >
-            JustERPs FAQ
-          </motion.h1>
-          <motion.p
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.9, delay: 0.15 }}
-            className="mt-4 text-lg md:text-xl text-[#FFA500] max-w-3xl font-medium"
-          >
-            Your Questions Answered Everything you need to know about JustERPs.
-          </motion.p>
-        </div>
-      </header>
+<header className="relative w-full h-[450px] overflow-hidden">
+  <motion.img
+    src={imgHero}
+    alt="FAQ Hero"
+    initial={{ scale: 1.2, opacity: 0, y: -40 }} // starts slightly up
+    animate={{ scale: 1, opacity: 1, y: 100 }}   // moved further down
+    transition={{ duration: 1.6, ease: "easeOut" }}
+    className="w-full h-full object-cover object-center"
+  />
+
+  {/* Overlay with gradient + centered text */}
+  <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-[#708238]/30 flex flex-col items-center justify-center text-center px-6">
+    <motion.h1
+      initial={{ y: -30, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.9 }}
+      className="text-5xl md:text-6xl font-extrabold text-white drop-shadow-lg"
+    >
+      JustERPs FAQ
+    </motion.h1>
+
+    <motion.p
+  initial={{ y: 30, opacity: 0 }}
+  animate={{ y: 0, opacity: 1 }}
+  transition={{ duration: 0.9, delay: 0.15 }}
+  className="mt-4 text-xl md:text-2xl lg:text-3xl text-[#FFA500] font-semibold leading-relaxed whitespace-nowrap text-center"
+>
+  Your Questions Answered Everything You Need To Know About JustERPs
+</motion.p>
+
+  </div>
+</header>
+
+
+
+
+
 
       {/* INTRO */}
       <section className="bg-gradient-to-br from-green-50 to-white py-16">
@@ -114,7 +123,7 @@ const FAQ = () => {
         {/* 1. Buyers */}
         <AccordionItem
           id={1}
-          title="1. For Buyers (Clients)"
+          title="1. For Buyers (The Clients)"
           isOpen={openId === 1}
           onToggle={toggle}
         >
@@ -159,7 +168,7 @@ const FAQ = () => {
         {/* 2. Sellers */}
         <AccordionItem
           id={2}
-          title="2. For Sellers (Freelancers & Agencies)"
+          title="2. For Sellers (The ERP Freelancers)"
           isOpen={openId === 2}
           onToggle={toggle}
         >
@@ -231,7 +240,7 @@ const FAQ = () => {
           <h3 className="text-2xl md:text-3xl font-bold mb-4">Still have questions?</h3>
           <p className="text-lg md:text-xl leading-relaxed">
             Our support team is here to help. Contact us anytime at{" "}
-            <strong>support@JustERPs.com</strong>.
+            <strong>support@JustERPs.com</strong>
           </p>
         </section>
       </main>
