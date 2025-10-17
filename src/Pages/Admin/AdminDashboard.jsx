@@ -393,59 +393,70 @@ const AdminDashboard = () => {
         return (
           <div className="space-y-6">
             {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-                <div className="flex justify-between">
-                  <div>
-                    <p className="text-gray-600 text-sm">Total Users</p>
-                    <p className="text-2xl font-bold">{stats.totalUsers}</p>
-                    <p className="text-xs text-green-500 mt-1">↑ 12% from last month</p>
-                  </div>
-                  <div className="bg-[#f0f4e4] p-3 rounded-full h-fit">
-                    <FiUsers className="text-[#708238] text-xl" />
-                  </div>
-                </div>
-              </div>
-              
-              <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-                <div className="flex justify-between">
-                  <div>
-                    <p className="text-gray-600 text-sm">Active Orders</p>
-                    <p className="text-2xl font-bold">{stats.activeOrders}</p>
-                    <p className="text-xs text-green-500 mt-1">↑ 8% from last week</p>
-                  </div>
-                  <div className="bg-[#fff0cc] p-3 rounded-full h-fit">
-                    <FiPackage className="text-[#FFA500] text-xl" />
-                  </div>
-                </div>
-              </div>
-              
-              <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-                <div className="flex justify-between">
-                  <div>
-                    <p className="text-gray-600 text-sm">Platform Revenue</p>
-                    <p className="text-2xl font-bold">${stats.platformRevenue.toLocaleString()}</p>
-                    <p className="text-xs text-green-500 mt-1">↑ 15% from last month</p>
-                  </div>
-                  <div className="bg-blue-100 p-3 rounded-full h-fit">
-                    <FiDollarSign className="text-blue-600 text-xl" />
-                  </div>
-                </div>
-              </div>
-              
-              <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-                <div className="flex justify-between">
-                  <div>
-                    <p className="text-gray-600 text-sm">Commission Rate</p>
-                    <p className="text-2xl font-bold">{stats.commissionRate}</p>
-                    <p className="text-xs text-gray-500 mt-1">Current rate</p>
-                  </div>
-                  <div className="bg-[#f0f4e4] p-3 rounded-full h-fit">
-                    <FiMessageSquare className="text-[#708238] text-xl" />
-                  </div>
-                </div>
-              </div>
-            </div>
+     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+  {/* Card 1 */}
+  <div className="bg-white p-5 rounded-xl shadow-sm border-l-4 border-[#708238] transition-all duration-300 hover:bg-[#FFA500] hover:text-white cursor-pointer">
+    <div className="flex justify-between">
+      <div>
+        <p className="text-gray-600 text-sm group-hover:text-white">Total Users</p>
+        <p className="text-2xl font-bold">{stats.totalUsers}</p>
+        <p className="text-xs text-green-500 mt-1 group-hover:text-white">↑ 12% from last month</p>
+      </div>
+      <div className="bg-[#f0f4e4] p-3 rounded-full h-fit">
+        <FiUsers className="text-[#708238] text-xl" />
+      </div>
+    </div>
+  </div>
+
+  {/* Card 2 */}
+  <div className="bg-white p-5 rounded-xl shadow-sm border-l-4 border-[#708238] transition-all duration-300 hover:bg-[#FFA500] hover:text-white cursor-pointer">
+    <div className="flex justify-between">
+      <div>
+        <p className="text-gray-600 text-sm">Active Orders</p>
+        <p className="text-2xl font-bold">{stats.activeOrders}</p>
+        <p className="text-xs text-green-500 mt-1">↑ 8% from last week</p>
+      </div>
+      <div className="bg-[#fff0cc] p-3 rounded-full h-fit">
+        <FiPackage className="text-[#FFA500] text-xl" />
+      </div>
+    </div>
+  </div>
+
+  {/* Card 3 */}
+  <div className="bg-white p-5 rounded-xl shadow-sm border-l-4 border-[#708238] transition-all duration-300 hover:bg-[#FFA500] hover:text-white cursor-pointer">
+    <div className="flex justify-between">
+      <div>
+        <p className="text-gray-600 text-sm">Platform Revenue</p>
+        <p className="text-2xl font-bold">
+          ${stats.platformRevenue.toLocaleString()}
+        </p>
+        <p className="text-xs text-green-500 mt-1">↑ 15% from last month</p>
+      </div>
+      <div className="bg-blue-100 p-3 rounded-full h-fit">
+        <FiDollarSign className="text-blue-600 text-xl" />
+      </div>
+    </div>
+  </div>
+
+  {/* Card 4 */}
+  <div className="bg-white p-5 rounded-xl shadow-sm border-l-4 border-[#708238] transition-all duration-300 hover:bg-[#FFA500] hover:text-white cursor-pointer">
+    <div className="flex justify-between">
+      <div>
+        <p className="text-gray-600 text-sm">Commission Rate</p>
+        <p className="text-2xl font-bold">{stats.commissionRate}</p>
+        <p className="text-xs text-gray-500 mt-1">Current rate</p>
+      </div>
+      <div className="bg-[#f0f4e4] p-3 rounded-full h-fit">
+        <FiMessageSquare className="text-[#708238] text-xl" />
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
             
             {/* Charts and Recent Activity */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -566,47 +577,50 @@ const AdminDashboard = () => {
   return (
     <div className="flex flex-col h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className=" bg-[#708238] flex justify-between items-center px-4 sm:px-6 py-4">
-          <div className="flex items-center">
-            <img
-  src={logo}
-  alt="JustERPs Logo"
-  className="w-48 rounded-lg mr-4 sm:mr-10 object-cover"
-/>
+     <header className="bg-white shadow-sm border-b border-gray-200">
+  {/* Gradient Background Bar */}
+  <div className="bg-gradient-to-r from-[#FFA500] via-[#8A993E] to-[#708238] flex justify-between items-center px-4 sm:px-6 py-4">
+    {/* Left Section */}
+    <div className="flex items-center">
+      <img
+        src={logo}
+        alt="JustERPs Logo"
+        className="w-48 rounded-lg mr-4 sm:mr-10 object-cover"
+      />
 
-<div className="hidden md:flex items-center justify-between p-4 space-x-6">
-  {/* Title */}
-  <h1 className="text-3xl font-extrabold text-white tracking-wide drop-shadow-lg">
-    ADMIN DASHBOARD
-  </h1>
+      <div className="hidden md:flex items-center justify-between p-4 space-x-6">
+        {/* Title */}
+        <h1 className="text-3xl font-extrabold text-white tracking-wide drop-shadow-lg">
+          ADMIN DASHBOARD
+        </h1>
 
-  {/* Search Box */}
-  <div className="relative">
-    <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-    <input
-      type="text"
-      placeholder="Search..."
-      className="pl-10 pr-4 py-2 w-64 border border-gray-200 rounded-lg 
-                 focus:outline-none focus:ring-2 focus:ring-[#708238] focus:border-transparent"
-    />
-  </div>
-</div>
-
-
-
-          </div>
-          <div className="flex items-center space-x-3 sm:space-x-4">
-            <button className="p-2 rounded-full hover:bg-gray-100 relative">
-              <FiBell className="text-[#FFA500]" />
-              <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
-            </button>
-            <div className="h-8 w-8 rounded-full text-[#FFA500] hover:bg-gray-100 flex items-center justify-center font-medium cursor-pointer">
-              A
-            </div>
-          </div>
+        {/* Search Box */}
+        <div className="relative">
+          <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+          <input
+            type="text"
+            placeholder="Search..."
+            className="pl-10 pr-4 py-2 w-64 border border-gray-200 rounded-lg 
+                       focus:outline-none focus:ring-2 focus:ring-[#FFA500] focus:border-transparent"
+          />
         </div>
-      </header>
+      </div>
+    </div>
+
+    {/* Right Section */}
+    <div className="flex items-center space-x-3 sm:space-x-4">
+      <button className="p-2 rounded-full hover:bg-white/20 relative transition">
+        <FiBell className="text-white" />
+        <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
+      </button>
+      <div className="h-8 w-8 rounded-full bg-white/20 text-white hover:bg-white/30 flex items-center justify-center font-medium cursor-pointer">
+        A
+      </div>
+    </div>
+  </div>
+</header>
+
+
 
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
