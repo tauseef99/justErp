@@ -46,37 +46,44 @@ const FAQ = () => {
       <Navbar />
 
       {/* HERO */}
-<header className="relative w-full h-[450px] flex items-center justify-center bg-[#708238] overflow-hidden">
+<header className="relative w-full h-[480px] flex flex-col items-center justify-center bg-[#708238] overflow-hidden">
+  {/* Softer gradient overlay */}
+  <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-[#708238]/30 pointer-events-none" />
+
+  {/* Left-aligned heading */}
+  <motion.h1
+    initial={{ x: -40, opacity: 0 }}
+    animate={{ x: 0, opacity: 1 }}
+    transition={{ duration: 1 }}
+    className="absolute left-16 top-1/3 text-5xl md:text-6xl font-extrabold text-white drop-shadow-lg z-20"
+  >
+    JustERPs FAQ
+  </motion.h1>
+
+  {/* Centered image */}
   <motion.img
     src={imgHero}
     alt="FAQ Hero"
     initial={{ scale: 1.05, opacity: 0 }}
-    animate={{ scale: 0.8, opacity: 1 }} // smaller image scale
-    transition={{ duration: 1.4, ease: "easeOut" }}
-    className="max-h-[340px] w-auto object-contain" // reduced max height for smaller display
+    animate={{ scale: 0.85, opacity: 1 }}
+    transition={{ duration: 1.4, ease: 'easeOut' }}
+    className="max-h-[340px] w-auto object-contain z-10 mx-auto"
   />
 
-  {/* Overlay with gradient + centered text */}
-  <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-[#708238]/40 flex flex-col items-center justify-center text-center px-6">
-    <motion.h1
-      initial={{ y: -30, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.9 }}
-      className="text-5xl md:text-6xl font-extrabold text-white drop-shadow-lg"
-    >
-      JustERPs FAQ
-    </motion.h1>
-
-    <motion.p
-      initial={{ y: 30, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.9, delay: 0.15 }}
-      className="mt-4 text-xl md:text-2xl lg:text-3xl text-[#FFA500] font-semibold leading-relaxed text-center"
-    >
-      Your Questions Answered Everything You Need To Know About JustERPs
-    </motion.p>
-  </div>
+  {/* Slightly smaller, brighter orange text below image */}
+  <motion.p
+    initial={{ y: 30, opacity: 0 }}
+    animate={{ y: 0, opacity: 1 }}
+    transition={{ duration: 1, delay: 0.3 }}
+    className="mt-5 text-lg md:text-xl lg:text-2xl text-[#FFA500] font-semibold leading-relaxed text-center max-w-[900px] whitespace-nowrap mx-auto z-30 relative"
+  >
+    Your Questions Answered — Everything You Need To Know About JustERPs
+  </motion.p>
 </header>
+
+
+
+
 
 
 

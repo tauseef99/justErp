@@ -460,26 +460,38 @@ const AdminDashboard = () => {
             
             {/* Charts and Recent Activity */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100 lg:col-span-2">
-                <h3 className="font-bold text-lg mb-4">Order Analytics</h3>
-                <div className="bg-gray-50 rounded-lg p-4 flex items-center justify-center h-64">
-                  <p className="text-gray-400">Order volume chart would be displayed here</p>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
-                  <div className="bg-[#f0f4e4] p-3 rounded-lg text-center">
-                    <p className="text-sm text-[#708238]">Active Sellers</p>
-                    <p className="font-bold text-lg">{stats.activeSellers}</p>
-                  </div>
-                  <div className="bg-green-50 p-3 rounded-lg text-center">
-                    <p className="text-sm text-green-600">Active Buyers</p>
-                    <p className="font-bold text-lg">{stats.activeBuyers}</p>
-                  </div>
-                  <div className="bg-blue-50 p-3 rounded-lg text-center">
-                    <p className="text-sm text-blue-600">Completed Orders</p>
-                    <p className="font-bold text-lg">{stats.completedOrders}</p>
-                  </div>
-                </div>
-              </div>
+              <div
+  className="bg-white p-5 rounded-xl border border-gray-100 lg:col-span-2"
+  style={{
+    boxShadow: "0 0 20px rgba(255, 165, 0, 0.7)", // orange glow shadow
+  }}
+>
+  <h3 className="font-bold text-lg mb-4">Order Analytics</h3>
+  <div className="bg-gray-50 rounded-lg p-4 flex items-center justify-center h-64">
+    <p className="text-gray-400">Order volume chart would be displayed here</p>
+  </div>
+ <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
+  {/* Box 1 – Olive border */}
+  <div className="bg-[#f0f4e4] p-3 rounded-lg text-center border-2 border-[#708238] shadow-md">
+    <p className="text-sm text-[#708238]">Active Sellers</p>
+    <p className="font-bold text-lg">{stats.activeSellers}</p>
+  </div>
+
+  {/* Box 2 – Orange border */}
+  <div className="bg-green-50 p-3 rounded-lg text-center border-2 border-[#FFA500] shadow-md">
+    <p className="text-sm text-[#FFA500]">Active Buyers</p>
+    <p className="font-bold text-lg">{stats.activeBuyers}</p>
+  </div>
+
+  {/* Box 3 – Olive border again */}
+  <div className="bg-blue-50 p-3 rounded-lg text-center border-2 border-[#708238] shadow-md">
+    <p className="text-sm text-[#708238]">Completed Orders</p>
+    <p className="font-bold text-lg">{stats.completedOrders}</p>
+  </div>
+</div>
+
+</div>
+
               
               <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
                 <h3 className="font-bold text-lg mb-4">Recent Activity</h3>
@@ -532,43 +544,58 @@ const AdminDashboard = () => {
             </div>
             
             {/* Recent Orders */}
-            <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-              <h3 className="font-bold text-lg mb-4">Recent Orders</h3>
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Service</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {orders.slice(0, 3).map(order => (
-                      <tr key={order.id} className="hover:bg-gray-50 transition-colors">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-[#708238]">
-                          {order.id}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {order.service}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <StatusBadge status={order.status} />
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                          {order.amount}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {order.date}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
+           <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+  <h3 className="font-bold text-lg mb-4">Recent Orders</h3>
+  <div className="overflow-x-auto">
+    <table className="min-w-full divide-y divide-gray-200">
+      <thead className="bg-gray-50">
+        <tr>
+          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Order ID
+          </th>
+          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Service
+          </th>
+          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Status
+          </th>
+          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Amount
+          </th>
+          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Date
+          </th>
+        </tr>
+      </thead>
+      <tbody className="bg-white divide-y divide-gray-200">
+        {orders.slice(0, 3).map((order) => (
+          <tr
+            key={order.id}
+            className="hover:bg-[#b4c56c] hover:text-white transition-colors duration-300"
+          >
+            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-[#708238]">
+              {order.id}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              {order.service}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap">
+              <StatusBadge status={order.status} />
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+              {order.amount}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              {order.date}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
           </div>
         );
     }
@@ -577,9 +604,9 @@ const AdminDashboard = () => {
   return (
     <div className="flex flex-col h-screen bg-gray-50">
       {/* Header */}
-     <header className="bg-white shadow-sm border-b border-gray-200">
+    <header className="bg-white shadow-sm border-b border-gray-200">
   {/* Gradient Background Bar */}
-  <div className="bg-gradient-to-r from-[#FFA500] via-[#8A993E] to-[#708238] flex justify-between items-center px-4 sm:px-6 py-4">
+  <div className="bg-gradient-to-r from-[#FFA500] via-[#d4a72b] via-40% to-[#708238] flex justify-between items-center px-4 sm:px-6 py-4">
     {/* Left Section */}
     <div className="flex items-center">
       <img
@@ -622,13 +649,12 @@ const AdminDashboard = () => {
 
 
 
+
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
         <nav className="w-64 bg-[#708238] shadow-sm text-white border-r border-gray-200 flex-shrink-0 hidden md:block">
   <div className="p-4">
-  <h2 className="text-[#FFA500] font-semibold text-lg text-center">
-  Main Navigator
-</h2>
+  
 
     <ul className="space-y-1">
       <li>
@@ -697,13 +723,7 @@ const AdminDashboard = () => {
           </button>
         </li>
         <li>
-          <button 
-            onClick={handleLogout}
-            className="w-full flex items-center px-4 py-3 rounded-lg text-white hover:text-[#FFA500] transition-colors"
-          >
-            <FiLogOut className="mr-3" />
-            Logout
-          </button>
+         
         </li>
       </ul>
     </div>
