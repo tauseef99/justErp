@@ -431,43 +431,45 @@ export default function SellerProfile() {
             
             {/* Profile Sections */}
             <div className="p-6 space-y-8">
-              {/* Professional Summary */}
-              <SectionHeader 
-                title="Professional Summary" 
-                icon={
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                }
-                onEdit={() => openEditModal('professionalSummary')}
-              />
-              <p className="text-gray-600 leading-relaxed">
-                {sellerData?.professionalSummary || "No professional summary provided."}
-              </p>
-              
-              {/* Functional Experience */}
-              <SectionHeader 
-                title="Functional Role" 
-                icon={
-                  <svg
-  className="w-5 h-5 text-[#708238]"
-  fill="none"
-  stroke="currentColor"
-  viewBox="0 0 24 24"
-  xmlns="http://www.w3.org/2000/svg"
->
-  <path
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    strokeWidth="2"
-    d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"
-  />
-</svg>
 
-                }
-                onEdit={() => openEditModal('functionalRoles')}
-              />
-              <div className="overflow-x-auto">
+  {/* Professional Summary - Orange Outline */}
+  <div className="border-2 border-[#FFA500] rounded-lg p-4">
+    <SectionHeader 
+      title="Professional Summary" 
+      icon={
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 4 4 0 11-8 0 4 4 0 08 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        </svg>
+      }
+      onEdit={() => openEditModal('professionalSummary')}
+    />
+    <p className="text-gray-600 leading-relaxed">
+      {sellerData?.professionalSummary || "No professional summary provided."}
+    </p>
+  </div>
+
+  {/* Functional Experience - Green Outline */}
+  <div className="border-2 border-[#708238] rounded-lg p-4">
+    <SectionHeader 
+      title="Functional Role" 
+      icon={
+        <svg
+          className="w-5 h-5 text-[#708238]"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"
+          />
+        </svg>
+      }
+      onEdit={() => openEditModal('functionalRoles')}
+    />
+    <div className="overflow-x-auto">
                 <table className="min-w-full border border-gray-200">
                   <thead>
                     <tr className="bg-gray-300">
@@ -499,18 +501,20 @@ export default function SellerProfile() {
                   </tbody>
                 </table>
               </div>
-              
-              {/* Technical Experience */}
-              <SectionHeader 
-                title="Technical Role" 
-                icon={
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                }
-                onEdit={() => openEditModal('technicalRoles')}
-              />
-              <div className="overflow-x-auto">
+  </div>
+
+  {/* Technical Experience - Orange Outline */}
+  <div className="border-2 border-[#FFA500] rounded-lg p-4">
+    <SectionHeader 
+      title="Technical Role" 
+      icon={
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+      }
+      onEdit={() => openEditModal('technicalRoles')}
+    />
+    <div className="overflow-x-auto">
                 <table className="min-w-full border border-gray-200">
                   <thead>
                     <tr className="bg-gray-300">
@@ -542,18 +546,20 @@ export default function SellerProfile() {
                   </tbody>
                 </table>
               </div>
-              
-              {/* Project Delivered  */}
-              <SectionHeader 
-                title="Project Delivered" 
-                icon={
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                  </svg>
-                }
-                onEdit={() => openEditModal('projects')}
-              />
-              <div className="overflow-x-auto">
+  </div>
+
+  {/* Project Delivered - Green Outline */}
+  <div className="border-2 border-[#708238] rounded-lg p-4">
+    <SectionHeader 
+      title="Project Delivered" 
+      icon={
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+        </svg>
+      }
+      onEdit={() => openEditModal('projects')}
+    />
+     <div className="overflow-x-auto">
                 <table className="min-w-full border border-gray-200">
                   <thead>
                     <tr className="bg-gray-50">
@@ -585,28 +591,28 @@ export default function SellerProfile() {
                   </tbody>
                 </table>
               </div>
-              
-              {/* Technical Skills */}
-              <SectionHeader 
-                title="Technical Skills" 
-                icon={
-                  <svg
-  className="w-5 h-5 text-[#708238]"
-  fill="none"
-  stroke="currentColor"
-  strokeWidth="2"
-  strokeLinecap="round"
-  strokeLinejoin="round"
-  viewBox="0 0 24 24"
-  xmlns="http://www.w3.org/2000/svg"
->
-  <path d="M13 2L3 14h7v8l11-13h-8z" />
-</svg>
+  </div>
 
-                }
-                onEdit={() => openEditModal('technicalSkills')}
-              />
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+  {/* Technical Skills - Orange Outline */}
+  <div className="border-2 border-[#FFA500] rounded-lg p-4">
+    <SectionHeader 
+      title="Technical Skills" 
+      icon={
+        <svg
+          className="w-5 h-5 text-[#708238]"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          viewBox="0 0 24 24"
+        >
+          <path d="M13 2L3 14h7v8l11-13h-8z" />
+        </svg>
+      }
+      onEdit={() => openEditModal('technicalSkills')}
+    />
+     <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
                 {sellerData?.technicalSkills && sellerData.technicalSkills.length > 0 ? (
                   sellerData.technicalSkills.map((skill, index) => (
                     <span
@@ -620,18 +626,32 @@ export default function SellerProfile() {
                   <p className="text-gray-500 col-span-full">No technical skills added yet.</p>
                 )}
               </div>
-              
-              {/* Certifications */}
-              <SectionHeader 
-                title="Certifications" 
-                icon={
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 .42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3. 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-                  </svg>
-                }
-                onEdit={() => openEditModal('certifications')}
-              />
-              <div className="overflow-x-auto">
+  </div>
+
+  {/* Certifications - Green Outline */}
+  <div className="border-2 border-[#708238] rounded-lg p-4">
+    <SectionHeader 
+      title="Certifications" 
+      icon={
+        <svg 
+  className="w-5 h-5 text-green-600" 
+  fill="none" 
+  stroke="currentColor" 
+  viewBox="0 0 24 24"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path 
+    strokeLinecap="round" 
+    strokeLinejoin="round" 
+    strokeWidth="2" 
+    d="M5 13l4 4L19 7" 
+  />
+</svg>
+
+      }
+      onEdit={() => openEditModal('certifications')}
+    />
+    <div className="overflow-x-auto">
                 <table className="min-w-full border border-gray-200">
                   <thead>
                     <tr className="bg-gray-50">
@@ -663,18 +683,32 @@ export default function SellerProfile() {
                   </tbody>
                 </table>
               </div>
-              
-              {/* Services Offered */}
-              <SectionHeader 
-                title="ERP Consultancy/Services Offered" 
-                icon={
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-22m8 0V6a2 2 0 002 2h2a2 2 0 002-2V6m0 4v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2" />
-                  </svg>
-                }
-                onEdit={() => openEditModal('servicesOffered')}
-              />
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+  </div>
+
+  {/* Services Offered - Orange Outline */}
+  <div className="border-2 border-[#FFA500] rounded-lg p-4">
+    <SectionHeader 
+      title="Services Offered" 
+      icon={
+        <svg
+  className="w-5 h-5 text-gray-600"
+  fill="none"
+  stroke="currentColor"
+  viewBox="0 0 24 24"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeWidth="2"
+    d="M21 13.255A8.962 8.962 0 0112 21a8.962 8.962 0 01-4.255-1.11L3 21l1.11-4.255A8.962 8.962 0 013 12a9 9 0 1118 1.255z"
+  />
+</svg>
+
+      }
+      onEdit={() => openEditModal('servicesOffered')}
+    />
+     <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
                 {sellerData?.servicesOffered && sellerData.servicesOffered.length > 0 ? (
                   sellerData.servicesOffered.map((service, index) => (
                     <span
@@ -688,18 +722,32 @@ export default function SellerProfile() {
                   <p className="text-gray-500 col-span-full">No services added yet.</p>
                 )}
               </div>
-              
-              {/* Language Proficiencies */}
-              <SectionHeader 
-                title="Language Proficiencies" 
-                icon={
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
-                  </svg>
-                }
-                onEdit={() => openEditModal('languages')}
-              />
-              <div className="overflow-x-auto">
+  </div>
+
+  {/* Language Proficiencies - Green Outline */}
+  <div className="border-2 border-[#708238] rounded-lg p-4">
+    <SectionHeader 
+      title="Language Proficiencies" 
+      icon={
+        <svg
+  className="w-5 h-5 text-gray-600"
+  fill="none"
+  stroke="currentColor"
+  viewBox="0 0 24 24"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeWidth="2"
+    d="M3 5h12l4 4v10a2 2 0 01-2 2H5a2 2 0 01-2-2V5z"
+  />
+</svg>
+
+      }
+      onEdit={() => openEditModal('languages')}
+    />
+    <div className="overflow-x-auto">
                 <table className="min-w-full border border-gray-200">
                   <thead>
                     <tr className="bg-gray-50">
@@ -759,7 +807,9 @@ export default function SellerProfile() {
                   </tbody>
                 </table>
               </div>
-            </div>
+  </div>
+</div>
+
           </div>
         </div>
 
