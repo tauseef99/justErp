@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import img from "../Assets/images/social-responsibilty.jpg";
 import Navbar from '../Components/Navbar';
 import Footer from "./Footer";
+import { Book, GraduationCap, Globe2, Apple } from "lucide-react";
 
 const SocialResponsibility = () => {
   const [impactCounters, setImpactCounters] = useState({
@@ -135,27 +136,33 @@ const SocialResponsibility = () => {
         </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
-          {impactInitiatives.map((initiative, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 60 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: index * 0.2 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-2xl shadow-lg p-10 hover:scale-105 hover:shadow-2xl group transition"
-            >
-              <div className="w-16 h-16 bg-gradient-to-br from-[#FFA500] to-orange-400 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 mx-auto">
-                <span className="text-2xl text-white">{initiative.icon}</span>
-              </div>
-              <h3 className="text-xl font-bold text-[#708238] text-center mb-4 group-hover:text-[#FFA500] transition-colors duration-300">
-                {initiative.title}
-              </h3>
-              <p className="text-gray-600 text-center leading-relaxed">
-                {initiative.description}
-              </p>
-            </motion.div>
-          ))}
-        </div>
+  {impactInitiatives.map((initiative, index) => (
+    <motion.div
+      key={index}
+      initial={{ opacity: 0, y: 60 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: index * 0.2 }}
+      viewport={{ once: true }}
+      className="bg-white rounded-2xl shadow-lg p-10 hover:scale-105 hover:shadow-2xl group transition"
+    >
+      {/* Green filled box with orange icon */}
+      <div className="w-16 h-16 bg-[#708238] rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 mx-auto">
+        <span className="text-2xl text-orange-500">{initiative.icon}</span>
+      </div>
+
+      {/* Title with hover color change */}
+      <h3 className="text-xl font-bold text-[#708238] text-center mb-4 group-hover:text-orange-500 transition-colors duration-300">
+        {initiative.title}
+      </h3>
+
+      {/* Description */}
+      <p className="text-gray-600 text-center leading-relaxed">
+        {initiative.description}
+      </p>
+    </motion.div>
+  ))}
+</div>
+
       </div>
 
       {/* Real World Impact Section */}
@@ -426,28 +433,27 @@ const SocialResponsibility = () => {
   );
 };
 
-// Data for impact initiatives
 const impactInitiatives = [
   {
-    icon: "🍎",
+    icon: <Apple className="w-6 h-6 text-orange-500" />,
     title: "Child Nutrition",
     description:
       "Delivering daily meals to malnourished children in underserved communities worldwide.",
   },
   {
-    icon: "🎓",
+    icon: <GraduationCap className="w-6 h-6 text-orange-500" />,
     title: "Vocational Training",
     description:
       "Equipping unemployed parents with in-demand skills for sustainable employment.",
   },
   {
-    icon: "📚",
+    icon: <Book className="w-6 h-6 text-orange-500" />,
     title: "Education Initiatives",
     description:
       "Providing books, uniforms, and digital access to underserved students.",
   },
   {
-    icon: "🌍",
+    icon: <Globe2 className="w-6 h-6 text-orange-500" />,
     title: "Community Development",
     description:
       "Improving infrastructure and facilities in marginalized areas globally.",

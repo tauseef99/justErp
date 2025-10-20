@@ -81,22 +81,23 @@ const ProfileImageUpload = ({ currentImage, onImageUpdate }) => {
 
   return (
     <div className="relative">
-      <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-gray-200 border-4 border-white shadow-lg overflow-hidden">
-        {currentImage ? (
-          <img
-            src={`http://localhost:5000/uploads/${currentImage}`}
-            alt="Profile"
-            className="w-full h-full object-cover"
-            onError={(e) => {
-              e.target.src = "https://via.placeholder.com/150";
-            }}
-          />
-        ) : (
-          <div className="w-full h-full bg-gray-300 flex items-center justify-center">
-            <span className="text-gray-500 text-sm">No Image</span>
-          </div>
-        )}
-      </div>
+      <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-gray-100 border-4 border-orange-400 overflow-hidden shadow-md">
+  {currentImage ? (
+    <img
+      src={`http://localhost:5000/uploads/${currentImage}`}
+      alt="Profile"
+      className="w-full h-full object-cover"
+      onError={(e) => {
+        e.target.src = "https://via.placeholder.com/150";
+      }}
+    />
+  ) : (
+    <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+      <span className="text-gray-600 text-sm">No Image</span>
+    </div>
+  )}
+</div>
+
       
       <label className="absolute bottom-0 right-0 bg-[#708238] text-white p-2 rounded-full cursor-pointer hover:bg-[#5a6a2d] transition-colors">
         <input
@@ -378,7 +379,7 @@ export default function SellerProfile() {
             <h1 className="text-2xl md:text-3xl font-bold text-gray-800">ERP Consultant Profile</h1>
             <button 
               onClick={() => setShowWizard(true)}
-              className="bg-[#708238] hover:bg-[#5a6a2d] text-white px-5 py-2 rounded-md text-sm font-medium transition-colors"
+              className="bg-[#708238] hover:bg-[#FFA500] text-white px-5 py-2 rounded-md text-sm font-medium transition-colors"
             >
               Complete Your Profile
             </button>
@@ -448,9 +449,21 @@ export default function SellerProfile() {
               <SectionHeader 
                 title="Functional Role" 
                 icon={
-                  <svg className="w-5 h-5" fill="none" stroke="current" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
+                  <svg
+  className="w-5 h-5 text-[#708238]"
+  fill="none"
+  stroke="currentColor"
+  viewBox="0 0 24 24"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeWidth="2"
+    d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"
+  />
+</svg>
+
                 }
                 onEdit={() => openEditModal('functionalRoles')}
               />
@@ -577,9 +590,19 @@ export default function SellerProfile() {
               <SectionHeader 
                 title="Technical Skills" 
                 icon={
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 V3L4 14h7v7l9-11h-7z" />
-                  </svg>
+                  <svg
+  className="w-5 h-5 text-[#708238]"
+  fill="none"
+  stroke="currentColor"
+  strokeWidth="2"
+  strokeLinecap="round"
+  strokeLinejoin="round"
+  viewBox="0 0 24 24"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path d="M13 2L3 14h7v8l11-13h-8z" />
+</svg>
+
                 }
                 onEdit={() => openEditModal('technicalSkills')}
               />
@@ -777,11 +800,14 @@ function SectionHeader({ title, icon, onEdit }) {
   return (
     <div className="flex items-center justify-between pb-2 border-b border-gray-100">
       <div className="flex items-center gap-3">
-        <div className="text-[#708238] bg-[#708238]/10 p-2 rounded-lg">
-          {icon}
-        </div>
-        <h2 className="text-lg font-semibold text-gray-800">{title}</h2>
-      </div>
+  <div className="text-[#708238] bg-[#708238]/10 p-2 rounded-lg border-2 border-[#708238] flex items-center justify-center">
+    {icon}
+  </div>
+  <h2 className="text-lg font-semibold text-gray-800 border-b-2 border-orange-500 inline-block pb-1">
+    {title}
+  </h2>
+</div>
+
       <button 
         onClick={onEdit}
         className="text-gray-500 hover:text-[#708238] flex items-center gap-2 text-sm"

@@ -46,7 +46,7 @@ const FAQ = () => {
       <Navbar />
 
       {/* HERO */}
-<header className="relative w-full h-[480px] flex flex-col items-center justify-center bg-[#708238] overflow-hidden">
+<header className="relative w-full h-[460px] flex flex-col items-center justify-center bg-[#708238] overflow-hidden">
   {/* Softer gradient overlay */}
   <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-[#708238]/30 pointer-events-none" />
 
@@ -55,31 +55,32 @@ const FAQ = () => {
     initial={{ x: -40, opacity: 0 }}
     animate={{ x: 0, opacity: 1 }}
     transition={{ duration: 1 }}
-    className="absolute left-16 top-1/3 text-5xl md:text-6xl font-extrabold text-white drop-shadow-lg z-20"
+    className="absolute left-16 top-[35%] text-4xl md:text-5xl lg:text-6xl font-extrabold text-white drop-shadow-lg z-20 leading-tight"
   >
     JustERPs FAQ
   </motion.h1>
 
-  {/* Centered image */}
+  {/* Centered, smaller image */}
   <motion.img
     src={imgHero}
     alt="FAQ Hero"
     initial={{ scale: 1.05, opacity: 0 }}
-    animate={{ scale: 0.85, opacity: 1 }}
+    animate={{ scale: 0.8, opacity: 1 }}
     transition={{ duration: 1.4, ease: 'easeOut' }}
-    className="max-h-[340px] w-auto object-contain z-10 mx-auto"
+    className="max-h-[280px] w-auto object-contain z-10 mx-auto mt-6"
   />
 
-  {/* Slightly smaller, brighter orange text below image */}
+  {/* Single-line orange text below image */}
   <motion.p
     initial={{ y: 30, opacity: 0 }}
     animate={{ y: 0, opacity: 1 }}
     transition={{ duration: 1, delay: 0.3 }}
-    className="mt-5 text-lg md:text-xl lg:text-2xl text-[#FFA500] font-semibold leading-relaxed text-center max-w-[900px] whitespace-nowrap mx-auto z-30 relative"
+    className="mt-4 text-lg md:text-xl lg:text-2xl text-[#FFA500] font-semibold text-center z-30 relative tracking-wide"
   >
     Your Questions Answered — Everything You Need To Know About JustERPs
   </motion.p>
 </header>
+
 
 
 

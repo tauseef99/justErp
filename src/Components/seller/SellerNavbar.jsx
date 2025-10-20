@@ -79,7 +79,7 @@ export default function SellerNavbar() {
 
   return (
     <nav
-      className="sticky top-0 z-50 bg-white border-b border-[#5a6a2d] px-4 py-3 shadow-sm flex justify-between items-center"
+      className="sticky top-0 z-50 bg-gradient-to-r from-[#FFA500] to-[#708238]  px-4 py-3 shadow-sm flex justify-between items-center"
       style={{ backgroundColor: "#708238" }}
     >
       {/* Left - Logo and Mobile Menu Button */}
@@ -128,7 +128,7 @@ export default function SellerNavbar() {
       <div className="flex items-center gap-3 md:gap-5 relative">
         {/* Balance */}
         <span className="text-sm font-semibold px-3 py-1 rounded-md border border-[#FFA500] bg-[#FFA500] text-white hidden md:block">
-          $0
+          $0000
         </span>
 
         {/* Notification Bell with Dropdown */}
@@ -176,32 +176,52 @@ export default function SellerNavbar() {
         <FiHelpCircle className="w-5 h-5 text-white hover:text-[#FFA500] cursor-pointer hidden md:block" />
 
         {/* Profile Image + Dropdown */}
-        <div className="relative" ref={dropdownRef}>
-          
-           <img
-          src={profileImage ? `http://localhost:5000/uploads/${profileImage}` : "https://static.vecteezy.com/system/resources/thumbnails/005/346/410/small_2x/close-up-portrait-of-smiling-handsome-young-caucasian-man-face-looking-at-camera-on-isolated-light-gray-studio-background-photo.jpg"}
-          alt="Profile" onClick={toggleProfileDropdown}
-          className="w-8 h-8 rounded-full object-cover border border-white hidden md:block cursor-pointer"
-          onError={(e) => {
-            e.target.src = "https://static.vecteezy.com/system/resources/thumbnails/005/346/410/small_2x/close-up-portrait-of-smiling-handsome-young-caucasian-man-face-looking-at-camera-on-isolated-light-gray-studio-background-photo.jpg";
-          }}
-        />
+       <div className="relative flex items-center gap-3" ref={dropdownRef}>
+  {/* Name + Title on the left */}
+  <div
+    className="hidden md:flex flex-col items-end leading-tight cursor-pointer"
+    onClick={toggleProfileDropdown}
+  >
+    <span className="text-sm font-semibold text-gray-900">Tauseef</span>
+    <span className="text-xs text-[#FFA500] font-medium">
+      Techno-Functional ERP Consultant
+    </span>
+  </div>
 
-          {showProfileDropdown && (
-            <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50">
-              <div className="px-4 py-2 border-b text-gray-700 text-sm">
-                <p className="font-semibold">amjad hassan</p>
-                <p className="text-xs text-gray-500">amjadhassan@gmail.com</p>
-              </div>
-              <button
-                onClick={handleLogout}
-                className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              >
-                Logout
-              </button>
-            </div>
-          )}
-        </div>
+  {/* Profile Image on the right */}
+  <img
+    src={
+      profileImage
+        ? `http://localhost:5000/uploads/${profileImage}`
+        : "https://static.vecteezy.com/system/resources/thumbnails/005/346/410/small_2x/close-up-portrait-of-smiling-handsome-young-caucasian-man-face-looking-at-camera-on-isolated-light-gray-studio-background-photo.jpg"
+    }
+    alt="Profile"
+    onClick={toggleProfileDropdown}
+    className="w-10 h-10 rounded-full object-cover border-2 border-white cursor-pointer"
+    onError={(e) => {
+      e.target.src =
+        "https://static.vecteezy.com/system/resources/thumbnails/005/346/410/small_2x/close-up-portrait-of-smiling-handsome-young-caucasian-man-face-looking-at-camera-on-isolated-light-gray-studio-background-photo.jpg";
+    }}
+  />
+
+  {/* Dropdown Menu */}
+  {showProfileDropdown && (
+    <div className="absolute right-0 mt-14 w-52 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+      <div className="px-4 py-2 border-b text-gray-700 text-sm">
+        <p className="font-semibold">Tauseef</p>
+        <p className="text-xs text-gray-500">tauseef.hussain@example.com</p>
+      </div>
+      <button
+        onClick={handleLogout}
+        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+      >
+        Logout
+      </button>
+    </div>
+  )}
+</div>
+
+
       </div>
 
       {/* Mobile Menu */}
