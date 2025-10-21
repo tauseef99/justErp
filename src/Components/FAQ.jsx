@@ -50,36 +50,39 @@ const FAQ = () => {
   {/* Softer gradient overlay */}
   <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-[#708238]/30 pointer-events-none" />
 
-  {/* Left-aligned heading */}
+  {/* Center FAQ Image (Smaller size) */}
+  <motion.img
+    src={imgHero}
+    alt="FAQ Hero"
+    initial={{ scale: 1.1, opacity: 0 }}
+    animate={{ scale: 1, opacity: 1 }}
+    transition={{ duration: 1.2, ease: 'easeOut' }}
+    className="max-h-[150px] w-auto object-contain z-20 mb-6 mt-4"
+  />
+
+  {/* Heading BELOW Image */}
   <motion.h1
-    initial={{ x: -40, opacity: 0 }}
-    animate={{ x: 0, opacity: 1 }}
+    initial={{ y: -30, opacity: 0 }}
+    animate={{ y: 0, opacity: 1 }}
     transition={{ duration: 1 }}
-    className="absolute left-16 top-[35%] text-4xl md:text-5xl lg:text-6xl font-extrabold text-white drop-shadow-lg z-20 leading-tight"
+    className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white drop-shadow-lg z-30 text-center"
   >
     JustERPs FAQ
   </motion.h1>
 
-  {/* Centered, smaller image */}
-  <motion.img
-    src={imgHero}
-    alt="FAQ Hero"
-    initial={{ scale: 1.05, opacity: 0 }}
-    animate={{ scale: 0.8, opacity: 1 }}
-    transition={{ duration: 1.4, ease: 'easeOut' }}
-    className="max-h-[280px] w-auto object-contain z-10 mx-auto mt-6"
-  />
-
-  {/* Single-line orange text below image */}
+  {/* Tagline BELOW Heading */}
   <motion.p
-    initial={{ y: 30, opacity: 0 }}
+    initial={{ y: 20, opacity: 0 }}
     animate={{ y: 0, opacity: 1 }}
     transition={{ duration: 1, delay: 0.3 }}
-    className="mt-4 text-lg md:text-xl lg:text-2xl text-[#FFA500] font-semibold text-center z-30 relative tracking-wide"
+    className="text-lg md:text-xl lg:text-2xl text-[#FFA500] font-semibold text-center z-30 tracking-wide mt-4"
   >
     Your Questions Answered — Everything You Need To Know About JustERPs
   </motion.p>
 </header>
+
+
+
 
 
 

@@ -52,7 +52,7 @@ const footerData = [
   {
     heading: "About JustERPs",
     links: [
-      { name: "JustERPs", href: "/about" },
+      { name: "JustERPs", href: "/justerps" },
       { name: "Customer Support", href: "/customer/services" },
       { name: "Privacy Policy & Term of Services", href: "/terms/services" },
       { name: "Social Responsibility", href: "/social/responsibility" },

@@ -636,14 +636,18 @@ const AdminDashboard = () => {
 
     {/* Right Section */}
     <div className="flex items-center space-x-3 sm:space-x-4">
-      <button className="p-2 rounded-full hover:bg-white/20 relative transition">
-        <FiBell className="text-white" />
-        <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
-      </button>
-      <div className="h-8 w-8 rounded-full bg-white/20 text-white hover:bg-white/30 flex items-center justify-center font-medium cursor-pointer">
-        A
-      </div>
-    </div>
+  {/* Notification Icon */}
+  <button className="p-2 rounded-full bg-gradient-to-br from-[#FFA500] to-[#708238] hover:opacity-90 relative transition shadow-md">
+    <FiBell className="text-white text-lg" />
+    <span className="absolute top-0 right-0 h-2.5 w-2.5 rounded-full bg-red-500 border-2 border-white"></span>
+  </button>
+
+  {/* Profile Icon */}
+  <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#FFA500] to-[#708238] text-white flex items-center justify-center font-semibold cursor-pointer hover:opacity-90 shadow-md">
+    A
+  </div>
+</div>
+
   </div>
 </header>
 

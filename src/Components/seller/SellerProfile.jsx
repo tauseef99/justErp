@@ -388,52 +388,53 @@ export default function SellerProfile() {
           {/* Profile Card */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
             {/* Profile Header */}
-            <div className="bg-gradient-to-r from-[#708238]/10 to-[#FFA500]/10 p-6">
-              <div className="flex flex-col md:flex-row gap-6">
-                <ProfileImageUpload 
-                  currentImage={profileImage} 
-                  onImageUpdate={setProfileImage} 
-                />
-                
-                <div className="flex-1">
-                  <h1 className="text-2xl font-bold text-gray-800">
-                    {user.username}
-                  </h1>
-                  <p className="text-lg text-gray-600 mt-1">
-                    {generateTagline()}
-                  </p>
-                  
-                  <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <ProfileInfo 
-                      icon={<FaMapMarkerAlt className="text-gray-500" />} 
-                      label="Based in" 
-                      value="Karachi, Pakistan" 
-                    />
-                    <ProfileInfo 
-                      icon={<FaCalendarAlt className="text-gray-500" />} 
-                      label="Member since" 
-                      value="Apr 2023" 
-                    />
-                    <ProfileInfo 
-                      icon={<FaClock className="text-gray-500" />} 
-                      label="Avg. response time" 
-                      value="< 1 hour" 
-                    />
-                    <ProfileInfo 
-                      icon={<FaTruck className="text-gray-500" />} 
-                      label="Last delivery" 
-                      value="2 days ago" 
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
+            <div className="bg-gradient-to-r from-[#708238]/10 to-[#FFA500]/10 p-6 border-4 border-[#FFA500] rounded-xl shadow-md">
+  <div className="flex flex-col md:flex-row gap-6">
+    <ProfileImageUpload 
+      currentImage={profileImage} 
+      onImageUpdate={setProfileImage} 
+    />
+    
+    <div className="flex-1">
+      <h1 className="text-2xl font-bold text-gray-800">
+        {user.username}
+      </h1>
+      <p className="text-lg text-gray-600 mt-1">
+        {generateTagline()}
+      </p>
+      
+      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <ProfileInfo 
+          icon={<FaMapMarkerAlt className="text-gray-500" />} 
+          label="Based in" 
+          value="Karachi, Pakistan" 
+        />
+        <ProfileInfo 
+          icon={<FaCalendarAlt className="text-gray-500" />} 
+          label="Member since" 
+          value="Apr 2023" 
+        />
+        <ProfileInfo 
+          icon={<FaClock className="text-gray-500" />} 
+          label="Avg. response time" 
+          value="< 1 hour" 
+        />
+        <ProfileInfo 
+          icon={<FaTruck className="text-gray-500" />} 
+          label="Last delivery" 
+          value="2 days ago" 
+        />
+      </div>
+    </div>
+  </div>
+</div>
+
             
             {/* Profile Sections */}
             <div className="p-6 space-y-8">
 
   {/* Professional Summary - Orange Outline */}
-  <div className="border-2 border-[#FFA500] rounded-lg p-4">
+  <div className="bg-white rounded-2xl shadow-md p-6 border-l-8 border-[#FFA500] transition-all hover:border-[#708238]">
     <SectionHeader 
       title="Professional Summary" 
       icon={
@@ -449,7 +450,7 @@ export default function SellerProfile() {
   </div>
 
   {/* Functional Experience - Green Outline */}
-  <div className="border-2 border-[#708238] rounded-lg p-4">
+  <div className="bg-white rounded-2xl shadow-md p-6 border-l-8 border-[#708238] transition-all hover:border-[#FFA500]">
     <SectionHeader 
       title="Functional Role" 
       icon={
@@ -504,7 +505,7 @@ export default function SellerProfile() {
   </div>
 
   {/* Technical Experience - Orange Outline */}
-  <div className="border-2 border-[#FFA500] rounded-lg p-4">
+  <div className="bg-white rounded-2xl shadow-md p-6 border-l-8 border-[#FFA500] transition-all hover:border-[#708238]">
     <SectionHeader 
       title="Technical Role" 
       icon={
@@ -549,7 +550,7 @@ export default function SellerProfile() {
   </div>
 
   {/* Project Delivered - Green Outline */}
-  <div className="border-2 border-[#708238] rounded-lg p-4">
+  <div className="bg-white rounded-2xl shadow-md p-6 border-l-8 border-[#708238] transition-all hover:border-[#FFA500]">
     <SectionHeader 
       title="Project Delivered" 
       icon={
@@ -594,7 +595,7 @@ export default function SellerProfile() {
   </div>
 
   {/* Technical Skills - Orange Outline */}
-  <div className="border-2 border-[#FFA500] rounded-lg p-4">
+  <div className="bg-white rounded-2xl shadow-md p-6 border-l-8 border-[#FFA500] transition-all hover:border-[#708238]">
     <SectionHeader 
       title="Technical Skills" 
       icon={
@@ -629,7 +630,7 @@ export default function SellerProfile() {
   </div>
 
   {/* Certifications - Green Outline */}
-  <div className="border-2 border-[#708238] rounded-lg p-4">
+  <div className="bg-white rounded-2xl shadow-md p-6 border-l-8 border-[#708238] transition-all hover:border-[#FFA500]">
     <SectionHeader 
       title="Certifications" 
       icon={
@@ -686,7 +687,7 @@ export default function SellerProfile() {
   </div>
 
   {/* Services Offered - Orange Outline */}
-  <div className="border-2 border-[#FFA500] rounded-lg p-4">
+  <div className="bg-white rounded-2xl shadow-md p-6 border-l-8 border-[#FFA500] transition-all hover:border-[#708238]">
     <SectionHeader 
       title="Services Offered" 
       icon={
@@ -725,7 +726,7 @@ export default function SellerProfile() {
   </div>
 
   {/* Language Proficiencies - Green Outline */}
-  <div className="border-2 border-[#708238] rounded-lg p-4">
+  <div className="bg-white rounded-2xl shadow-md p-6 border-l-8 border-[#708238] transition-all hover:border-[#FFA500]">
     <SectionHeader 
       title="Language Proficiencies" 
       icon={

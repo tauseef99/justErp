@@ -356,52 +356,94 @@ const PersonalDataProtection = () => {
         </section>
 
         {/* ENHANCED CONTACT SECTION */}
-        <section className="container mx-auto px-6 lg:px-20 pb-28">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1 }}
-            viewport={{ once: true }}
-            className="relative bg-gradient-to-br from-[#708238] via-[#5f7030] to-[#4a5727] text-white rounded-4xl shadow-2xl p-16 text-center overflow-hidden"
-          >
-            {/* Animated Background Elements */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-[#FFA500] rounded-full -translate-y-32 translate-x-32 opacity-20 animate-pulse"></div>
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#FFA500] rounded-full translate-y-24 -translate-x-24 opacity-20 animate-bounce"></div>
-            <div className="absolute top-1/2 left-1/2 w-32 h-32 bg-white/10 rounded-full -translate-x-1/2 -translate-y-1/2 opacity-30"></div>
+      <section className="container mx-auto px-6 lg:px-20 pb-28">
+  <motion.div
+    initial={{ opacity: 0, scale: 0.95 }}
+    whileInView={{ opacity: 1, scale: 1 }}
+    transition={{ duration: 1 }}
+    viewport={{ once: true }}
+    className="relative bg-gradient-to-br from-[#708238] via-[#5f7030] to-[#4a5727] text-white rounded-4xl shadow-2xl p-16 text-center overflow-hidden"
+  >
+    {/* Animated Background Elements */}
+    {/* 🟠 Top-right circle now also moves */}
+    <div className="absolute top-0 right-0 w-64 h-64 bg-[#FFA500] rounded-full -translate-y-32 translate-x-32 opacity-20 animate-float-slow"></div>
 
-            <div className="relative z-10">
-              <div className="inline-flex items-center px-6 py-3 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-8">
-                <svg className="w-5 h-5 text-white mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-                <span className="text-sm font-semibold">Get In Touch</span>
-              </div>
-              
-              <h2 className="text-5xl font-black mb-8 bg-gradient-to-r from-[#FFA500] to-[#ffcc00] bg-clip-text text-transparent">
-                Contact Our Data Protection Team
-              </h2>
-              
-              <p className="text-xl mb-12 max-w-2xl mx-auto leading-relaxed opacity-90">
-                If you have any questions about this Data Protection Policy or our data practices, please contact our Data Protection Officer.
-              </p>
-              
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="inline-flex items-center bg-white text-[#708238] font-bold py-4 px-8 rounded-2xl shadow-2xl transition-all duration-300 mb-8"
-              >
-                <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-                privacy@justerps.com
-              </motion.div>
-              
-              <p className="text-sm opacity-70">
-                Typically responds within 24 hours
-              </p>
-            </div>
-          </motion.div>
-        </section>
+    {/* 🟠 Bottom-left circle (already moving) */}
+    <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#FFA500] rounded-full translate-y-24 -translate-x-24 opacity-20 animate-bounce"></div>
+
+    <div className="absolute top-1/2 left-1/2 w-32 h-32 bg-white/10 rounded-full -translate-x-1/2 -translate-y-1/2 opacity-30"></div>
+
+    <div className="relative z-10">
+      <div className="inline-flex items-center px-6 py-3 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-8">
+        <svg
+          className="w-5 h-5 text-white mr-2"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+          />
+        </svg>
+        <span className="text-sm font-semibold">Get In Touch</span>
+      </div>
+
+      <h2 className="text-5xl font-black mb-8 bg-gradient-to-r from-[#FFA500] to-[#ffcc00] bg-clip-text text-transparent">
+        Contact Our Data Protection Team
+      </h2>
+
+      <p className="text-xl mb-12 max-w-2xl mx-auto leading-relaxed opacity-90">
+        If you have any questions about this Data Protection Policy or our data
+        practices, please contact our Data Protection Officer.
+      </p>
+
+      <motion.div
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className="inline-flex items-center bg-white text-[#708238] font-bold py-4 px-8 rounded-2xl shadow-2xl transition-all duration-300 mb-8"
+      >
+        <svg
+          className="w-5 h-5 mr-3"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+          />
+        </svg>
+        privacy@justerps.com
+      </motion.div>
+
+      <p className="text-sm opacity-70">Typically responds within 24 hours</p>
+    </div>
+  </motion.div>
+
+  {/* Custom Animation Styles */}
+  <style>
+    {`
+      @keyframes float-slow {
+        0%, 100% {
+          transform: translateY(0) translateX(0);
+        }
+        50% {
+          transform: translateY(-20px) translateX(-10px);
+        }
+      }
+      .animate-float-slow {
+        animation: float-slow 6s ease-in-out infinite;
+      }
+    `}
+  </style>
+</section>
+
+
       </div>
 
       <Footer />

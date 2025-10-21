@@ -31,6 +31,8 @@ import TermsOfService from "./Components/TermsOfService";
 import FAQ from "./Components/FAQ";
 import ProjectTeams from './Components/ProjectTeams';
 
+import JustERPs from "./Components/JustERPs";
+
 
 function App() {
   return (
@@ -62,6 +64,8 @@ function App() {
         <Route path="/terms/services" element={<TermsOfService />} />
         <Route path="/erp/team" element={<ProjectTeams />} />
         <Route path="/faq" element={<FAQ />} />
+         <Route path="/justerps" element={<JustERPs/>} />
+
 
 
 

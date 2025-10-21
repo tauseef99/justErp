@@ -132,49 +132,51 @@ export default function SellerNavbar() {
         </span>
 
         {/* Notification Bell with Dropdown */}
-        <div className="relative">
-          <button
-            onClick={toggleDropdown}
-            className="relative focus:outline-none p-2 hover:bg-[#5a6a2d] rounded-full"
-          >
-            <FiBell className="w-5 h-5 text-white hover:text-[#FFA500]" />
-            <span className="absolute top-1 right-1 w-2 h-2 bg-[#FFA500] rounded-full"></span>
-          </button>
+        <div className="relative flex items-center gap-3">
+  {/* Notification Icon */}
+  <div className="relative">
+    <button
+      onClick={toggleDropdown}
+      className="relative focus:outline-none p-[10px] rounded-full bg-gradient-to-br from-[#FFA500] to-[#708238] hover:from-[#708238] hover:to-[#FFA500] transition-all duration-300 shadow-md"
+    >
+      <FiBell className="w-5 h-5 text-white" />
+      <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-white rounded-full border border-[#FFA500]" />
+    </button>
 
-          {showNotifications && (
-            <div className="absolute right-0 mt-2 w-72 bg-white border border-gray-200 rounded-md shadow-lg z-50">
-              <div className="p-4 border-b font-semibold text-gray-700">
-                Notifications
-              </div>
-              <ul className="max-h-60 overflow-y-auto">
-                <li className="px-4 py-2 hover:bg-gray-50 text-sm text-gray-700 cursor-pointer">
-                  🎉 New order received!
-                </li>
-                <li className="px-4 py-2 hover:bg-gray-50 text-sm text-gray-700 cursor-pointer">
-                  💬 You've got a new message.
-                </li>
-                <li className="px-4 py-2 hover:bg-gray-50 text-sm text-gray-700 cursor-pointer">
-                  📈 Your gig performance has improved.
-                </li>
-              </ul>
-              <div className="px-4 py-2 text-center text-sm text-[#FFA500] hover:underline cursor-pointer">
-                View All Notifications
-              </div>
-            </div>
-          )}
+    {showNotifications && (
+      <div className="absolute right-0 mt-2 w-72 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+        <div className="p-4 border-b font-semibold text-gray-700">
+          Notifications
         </div>
+        <ul className="max-h-60 overflow-y-auto">
+          <li className="px-4 py-2 hover:bg-gray-50 text-sm text-gray-700 cursor-pointer">
+            🎉 New order received!
+          </li>
+          <li className="px-4 py-2 hover:bg-gray-50 text-sm text-gray-700 cursor-pointer">
+            💬 You've got a new message.
+          </li>
+          <li className="px-4 py-2 hover:bg-gray-50 text-sm text-gray-700 cursor-pointer">
+            📈 Your gig performance has improved.
+          </li>
+        </ul>
+        <div className="px-4 py-2 text-center text-sm text-[#FFA500] hover:underline cursor-pointer">
+          View All Notifications
+        </div>
+      </div>
+    )}
+  </div>
 
-        {/* Mail */}
-        <Link to="/seller/messages">
-          <button className="relative group p-2 hover:bg-[#5a6a2d] rounded-full">
-            <FiMail className="w-5 h-5 text-white group-hover:text-[#FFA500]" />
-            <span className="absolute top-1 right-1 w-2 h-2 bg-[#FFA500] rounded-full"></span>
-          </button>
-        </Link>
+  {/* Message Icon */}
+  <Link to="/seller/messages">
+    <button className="relative group p-[10px] rounded-full bg-gradient-to-br from-[#FFA500] to-[#708238] hover:from-[#708238] hover:to-[#FFA500] transition-all duration-300 shadow-md">
+      <FiMail className="w-5 h-5 text-white" />
+      <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-white rounded-full border border-[#FFA500]" />
+    </button>
+  </Link>
+</div>
 
-        {/* Help Icon */}
-        <FiHelpCircle className="w-5 h-5 text-white hover:text-[#FFA500] cursor-pointer hidden md:block" />
 
+       
         {/* Profile Image + Dropdown */}
        <div className="relative flex items-center gap-3" ref={dropdownRef}>
   {/* Name + Title on the left */}
