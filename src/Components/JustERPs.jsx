@@ -55,19 +55,19 @@ const features = [
     title: "Routine Upgrades & Optimization",
     desc: "Keep your ERP up-to-date with minimal downtime and expert-driven upgrade plans tailored to your business needs.",
     img: featureImg1,
-    stats: "2,000+ Specialized Categories",
+   
   },
   {
     title: "Custom Dashboards & Reporting",
     desc: "Tailored dashboards, Crystal Report formats, and reporting for the KPIs that matter most to your business success.",
     img: featureImg2,
-    stats: "Custom Solutions",
+   
   },
   {
     title: "End-to-End Implementations",
     desc: "From discovery to rollout — experienced consultants to guide large-scale transformations and complex global rollouts.",
     img: featureImg3,
-    stats: "Fortune 500 Experience",
+   
   },
 ];
 
@@ -80,93 +80,76 @@ const JustERPs = () => {
 
       <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
         {/* ENHANCED HERO */}
-        <section className="relative w-full overflow-hidden">
-          <motion.div
-            initial={{ scale: 1.05, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 1.2 }}
-            className="relative w-full h-[85vh] min-h-[600px] flex items-center justify-center"
-          >
-            <img
-              src={heroImg}
-              alt="JustERPs hero"
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
-            
-            {/* Enhanced floating elements */}
-            <div className="absolute top-12 left-12 w-5 h-5 bg-[#FFA500] rounded-full opacity-80 animate-float-slow" />
-            <div className="absolute top-32 right-20 w-7 h-7 bg-[#708238] rounded-full opacity-50 animate-float-slow" style={{animationDelay: '1s'}} />
-            <div className="absolute bottom-24 left-1/4 w-4 h-4 bg-white rounded-full opacity-60 animate-pulse" />
-            <div className="absolute top-1/2 right-1/4 w-6 h-6 bg-cyan-400 rounded-full opacity-40 animate-bounce" style={{animationDelay: '0.5s'}} />
+       <section className="relative w-full overflow-hidden">
+  <motion.div
+    initial={{ scale: 1.05, opacity: 0 }}
+    animate={{ scale: 1, opacity: 1 }}
+    transition={{ duration: 1.2 }}
+    className="relative w-full h-[85vh] min-h-[600px] flex items-center justify-center"
+  >
+    <img
+      src={heroImg}
+      alt="JustERPs hero"
+      className="absolute inset-0 w-full h-full object-cover"
+    />
+    <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
 
-            <div className="relative z-10 text-center px-6 lg:px-24">
-              <motion.div
-                initial={{ y: -30, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 1, delay: 0.2 }}
-                className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20 mb-6"
-              >
-               
-              </motion.div>
+    {/* Floating Elements */}
+    <div className="absolute top-12 left-12 w-5 h-5 bg-[#FFA500] rounded-full opacity-80 animate-float-slow" />
+    <div
+      className="absolute top-32 right-20 w-7 h-7 bg-[#FFA500] rounded-full opacity-50 animate-float-slow"
+      style={{ animationDelay: "0.5s" }}
+    />
+    <div className="absolute bottom-24 left-1/4 w-4 h-4 bg-white rounded-full opacity-60 animate-pulse" />
+    <div
+      className="absolute top-1/2 right-1/4 w-6 h-6 bg-[#708238] rounded-full opacity-90 animate-bounce"
+      style={{ animationDelay: "0.5s" }}
+    />
 
-              <motion.h1
-                initial={{ y: -20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.9, delay: 0.3 }}
-                className="text-4xl md:text-6xl lg:text-7xl font-black text-white leading-tight mb-6"
-              >
-                <span className="bg-gradient-to-r from-white via-white to-amber-200 bg-clip-text text-transparent">
-                  JustERPs
-                </span>
-                <br />
-                <span className="text-3xl md:text-4xl lg:text-5xl font-bold text-amber-400">
-                  Your Global ERP Partner
-                </span>
-              </motion.h1>
+    <div className="relative z-10 text-center px-6 lg:px-24">
+  {/* Optional top tag section (kept empty for spacing) */}
+  <motion.div
+    initial={{ y: -30, opacity: 0 }}
+    animate={{ y: 0, opacity: 1 }}
+    transition={{ duration: 1, delay: 0.2 }}
+    className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20 mb-6"
+  ></motion.div>
 
-              <motion.p
-                initial={{ y: 10, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.9, delay: 0.5 }}
-                className="text-xl md:text-2xl text-white/90 max-w-4xl mx-auto mb-8 leading-relaxed"
-              >
-               
-              </motion.p>
+  {/* Main Heading */}
+  <motion.h1
+    initial={{ y: -20, opacity: 0 }}
+    animate={{ y: 0, opacity: 1 }}
+    transition={{ duration: 0.9, delay: 0.3 }}
+    className="text-4xl md:text-6xl lg:text-7xl font-black text-white leading-tight mb-6"
+  >
+    <span className="bg-gradient-to-r from-white via-white to-amber-200 bg-clip-text text-transparent">
+      JustERPs
+    </span>
+    <br />
+    <span className="bg-gradient-to-r from-amber-400 to-[#708238] bg-clip-text text-transparent text-3xl md:text-4xl lg:text-5xl font-bold">
+      Your Global ERP Partner
+    </span>
+  </motion.h1>
 
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: "280px" }}
-                transition={{ duration: 1.2, delay: 0.7 }}
-                className="h-1.5 bg-gradient-to-r from-amber-400 via-[#708238] to-cyan-400 rounded-full mx-auto mb-8 shadow-lg"
-              />
+  {/* Description Paragraph */}
+  <motion.p
+    initial={{ y: 10, opacity: 0 }}
+    animate={{ y: 0, opacity: 1 }}
+    transition={{ duration: 0.9, delay: 0.1 }}
+    className="text-xl md:text-2xl text-white/90 max-w-4xl mx-auto mb-8 leading-relaxed"
+  ></motion.p>
 
-              <motion.div
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.8 }}
-                className="flex items-center justify-center gap-4 flex-wrap"
-              >
-                <a
-                  href="#our-journey"
-                  className="inline-flex items-center gap-3 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold py-4 px-8 rounded-2xl shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300"
-                >
-                  <span>Discover Our Journey</span>
-                  <span className="text-lg">→</span>
-                </a>
-                <a
-                  href="#values"
-                  className="inline-flex items-center gap-3 bg-white/15 backdrop-blur-sm text-white font-semibold py-4 px-8 rounded-2xl border border-white/30 hover:bg-white/25 hover:scale-105 transition-all duration-300"
-                >
-                  Our Values & Mission
-                </a>
-              </motion.div>
-            </div>
+  {/* Divider line */}
+  <motion.div
+    initial={{ width: 0 }}
+    animate={{ width: "280px" }}
+    transition={{ duration: 1.2, delay: 0.1 }}
+    className="h-1.5 bg-gradient-to-r from-amber-400 via-[#708238] to-cyan-400 rounded-full mx-auto mb-8 shadow-lg"
+  />
+</div>
+  </motion.div>
+</section>
 
-            {/* Scroll indicator */}
-            
-          </motion.div>
-        </section>
 
         {/* ENHANCED JOURNEY SECTION */}
         <section id="our-journey" className="py-28 relative">
@@ -193,45 +176,23 @@ const JustERPs = () => {
                 
                 <div className="space-y-4 text-gray-700 leading-relaxed">
                   <p className="text-lg">
-                    JustERPs began its journey in <strong>2025</strong> with a bold vision: to 
-                    revolutionize ERP services by building a global community of freelance professionals. 
-                    More than just a platform for project work, we are a dynamic learning ecosystem 
-                    where experts work as a team to achieve optimal outcomes for businesses worldwide.
+                   Founded in <strong> 2025,</strong> JustERPs was built on a bold vision: to create the universal
+platform where businesses and ERP talent unite to shape the future of enterprise. We are more than a
+
+marketplace for projects; we are a dynamic learning ecosystem. Here, experts collaborate as a unified team
+to deliver optimal outcomes and drive success for businesses worldwide.
                   </p>
 
                   <p className="text-lg">
-                    From our headquarters in <strong>Vancouver, BC</strong>, we are building our global 
-                    footprint with planned expansions into key international hubs.
+                   From our headquarters in <strong>Vancouver, BC,</strong> we are building our global footprint with planned
+expansions into key international hubs, including New York, London, Frankfurt, Stockholm, and the
+Middle East.
                   </p>
+
+                  
                 </div>
 
-                {/* Global hubs */}
-                <div className="mt-8">
-                  <h3 className="font-bold text-gray-800 mb-4">Global Expansion Hubs:</h3>
-                  <div className="flex flex-wrap gap-3">
-                    {globalHubs.map((hub, index) => (
-                      <motion.span
-                        key={hub}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.4, delay: index * 0.1 }}
-                        className="px-4 py-2 rounded-full bg-gradient-to-r from-gray-100 to-gray-50 text-gray-700 font-medium border border-gray-200 shadow-sm"
-                      >
-                        {hub}
-                      </motion.span>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="flex gap-4 mt-8">
-                  <div className="px-5 py-3 rounded-2xl bg-amber-500/10 text-amber-700 font-bold border border-amber-200">
-                    Founded 2025
-                  </div>
-                  <div className="px-5 py-3 rounded-2xl bg-[#708238]/10 text-[#708238] font-bold border border-[#708238]/20">
-                    2,000+ Specializations
-                  </div>
-                </div>
+              
               </div>
             </motion.div>
 
@@ -245,7 +206,7 @@ const JustERPs = () => {
               <div className="rounded-3xl overflow-hidden shadow-2xl group relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-amber-400/10 via-[#708238]/10 to-cyan-400/10 z-10" />
                 <img
-                  src={galleryPlaceholder}
+                  src={heroImg}
                   alt="JustERPs global journey"
                   className="w-full h-[520px] object-cover transform group-hover:scale-110 transition duration-1000"
                 />
@@ -283,12 +244,13 @@ const JustERPs = () => {
               transition={{ duration: 0.8 }}
               className="text-center max-w-4xl mx-auto mb-16"
             >
-              <h2 className="text-4xl md:text-5xl font-black text-gray-800 mb-6">
-                Curated Marketplace for{" "}
-                <span className="bg-gradient-to-r from-amber-600 to-[#708238] bg-clip-text text-transparent">
-                  Unified ERP Solutions
-                </span>
-              </h2>
+              <h2 className="text-4xl md:text-5xl font-black text-gray-800 mb-6 text-center leading-tight">
+  Curated Marketplace for{" "}
+  <span className="bg-gradient-to-r from-amber-600 to-[#708238] bg-clip-text text-transparent block">
+    United ERP Solutions
+  </span>
+</h2>
+
               <p className="text-xl text-gray-600 leading-relaxed">
                 Spanning the entire ERP spectrum with over 2,000 specialized categories. 
                 From routine upgrades to complete architectural advancements.
@@ -324,9 +286,7 @@ const JustERPs = () => {
                         <span className="text-sm font-semibold text-amber-600 bg-amber-50 px-3 py-1 rounded-full">
                           {f.stats}
                         </span>
-                        <div className="w-10 h-10 bg-gradient-to-r from-amber-500 to-[#708238] rounded-full flex items-center justify-center text-white font-bold group-hover:scale-110 transition duration-300">
-                          →
-                        </div>
+                        
                       </div>
                     </div>
                   </div>
@@ -421,35 +381,47 @@ const JustERPs = () => {
                 </p>
               </div>
 
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-                {values.map((v, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: idx * 0.1 }}
-                    className="group"
-                  >
-                    <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-300 h-full relative overflow-hidden">
-                      {/* Gradient overlay on hover */}
-                      <div className={`absolute inset-0 bg-gradient-to-br ${v.gradient} opacity-0 group-hover:opacity-5 transition duration-500`}></div>
-                      
-                      <div className="relative z-10">
-                        <div className={`w-14 h-14 bg-gradient-to-br ${v.gradient} rounded-2xl flex items-center justify-center text-2xl text-white mb-6 group-hover:scale-110 transition duration-300 shadow-lg`}>
-                          {v.icon}
-                        </div>
-                        <h3 className="text-xl font-bold text-gray-800 mb-4 group-hover:text-gray-900 transition duration-300">
-                          {v.title}
-                        </h3>
-                        <p className="text-gray-600 leading-relaxed">
-                          {v.text}
-                        </p>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+  {values.map((v, idx) => (
+    <motion.div
+      key={idx}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay: idx * 0.1 }}
+      className="group"
+    >
+      <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-lg hover:border-gray-200 transition-all duration-500 h-full relative overflow-hidden">
+        {/* Softer gradient overlay on hover */}
+        <div
+          className={`absolute inset-0 bg-gradient-to-br ${v.gradient} opacity-0 group-hover:opacity-[0.04] transition duration-500`}
+        ></div>
+
+        <div className="relative z-10">
+          {/* Soft icon background */}
+          <div
+            className={`w-14 h-14 bg-gradient-to-br ${v.gradient} rounded-2xl flex items-center justify-center text-2xl text-white/90 mb-6 group-hover:scale-105 transition duration-300 shadow-sm`}
+            style={{
+              filter: "saturate(45%) brightness(0.9) blur(0.2px)",
+            }}
+          >
+            {v.icon}
+          </div>
+
+          <h3 className="text-lg font-semibold text-gray-800 mb-3 group-hover:text-gray-900 transition duration-300">
+            {v.title}
+          </h3>
+          <p className="text-gray-600 leading-relaxed tracking-wide">
+            {v.text}
+          </p>
+        </div>
+      </div>
+    </motion.div>
+  ))}
+</div>
+
+
+
 
               {/* Enhanced image gallery */}
               {/* <motion.div
@@ -500,12 +472,14 @@ const JustERPs = () => {
                 {/* Decorative corner */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-amber-400 to-[#708238] rounded-full -translate-y-16 translate-x-16 opacity-10"></div>
                 
-                <h2 className="text-4xl md:text-5xl font-black text-gray-800 mb-6">
-                  Ready to Accelerate Your{" "}
-                  <span className="bg-gradient-to-r from-amber-600 to-[#708238] bg-clip-text text-transparent">
-                    ERP Outcomes?
-                  </span>
-                </h2>
+                <h2 className="text-4xl md:text-5xl font-black text-gray-800 mb-6 text-center leading-tight">
+  Ready to Accelerate Your
+  <br />
+  <span className="bg-gradient-to-r from-amber-600 to-[#708238] bg-clip-text text-transparent">
+    ERP Outcomes?
+  </span>
+</h2>
+
                 
                 <p className="text-xl text-gray-700 mb-10 max-w-2xl mx-auto leading-relaxed">
                   Connect with certified ERP consultants, request a customized proposal, 
@@ -513,25 +487,29 @@ const JustERPs = () => {
                   to comprehensive implementations.
                 </p>
 
-                <div className="flex items-center justify-center gap-6 flex-wrap">
-                  <motion.a
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="bg-gradient-to-r from-[#708238] to-[#5a6a2d] text-white font-bold py-4 px-10 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center gap-3"
-                  >
-                    <span>Find Expert Consultants</span>
-                    <span className="text-lg">→</span>
-                  </motion.a>
-                  
-                  <motion.a
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold py-4 px-10 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center gap-3"
-                  >
-                    <span>Request Custom Proposal</span>
-                    <span className="text-lg">→</span>
-                  </motion.a>
-                </div>
+          <div className="flex items-center justify-center gap-6 flex-wrap">
+  {/* Green Button */}
+  <motion.a
+    whileHover={{ scale: 1.05 }}
+    whileTap={{ scale: 0.95 }}
+    className="bg-gradient-to-r from-[#708238] to-[#5a6a2d] text-white font-semibold text-lg py-4 px-10 rounded-2xl shadow-lg hover:shadow-2xl hover:brightness-110 transition-all duration-300 flex items-center justify-center gap-3 min-w-[280px]"
+  >
+    <span>Find Expert Consultants</span>
+    <span className="text-xl leading-none">→</span>
+  </motion.a>
+
+  {/* Orange Button */}
+  <motion.a
+    whileHover={{ scale: 1.05 }}
+    whileTap={{ scale: 0.95 }}
+    className="bg-gradient-to-r from-amber-500 to-orange-600 text-white font-semibold text-lg py-4 px-10 rounded-2xl shadow-lg hover:shadow-2xl hover:brightness-110 transition-all duration-300 flex items-center justify-center gap-3 min-w-[280px]"
+  >
+    <span>Request Custom Proposal</span>
+    <span className="text-xl leading-none">→</span>
+  </motion.a>
+</div>
+
+
 
                 <div className="mt-8 text-sm text-gray-500">
                   Trusted by businesses worldwide • From SMB to Fortune 500 • 2,000+ Specialized Categories

@@ -656,92 +656,121 @@ const AdminDashboard = () => {
 
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
-        <nav className="w-64 bg-[#708238] shadow-sm text-white border-r border-gray-200 flex-shrink-0 hidden md:block">
-  <div className="p-4">
+    <nav className="w-64 bg-[#708238] shadow-sm text-white border-r border-gray-200 flex-shrink-0 hidden md:block relative overflow-hidden">
+  {/* Animated Background Elements - More Visible */}
+  <div className="absolute top-0 left-0 w-40 h-40 bg-[#FFA500] rounded-full -translate-y-20 -translate-x-20 opacity-25 animate-float-slow"></div>
+  <div className="absolute bottom-0 right-0 w-48 h-48 bg-[#FFA500] rounded-full translate-y-24 translate-x-24 opacity-25 animate-bounce-slow"></div>
   
-
-    <ul className="space-y-1">
-      <li>
-        <button
-          className={`w-full flex items-center px-4 py-3 rounded-lg ${
-            activeTab === 'dashboard' 
-              ? `bg-[${lightPrimary}] text-[${primaryColor}]` 
-              : 'text-white hover:bg-white/20'
-          }`}
-          onClick={() => setActiveTab('dashboard')}
-        >
-          <FiHome className="mr-3" />
-          Dashboard
-        </button>
-      </li>
-      <li>
-        <button
-          className={`w-full flex items-center px-4 py-3 rounded-lg ${
-            activeTab === 'users' 
-              ? `bg-[${lightPrimary}] text-[${primaryColor}]` 
-              : 'text-white hover:bg-white/20'
-          }`}
-          onClick={() => setActiveTab('users')}
-        >
-          <FiUsers className="mr-3" />
-          User Management
-        </button>
-      </li>
-      <li>
-        <button
-          className={`w-full flex items-center px-4 py-3 rounded-lg ${
-            activeTab === 'orders' 
-              ? `bg-[${lightPrimary}] text-[${primaryColor}]` 
-              : 'text-white hover:bg-white/20'
-          }`}
-          onClick={() => setActiveTab('orders')}
-        >
-          <FiPackage className="mr-3" />
-          Orders & Projects
-        </button>
-      </li>
-      <li>
-        <button
-          className={`w-full flex items-center px-4 py-3 rounded-lg ${
-            activeTab === 'performance' 
-              ? `bg-[${lightPrimary}] text-[${primaryColor}]` 
-              : 'text-white hover:bg-white/20'
-          }`}
-          onClick={() => setActiveTab('performance')}
-        >
-          <FiStar className="mr-3" />
-          Seller Performance
-        </button>
-      </li>
-    </ul>
-    
-    <div className="mt-8">
-      <div className="text-xs font-semibold text-white uppercase tracking-wider mb-4">
-        ADMIN
-      </div>
+  <div className="relative z-10">
+    <div className="p-4">
       <ul className="space-y-1">
         <li>
-          <button className="w-full flex items-center px-4 py-3 rounded-lg text-white hover:bg-white/20">
-            <FiSettings className="mr-3" />
-            Settings
+          <button
+            className={`w-full flex items-center px-4 py-3 rounded-lg transition-all duration-300 ${
+              activeTab === 'dashboard' 
+                ? `bg-white/30 text-white shadow-lg backdrop-blur-sm border border-white/20` 
+                : 'text-white hover:bg-white/25 hover:shadow-md hover:scale-[1.02] backdrop-blur-sm border border-transparent'
+            }`}
+            onClick={() => setActiveTab('dashboard')}
+          >
+            <FiHome className="mr-3" />
+            Dashboard
           </button>
         </li>
         <li>
-         
+          <button
+            className={`w-full flex items-center px-4 py-3 rounded-lg transition-all duration-300 ${
+              activeTab === 'users' 
+                ? `bg-white/30 text-white shadow-lg backdrop-blur-sm border border-white/20` 
+                : 'text-white hover:bg-white/25 hover:shadow-md hover:scale-[1.02] backdrop-blur-sm border border-transparent'
+            }`}
+            onClick={() => setActiveTab('users')}
+          >
+            <FiUsers className="mr-3" />
+            User Management
+          </button>
+        </li>
+        <li>
+          <button
+            className={`w-full flex items-center px-4 py-3 rounded-lg transition-all duration-300 ${
+              activeTab === 'orders' 
+                ? `bg-white/30 text-white shadow-lg backdrop-blur-sm border border-white/20` 
+                : 'text-white hover:bg-white/25 hover:shadow-md hover:scale-[1.02] backdrop-blur-sm border border-transparent'
+            }`}
+            onClick={() => setActiveTab('orders')}
+          >
+            <FiPackage className="mr-3" />
+            Orders & Projects
+          </button>
+        </li>
+        <li>
+          <button
+            className={`w-full flex items-center px-4 py-3 rounded-lg transition-all duration-300 ${
+              activeTab === 'performance' 
+                ? `bg-white/30 text-white shadow-lg backdrop-blur-sm border border-white/20` 
+                : 'text-white hover:bg-white/25 hover:shadow-md hover:scale-[1.02] backdrop-blur-sm border border-transparent'
+            }`}
+            onClick={() => setActiveTab('performance')}
+          >
+            <FiStar className="mr-3" />
+            Seller Performance
+          </button>
         </li>
       </ul>
-    </div>
-  </div>
-  
-  <div className="p-4 border-t border-gray-200 mt-auto">
-    <div className="text-center text-xs text-white">
-      <div className="flex items-center justify-center mb-1">
-        <span className="h-2 w-2 rounded-full bg-green-500 mr-2"></span>
-        Platform Status: Operational
+      
+      <div className="mt-8">
+        <div className="text-xs font-semibold text-white/80 uppercase tracking-wider mb-4 backdrop-blur-sm">
+          ADMIN
+        </div>
+        <ul className="space-y-1">
+          <li>
+            <button className="w-full flex items-center px-4 py-3 rounded-lg text-white hover:bg-white/25 hover:shadow-md hover:scale-[1.02] transition-all duration-300 backdrop-blur-sm border border-transparent">
+              <FiSettings className="mr-3" />
+              Settings
+            </button>
+          </li>
+        </ul>
       </div>
-      <div>v2.1.0</div>
+    </div>
+    
+    <div className="p-4 border-t border-white/20 mt-auto backdrop-blur-sm bg-white/10">
+      <div className="text-center text-xs text-white/90">
+        <div className="flex items-center justify-center mb-1">
+          <span className="h-2 w-2 rounded-full bg-green-400 mr-2 shadow-lg"></span>
+          Platform Status: Operational
+        </div>
+        <div>v2.1.0</div>
+      </div>
     </div>
   </div>
+
+  {/* Custom Animation Styles */}
+  <style>
+    {`
+      @keyframes float-slow {
+        0%, 100% {
+          transform: translateY(0) translateX(0);
+        }
+        50% {
+          transform: translateY(-15px) translateX(-15px);
+        }
+      }
+      @keyframes bounce-slow {
+        0%, 100% {
+          transform: translateY(0) translateX(0);
+        }
+        50% {
+          transform: translateY(20px) translateX(20px);
+        }
+      }
+      .animate-float-slow {
+        animation: float-slow 8s ease-in-out infinite;
+      }
+      .animate-bounce-slow {
+        animation: bounce-slow 7s ease-in-out infinite;
+      }
+    `}
+  </style>
 </nav>
 
 

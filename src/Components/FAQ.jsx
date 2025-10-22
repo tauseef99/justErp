@@ -46,40 +46,47 @@ const FAQ = () => {
       <Navbar />
 
       {/* HERO */}
-<header className="relative w-full h-[460px] flex flex-col items-center justify-center bg-[#708238] overflow-hidden">
+<header className="relative w-full h-[520px] flex flex-col items-center justify-center bg-[#708238] overflow-hidden">
   {/* Softer gradient overlay */}
   <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-[#708238]/30 pointer-events-none" />
 
-  {/* Center FAQ Image (Smaller size) */}
-  <motion.img
-    src={imgHero}
-    alt="FAQ Hero"
-    initial={{ scale: 1.1, opacity: 0 }}
-    animate={{ scale: 1, opacity: 1 }}
-    transition={{ duration: 1.2, ease: 'easeOut' }}
-    className="max-h-[150px] w-auto object-contain z-20 mb-6 mt-4"
-  />
+  {/* Centered content with better vertical balance */}
+  <div className="relative z-30 flex flex-col items-center justify-center text-center px-4 space-y-6 translate-y-4">
+    {/* FAQ Image */}
+    <motion.img
+      src={imgHero}
+      alt="FAQ Hero"
+      initial={{ scale: 1.1, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ duration: 1.2, ease: 'easeOut' }}
+      className="max-h-[150px] w-auto object-contain"
+    />
 
-  {/* Heading BELOW Image */}
-  <motion.h1
-    initial={{ y: -30, opacity: 0 }}
-    animate={{ y: 0, opacity: 1 }}
-    transition={{ duration: 1 }}
-    className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white drop-shadow-lg z-30 text-center"
-  >
-    JustERPs FAQ
-  </motion.h1>
+    {/* Heading */}
+    <motion.h1
+      initial={{ y: -30, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 1 }}
+      className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white drop-shadow-lg"
+    >
+      JustERPs FAQ
+    </motion.h1>
 
-  {/* Tagline BELOW Heading */}
-  <motion.p
-    initial={{ y: 20, opacity: 0 }}
-    animate={{ y: 0, opacity: 1 }}
-    transition={{ duration: 1, delay: 0.3 }}
-    className="text-lg md:text-xl lg:text-2xl text-[#FFA500] font-semibold text-center z-30 tracking-wide mt-4"
-  >
-    Your Questions Answered — Everything You Need To Know About JustERPs
-  </motion.p>
+    {/* Tagline (slightly lower for better look) */}
+    <motion.p
+      initial={{ y: 20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 1, delay: 0.3 }}
+      className="text-lg md:text-xl lg:text-2xl text-[#FFA500] font-semibold tracking-wide mt-2"
+    >
+      Your Questions Answered — Everything You Need To Know About JustERPs
+    </motion.p>
+  </div>
 </header>
+
+
+
+
 
 
 

@@ -94,41 +94,38 @@ const Footer = () => {
             </p>
           </div>
 
-          <div className="flex space-x-6 text-md text-black items-center">
-            <a
-              href="https://facebook.com/justerps"
-              className="hover:text-[#1dbf73]"
-            >
-              <FaFacebookF />
-            </a>
-            <a
-              href="https://twitter.com/justerps"
-              className="hover:text-[#1dbf73]"
-            >
-              <FaTwitter />
-            </a>
-            <a
-              href="https://instagram.com/justerps"
-              className="hover:text-[#1dbf73]"
-            >
-              <FaInstagram />
-            </a>
-            <a
-              href="https://linkedin.com/company/justerps"
-              className="hover:text-[#1dbf73]"
-            >
-              <FaLinkedinIn />
-            </a>
+          <div className="flex space-x-6 text-md text-[#FFA500] items-center">
+  <a
+    href="https://facebook.com/justerps"
+    className="transition-colors duration-300"
+  >
+    <FaFacebookF />
+  </a>
+  <a
+    href="https://twitter.com/justerps"
+    className="transition-colors duration-300"
+  >
+    <FaTwitter />
+  </a>
+  <a
+    href="https://instagram.com/justerps"
+    className="transition-colors duration-300"
+  >
+    <FaInstagram />
+  </a>
+  <a
+    href="https://linkedin.com/company/justerps"
+    className="transition-colors duration-300"
+  >
+    <FaLinkedinIn />
+  </a>
 
-            <div className="flex items-center cursor-pointer hover:text-[#1dbf73] gap-2 text-gray-500 font-semibold">
-              <TfiWorld className="text-md " />
-              <p>English</p>
-            </div>
+  <div className="flex items-center cursor-pointer gap-2 text-[#FFA500] font-semibold transition-colors duration-300">
+    <TfiWorld className="text-md" />
+    <p>English</p>
+  </div>
+</div>
 
-            {/* <div className="flex items-center cursor-pointer gap-2 hover:text-[#1dbf73] text-gray-500 font-semibold">
-              <span>PKR</span>
-            </div> */}
-          </div>
         </div>
       </div>
     </footer>

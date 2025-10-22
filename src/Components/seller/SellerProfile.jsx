@@ -388,7 +388,7 @@ export default function SellerProfile() {
           {/* Profile Card */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
             {/* Profile Header */}
-            <div className="bg-gradient-to-r from-[#708238]/10 to-[#FFA500]/10 p-6 border-4 border-[#FFA500] rounded-xl shadow-md">
+            <div className="bg-gradient-to-r from-[#708238]/10 to-[#FFA500]/10 p-6  rounded-xl shadow-md">
   <div className="flex flex-col md:flex-row gap-6">
     <ProfileImageUpload 
       currentImage={profileImage} 
