@@ -5,11 +5,11 @@ import Navbar from "../Components/Navbar";
 import Footer from "../Components/Footer";
 
 // Replace these with your real images later
-import heroImg from "../Assets/images/8.jpg";
-import featureImg1 from "../Assets/images/7.jpg";
-import featureImg2 from "../Assets/images/9.jpg";
+import heroImg from "../Assets/images/7.jpg";
+import featureImg1 from "../Assets/images/13.jpg";
+import featureImg2 from "../Assets/images/4.png";
 import featureImg3 from "../Assets/images/11.jpg";
-import galleryPlaceholder from "../Assets/images/13.jpg";
+import galleryPlaceholder from "../Assets/images/8.jpg";
 
 const values = [
   {
@@ -206,7 +206,7 @@ Middle East.
               <div className="rounded-3xl overflow-hidden shadow-2xl group relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-amber-400/10 via-[#708238]/10 to-cyan-400/10 z-10" />
                 <img
-                  src={heroImg}
+                  src={galleryPlaceholder}
                   alt="JustERPs global journey"
                   className="w-full h-[520px] object-cover transform group-hover:scale-110 transition duration-1000"
                 />
