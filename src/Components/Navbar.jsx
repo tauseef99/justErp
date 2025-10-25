@@ -37,18 +37,17 @@ const subNavItems = [
 ];
 
 const aboutDropdownItems = [
-  "How JustERPs works",
-  "How to hire ERP Consultant",
-  "Join as Freelancer ERP Consultant",
-  "Personal Data Protection",
-  "Refer to a Consultant Bonus",
-  "Customer Support",
-  "Social Responsibility",
-  "Privacy Policy & Term of Use",
-  "Protecting Data in ERP Implementation",
-  "Categories",
+  { name: "How JustERPs works", path: "/how-it-works" },
+  { name: "How to hire ERP Consultant", path: "/hire-consultant" },
+  { name: "Join as Freelancer ERP Consultant", path: "/join-freelancer" },
+  { name: "Personal Data Protection", path: "/data-protection" },
+  { name: "Refer to a Consultant Bonus", path: "/refer-bonus" },
+  { name: "Customer Support", path: "/customer-support" },
+  { name: "Social Responsibility", path: "/social-responsibility" },
+  { name: "Privacy Policy & Term of Use", path: "/privacy-policy" },
+  { name: "Protecting Data in ERP Implementation", path: "/data-protection-erp" },
+  { name: "Categories", path: "/categories" },
 ];
-
 
 function Navbar() {
   const [isSticky, setIsSticky] = useState(false);
@@ -59,6 +58,7 @@ function Navbar() {
 
   const subNavRef = useRef(null);
   const aboutDropdownRef = useRef(null);
+  const aboutButtonRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -69,7 +69,9 @@ function Navbar() {
     const handleClickOutside = (event) => {
       if (
         aboutDropdownRef.current &&
-        !aboutDropdownRef.current.contains(event.target)
+        !aboutDropdownRef.current.contains(event.target) &&
+        aboutButtonRef.current &&
+        !aboutButtonRef.current.contains(event.target)
       ) {
         setShowAboutDropdownDesktop(false);
       }
@@ -126,42 +128,72 @@ function Navbar() {
           {/* Desktop Nav Items */}
           <div className="hidden lg:flex gap-2 xl:gap-6 font-semibold items-center text-[#62646A] text-sm xl:text-[15px] relative">
             {/* About Dropdown (Desktop) */}
-            <div
-              className="flex items-center gap-2 relative cursor-pointer"
-              onMouseEnter={() => setShowAboutDropdownDesktop(true)}
-              onMouseLeave={() => setShowAboutDropdownDesktop(false)}
-              ref={aboutDropdownRef}
-            >
-              <p>About</p>
-              <FaChevronDown className="text-sm" />
+            <div className="relative" ref={aboutDropdownRef}>
+              <div
+                className="flex items-center gap-2 cursor-pointer"
+                onMouseEnter={() => setShowAboutDropdownDesktop(true)}
+                ref={aboutButtonRef}
+              >
+                <p>About</p>
+                <FaChevronDown className="text-sm" />
+              </div>
+              
+              {/* Dropdown Menu with increased hover area */}
               {showAboutDropdownDesktop && (
-                <div className="absolute top-full mt-2 left-0 bg-white shadow-lg rounded-md w-56 z-50">
+                <div 
+                  className="absolute top-full left-0 mt-2 bg-white shadow-lg rounded-md w-64 z-50 border border-gray-200"
+                  onMouseEnter={() => setShowAboutDropdownDesktop(true)}
+                  onMouseLeave={() => setShowAboutDropdownDesktop(false)}
+                >
                   {aboutDropdownItems.map((item, index) => (
-                    <div
+                    <Link
                       key={index}
-                      className="flex items-center gap-2 px-4 py-2 text-sm text-[#62646A] hover:bg-[#FFA500] hover:text-white cursor-pointer"
-                      onClick={() => handleSubNavClick(item)}
+                      to={item.path}
+                      className="flex items-center gap-2 px-4 py-3 text-sm text-[#62646A] hover:bg-[#FFA500] hover:text-white transition-colors duration-200 border-b border-gray-100 last:border-b-0"
+                      onClick={() => {
+                        handleSubNavClick(item.name);
+                        setShowAboutDropdownDesktop(false);
+                      }}
                     >
-                      <FaChevronRight className="text-xs" />
-                      <span>{item}</span>
-                    </div>
+                      <FaChevronRight className="text-xs flex-shrink-0" />
+                      <span className="truncate">{item.name}</span>
+                    </Link>
                   ))}
                 </div>
               )}
             </div>
 
             <div className="flex items-center gap-2">
-              <Link to="/ourstory" className="text-[#62646A] cursor-pointer">
+              <Link to="/ourstory" className="text-[#62646A] cursor-pointer hover:text-[#FFA500] transition-colors">
                 Our Story
               </Link>
             </div>
 
-            <div className="flex items-center gap-2 cursor-pointer">
-              <TfiWorld className="text-md" />
-              <p>EN</p>
+            <div className="relative flex items-center gap-2">
+              <TfiWorld className="text-md text-[#62646A]" />
+
+              <div className="relative">
+                <select
+                  defaultValue="EN"
+                  onChange={(e) => {
+                    console.log("Selected language:", e.target.value);
+                  }}
+                  className="pr-8 appearance-none bg-transparent border border-gray-300 rounded-md px-2 py-1 text-[#62646A] text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#FFA500] cursor-pointer"
+                  aria-label="Select language"
+                >
+                  <option value="EN">ENGLISH</option>
+                  <option value="AR">URDU</option>
+                  <option value="ZH">SPANISH</option>
+                  <option value="AR">FRENCH</option>
+                  <option value="ZH">ARABIC</option>
+                </select>
+
+                {/* Chevron icon — absolutely positioned and won't capture clicks */}
+                <FaChevronDown className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-xs text-[#62646A]" />
+              </div>
             </div>
 
-            <Link to="/erpconsultant">
+            <Link to="/erpconsultant" className="hover:text-[#FFA500] transition-colors">
               <p className="cursor-pointer hidden xl:block">
                 Register as ERP Consultant
               </p>
@@ -170,13 +202,13 @@ function Navbar() {
 
             <p
               onClick={() => setShowSignInModal(true)}
-              className="cursor-pointer"
+              className="cursor-pointer hover:text-[#FFA500] transition-colors"
             >
               Sign in
             </p>
 
             <button
-              className="text-black border border-black rounded-md px-3 md:px-5 py-1 md:py-2 hover:bg-[#FFA500] hover:text-white transition-colors duration-300"
+              className="text-black border border-black rounded-md px-3 md:px-5 py-1 md:py-2 hover:bg-[#FFA500] hover:text-white hover:border-[#FFA500] transition-colors duration-300"
               onClick={() => setShowSignInModal(true)}
             >
               Join
@@ -185,72 +217,76 @@ function Navbar() {
 
           {/* Mobile Menu */}
           {isMenuOpen && (
-            <div className="flex flex-col gap-4 w-full mt-4 lg:hidden font-semibold text-[#62646A] text-sm">
+            <div className="flex flex-col gap-0 w-full mt-4 lg:hidden font-semibold text-[#62646A] text-sm">
               {/* Mobile About Dropdown */}
-              <div
-                className="flex items-center justify-between p-2 border-b"
-                onClick={() =>
-                  setShowAboutDropdownMobile(!showAboutDropdownMobile)
-                }
-              >
-                <span>About</span>
-                <FaChevronDown
-                  className={`transition-transform ${
-                    showAboutDropdownMobile ? "rotate-180" : ""
-                  }`}
-                />
-              </div>
-
-              {showAboutDropdownMobile && (
-                <div className="pl-6 border-b pb-2">
-                  {aboutDropdownItems.map((item, index) => (
-                    <div
-                      key={index}
-                      className="py-2 text-sm text-[#62646A] cursor-pointer"
-                      onClick={() => {
-                        handleSubNavClick(item);
-                        setShowAboutDropdownMobile(false); // close dropdown after click
-                      }}
-                    >
-                      {item}
-                    </div>
-                  ))}
+              <div className="border-b">
+                <div
+                  className="flex items-center justify-between p-4 cursor-pointer"
+                  onClick={() =>
+                    setShowAboutDropdownMobile(!showAboutDropdownMobile)
+                  }
+                >
+                  <span>About</span>
+                  <FaChevronDown
+                    className={`transition-transform ${
+                      showAboutDropdownMobile ? "rotate-180" : ""
+                    }`}
+                  />
                 </div>
-              )}
+
+                {showAboutDropdownMobile && (
+                  <div className="bg-gray-50 border-t">
+                    {aboutDropdownItems.map((item, index) => (
+                      <Link
+                        key={index}
+                        to={item.path}
+                        className="block py-3 px-6 text-sm text-[#62646A] border-b border-gray-100 last:border-b-0 hover:bg-[#FFA500] hover:text-white transition-colors"
+                        onClick={() => {
+                          handleSubNavClick(item.name);
+                          setShowAboutDropdownMobile(false);
+                          setIsMenuOpen(false);
+                        }}
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
 
               <Link
                 to="/ourstory"
-                className="p-2 border-b"
+                className="p-4 border-b hover:bg-gray-50 transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Our Story
               </Link>
 
-              <div className="flex items-center gap-2 p-2 border-b">
+              <div className="flex items-center gap-2 p-4 border-b">
                 <TfiWorld className="text-md" />
                 <p>EN</p>
               </div>
 
               <Link
                 to="/erpconsultant"
-                className="p-2 border-b"
+                className="p-4 border-b hover:bg-gray-50 transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Register as ERP Consultant
               </Link>
 
-              <p
-                className="p-2 border-b cursor-pointer"
+              <div
+                className="p-4 border-b cursor-pointer hover:bg-gray-50 transition-colors"
                 onClick={() => {
                   setShowSignInModal(true);
                   setIsMenuOpen(false);
                 }}
               >
                 Sign in
-              </p>
+              </div>
 
               <button
-                className="text-black border border-black rounded-md px-4 py-2 w-fit mt-2"
+                className="text-black border border-black rounded-md mx-4 my-2 px-4 py-3 w-fit hover:bg-[#FFA500] hover:text-white hover:border-[#FFA500] transition-colors"
                 onClick={() => {
                   setShowSignInModal(true);
                   setIsMenuOpen(false);

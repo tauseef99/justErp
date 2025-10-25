@@ -54,13 +54,13 @@ const features = [
   {
     title: "Routine Upgrades & Optimization",
     desc: "Keep your ERP up-to-date with minimal downtime and expert-driven upgrade plans tailored to your business needs.",
-    img: featureImg1,
+    img: featureImg2,
    
   },
   {
     title: "Custom Dashboards & Reporting",
     desc: "Tailored dashboards, Crystal Report formats, and reporting for the KPIs that matter most to your business success.",
-    img: featureImg2,
+    img: featureImg1,
    
   },
   {

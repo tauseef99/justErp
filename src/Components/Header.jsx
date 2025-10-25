@@ -55,48 +55,64 @@ const HeroHeader = () => {
            ERP Consultant starts Here!
         </h1>
     
-        {/* Filters Box */}
-        <div className="w-full md:w-[90%] lg:w-[80%] mx-auto p-4 sm:p-6 md:p-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 items-end text-gray-800 shadow-lg rounded-lg border-[3pt] sm:border-[4pt] border-[#FFA500] bg-black/40">
-          {/* ERP System Dropdown */}
-          <div>
-            <p className="pb-2 sm:pb-3 font-semibold text-center text-white text-sm sm:text-base">Select ERP</p>
-            <select className="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4ACC8F] text-sm sm:text-base">
-              <option value="">Choose ERP System</option>
-              <option value="sap">SAP</option>
-              <option value="oracle">Oracle</option>
-              <option value="microsoft">Microsoft Dynamics</option>
-            </select>
-          </div>
+       {/* Filters Box */}
+<div className="w-full md:w-[90%] lg:w-[80%] mx-auto p-4 sm:p-6 md:p-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 items-end text-gray-800 shadow-lg rounded-lg border-[3pt] sm:border-[4pt] border-[#FFA500] bg-black/40">
 
-          {/* Module Dropdown */}
-          <div>
-            <p className="pb-2 sm:pb-3 font-semibold text-center text-white text-sm sm:text-base">Select Module</p>
-            <select className="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4ACC8F] text-sm sm:text-base">
-              <option value="">Choose Module</option>
-              <option value="finance">Finance</option>
-              <option value="hr">Human Resources</option>
-              <option value="inventory">Inventory</option>
-            </select>
-          </div>
+  {/* ERP System Input */}
+  <div>
+    <p className="pb-2 sm:pb-3 font-semibold text-center text-white text-sm sm:text-base">
+      Select / Write ERP
+    </p>
+    <input
+      list="erpOptions"
+      placeholder="Choose or write ERP system"
+      className="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4ACC8F] text-sm sm:text-base"
+    />
+    <datalist id="erpOptions">
+      <option value="SAP" />
+      <option value="Oracle" />
+      <option value="Microsoft Dynamics" />
+    </datalist>
+  </div>
 
-          {/* Experience Dropdown */}
-          <div>
-            <p className="pb-2 sm:pb-3 font-semibold text-center text-white text-sm sm:text-base">Consultant Experience</p>
-            <select className="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4ACC8F] text-sm sm:text-base">
-              <option value="">Experience Level</option>
-              <option value="0-1">0-1 Year</option>
-              <option value="2-4">2-4 Years</option>
-              <option value="5+">5+ Years</option>
-            </select>
-          </div>
+  {/* Module Input */}
+  <div>
+    <p className="pb-2 sm:pb-3 font-semibold text-center text-white text-sm sm:text-base">
+      Select / Write Module
+    </p>
+    <input
+      list="moduleOptions"
+      placeholder="Choose or write module"
+      className="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4ACC8F] text-sm sm:text-base"
+    />
+    <datalist id="moduleOptions">
+      <option value="Finance" />
+      <option value="Human Resources" />
+      <option value="Inventory" />
+    </datalist>
+  </div>
 
-          {/* Search Button */}
-          <div className="flex justify-center mt-2 sm:mt-0">
-            <button className="flex justify-center items-center gap-2 bg-[#FFA500] hover:bg-[#cc8400] text-white font-semibold px-4 py-2 sm:px-6 sm:py-3 rounded-lg transition-all duration-200 text-sm sm:text-base w-full sm:w-auto">
-              Find Consultants
-            </button>
-          </div>
-        </div>
+  {/* Experience Dropdown */}
+  <div>
+    <p className="pb-2 sm:pb-3 font-semibold text-center text-white text-sm sm:text-base">
+      Consultant Experience
+    </p>
+    <select className="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4ACC8F] text-sm sm:text-base">
+      <option value="">Experience Level</option>
+      <option value="0-1">0-1 Year</option>
+      <option value="2-4">2-4 Years</option>
+      <option value="5+">5+ Years</option>
+    </select>
+  </div>
+
+  {/* Search Button */}
+  <div className="flex justify-center mt-2 sm:mt-0">
+    <button className="flex justify-center items-center gap-2 bg-[#FFA500] hover:bg-[#cc8400] text-white font-semibold px-4 py-2 sm:px-6 sm:py-3 rounded-lg transition-all duration-200 text-sm sm:text-base w-full sm:w-auto">
+      Find Consultants
+    </button>
+  </div>
+</div>
+
         
         {/* Video Control Button (Mobile Only) */}
         <div className="fixed bottom-4 right-4 z-30 md:hidden">

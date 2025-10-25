@@ -6,25 +6,25 @@ import CountUp from "react-countup";
 const statsData = [
   {
     icon: <MdApps size={40} className="mx-auto text-[#C44251]" />,
-    number: 47,
+    number: 1000,
     suffix: "+",
     description: "More than 200 + ERPS",
   },
   {
     icon: <FaProjectDiagram size={40} className="mx-auto text-[#C44251]" />,
-    number: 1200,
+    number: 1500,
     suffix: "+",
     description: "Consulting Categories",
   },
   {
     icon: <FaLanguage size={40} className="mx-auto text-[#C44251]" />,
-    number: 49,
+    number: 8,
     suffix: "",
     description: "Languages known by consultants",
   },
   {
     icon: <FaGlobeAmericas size={40} className="mx-auto text-[#C44251]" />,
-    number: 450,
+    number: 9999,
     suffix: "+",
     description: "Worldwide consultants",
   },
