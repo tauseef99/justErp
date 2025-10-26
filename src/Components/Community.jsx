@@ -8,7 +8,7 @@ const statsData = [
     icon: <MdApps size={40} className="mx-auto text-[#C44251]" />,
     number: 1000,
     suffix: "+",
-    description: "More than 200 + ERPS",
+    description: "ERPS",
   },
   {
     icon: <FaProjectDiagram size={40} className="mx-auto text-[#C44251]" />,
@@ -20,7 +20,7 @@ const statsData = [
     icon: <FaLanguage size={40} className="mx-auto text-[#C44251]" />,
     number: 8,
     suffix: "",
-    description: "Languages known by consultants",
+    description: "Languages",
   },
   {
     icon: <FaGlobeAmericas size={40} className="mx-auto text-[#C44251]" />,
@@ -61,7 +61,7 @@ function Community() {
           <div
             key={index}
             className="py-12 px-4 demand-services rounded-2xl text-center shadow-md cursor-pointer 
-                       transition-colors duration-300 hover:bg-[#FFA500] hover:text-white"
+                       transition-colors duration-300 hover:bg-gradient-to-r hover:from-[#FFA500] hover:to-[#708238] hover:text-white"
           >
             <p>{item.icon}</p>
             <h6 className="py-6 text-[#315F6F] text-5xl font-bold">

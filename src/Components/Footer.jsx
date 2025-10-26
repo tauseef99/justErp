@@ -94,7 +94,7 @@ const Footer = () => {
             </p>
           </div>
 
-          <div className="flex space-x-6 text-md text-[#FFA500] items-center">
+          <div className="flex space-x-6 text-md text-black items-center">
   <a
     href="https://facebook.com/justerps"
     className="transition-colors duration-300"
@@ -120,7 +120,7 @@ const Footer = () => {
     <FaLinkedinIn />
   </a>
 
-  <div className="flex items-center cursor-pointer gap-2 text-[#FFA500] font-semibold transition-colors duration-300">
+  <div className="flex items-center cursor-pointer gap-2 text-black font-semibold transition-colors duration-300">
     <TfiWorld className="text-md" />
     <p>English</p>
   </div>

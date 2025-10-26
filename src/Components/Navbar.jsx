@@ -37,14 +37,14 @@ const subNavItems = [
 ];
 
 const aboutDropdownItems = [
-  { name: "How JustERPs works", path: "/how-it-works" },
-  { name: "How to hire ERP Consultant", path: "/hire-consultant" },
-  { name: "Join as Freelancer ERP Consultant", path: "/join-freelancer" },
-  { name: "Personal Data Protection", path: "/data-protection" },
-  { name: "Refer to a Consultant Bonus", path: "/refer-bonus" },
-  { name: "Customer Support", path: "/customer-support" },
-  { name: "Social Responsibility", path: "/social-responsibility" },
-  { name: "Privacy Policy & Term of Use", path: "/privacy-policy" },
+  { name: "How JustERPs works", path: "/how/erp/works" },
+  { name: "How to hire ERP Consultant", path: "/erpconsultant" },
+  { name: "Join as Freelancer ERP Consultant", path: "/join/as/consultant" },
+  { name: "Personal Data Protection", path: "/personal/data/protection" },
+  { name: "Refer to a Consultant Bonus", path: "/referral/bonus" },
+  { name: "Customer Support", path: "/customer/services" },
+  { name: "Social Responsibility", path: "/social/responsibility" },
+  { name: "Privacy Policy & Term of Use", path: "/terms/services" },
   { name: "Protecting Data in ERP Implementation", path: "/data-protection-erp" },
   { name: "Categories", path: "/categories" },
 ];
@@ -181,10 +181,13 @@ function Navbar() {
                   className="pr-8 appearance-none bg-transparent border border-gray-300 rounded-md px-2 py-1 text-[#62646A] text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#FFA500] cursor-pointer"
                   aria-label="Select language"
                 >
-                  <option value="EN">ENGLISH</option>
-                  <option value="AR">URDU</option>
-                  <option value="ZH">SPANISH</option>
-                  <option value="AR">FRENCH</option>
+                  <option value="EN">English</option>
+                  <option value="AR">Deutich</option>
+                  <option value="ZH">Español</option>
+                  <option value="AR">Francais</option>
+                  <option value="AR">Portugues</option>
+                  <option value="ZH">Italiano</option>
+                  <option value="AR">Nederlands</option>
                   <option value="ZH">ARABIC</option>
                 </select>
 
