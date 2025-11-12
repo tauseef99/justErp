@@ -28,30 +28,29 @@ const Register = () => {
   };
 
   // handle form submit
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setMessage("");
-    try {
-      const res = await axios.post("http://localhost:5000/api/auth/register", {
-        username: formData.username,
-        email: formData.email,
-        password: formData.password,
-        roles: [formData.role],
-      });
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  setMessage("");
+  try {
+    const res = await axios.post("http://localhost:5000/api/auth/register", {
+      username: formData.username,
+      email: formData.email,
+      password: formData.password,
+      roles: [formData.role],
+    });
 
-      setMessage("✅ Registered successfully!");
-      console.log("Registered user:", res.data);
+    setMessage("✅ Registered successfully! Verification code sent.");
+    localStorage.setItem("verif_email", formData.email);
+    navigate("/verify", { state: { email: formData.email } });
+  } catch (err) {
+    setMessage(err.response?.data?.message || "❌ Registration failed");
+    console.error("Error registering:", err.response?.data || err.message);
+  } finally {
+    setLoading(false);
+  }
+};
 
-      // Redirect to login after success
-      navigate("/signIn");
-    } catch (err) {
-      setMessage(err.response?.data?.message || "❌ Registration failed");
-      console.error("Error registering:", err.response?.data || err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#f0f4e3] to-[#e2e8d0] p-4">

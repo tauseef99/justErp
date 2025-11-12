@@ -1,5 +1,6 @@
 // frontend/src/App.js
 import React from "react";
+import './i18n';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "../src/Pages/Home";
 import SignIn from "../src/Components/SignIn";
@@ -30,6 +31,7 @@ import CustomerService from "./Components/CustomerService";
 import TermsOfService from "./Components/TermsOfService";
 import FAQ from "./Components/FAQ";
 import ProjectTeams from './Components/ProjectTeams';
+import Verify from "./Components/Verify";
 
 import JustERPs from "./Components/JustERPs";
 
@@ -65,6 +67,7 @@ function App() {
         <Route path="/erp/team" element={<ProjectTeams />} />
         <Route path="/faq" element={<FAQ />} />
          <Route path="/justerps" element={<JustERPs/>} />
+         <Route path="/verify" element={<Verify/>} />
 
 
 

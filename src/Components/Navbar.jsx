@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import logo from "../Assets/images/logo-2.jpeg";
 import SignInForm from "../Components/SignIn";
 import { FaChevronRight, FaChevronLeft, FaBars, FaTimes } from "react-icons/fa";
@@ -7,49 +8,52 @@ import { FaChevronDown } from "react-icons/fa";
 import { TfiWorld } from "react-icons/tfi";
 import Modal from "./Modal";
 
+// Updated subNavItems to use translation keys
 const subNavItems = [
-  "Trending 🔥",
-  "S4/HANA Upgrade",
-  "SAP ABAP",
-  "S4/HANA Public Cloud",
-  "ERP Migration",
-  "NetSuite Customization",
-  "SAP BASIS",
-  "Crystal Reports",
-  "MS365",
-  "MS Dynamics",
-  "ERP Upgrade",
-  "BI/ BO",
-  "Customize Reports",
-  "Cloud Migration",
-  "Oracle EBS",
-  "Infor",
-  "Acumatica",
-  "ERP Training",
-  "SAP Ariba",
-  "JD Edward",
-  "Project Management",
-  "SAP Signavio",
-  "SuccessFactors",
-  "HCM",
-  "Epicor",
-  "Oddo",
+  "trending",
+  "s4_hana_upgrade",
+  "sap_abap",
+  "s4_hana_cloud",
+  "erp_migration",
+  "netsuite_customization",
+  "sap_basis",
+  "crystal_reports",
+  "ms365",
+  "ms_dynamics",
+  "erp_upgrade",
+  "bi_bo",
+  "customize_reports",
+  "cloud_migration",
+  "oracle_ebs",
+  "infor",
+  "acumatica",
+  "erp_training",
+  "sap_ariba",
+  "jd_edward",
+  "project_management",
+  "sap_signavio",
+  "successfactors",
+  "hcm",
+  "epicor",
+  "oddo",
 ];
 
+// Updated aboutDropdownItems to use translation keys
 const aboutDropdownItems = [
-  { name: "How JustERPs works", path: "/how/erp/works" },
-  { name: "How to hire ERP Consultant", path: "/erpconsultant" },
-  { name: "Join as Freelancer ERP Consultant", path: "/join/as/consultant" },
-  { name: "Personal Data Protection", path: "/personal/data/protection" },
-  { name: "Refer to a Consultant Bonus", path: "/referral/bonus" },
-  { name: "Customer Support", path: "/customer/services" },
-  { name: "Social Responsibility", path: "/social/responsibility" },
-  { name: "Privacy Policy & Term of Use", path: "/terms/services" },
-  { name: "Protecting Data in ERP Implementation", path: "/data-protection-erp" },
-  { name: "Categories", path: "/categories" },
+  { key: "how_erp_works", path: "/how/erp/works" },
+  { key: "hire_erp_consultant", path: "/erpconsultant" },
+  { key: "join_freelancer", path: "/join/as/consultant" },
+  { key: "data_protection", path: "/personal/data/protection" },
+  { key: "referral_bonus", path: "/referral/bonus" },
+  { key: "customer_support", path: "/customer/services" },
+  { key: "social_responsibility", path: "/social/responsibility" },
+  { key: "privacy_policy", path: "/terms/services" },
+  { key: "data_protection_erp", path: "/data-protection-erp" },
+  { key: "categories", path: "/categories" },
 ];
 
 function Navbar() {
+  const { t, i18n } = useTranslation();
   const [isSticky, setIsSticky] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showSignInModal, setShowSignInModal] = useState(false);
@@ -65,7 +69,6 @@ function Navbar() {
       setIsSticky(window.scrollY > 0);
     };
 
-    // Close desktop dropdown on outside click
     const handleClickOutside = (event) => {
       if (
         aboutDropdownRef.current &&
@@ -86,8 +89,8 @@ function Navbar() {
     };
   }, []);
 
-  const handleSubNavClick = (item) => {
-    console.log(`Clicked: ${item}`);
+  const handleSubNavClick = (itemKey) => {
+    console.log(`Clicked: ${t(itemKey)}`);
   };
 
   const handleChevronClick = () => {
@@ -104,7 +107,25 @@ function Navbar() {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
-    setShowAboutDropdownMobile(false); // close About when reopening menu
+    setShowAboutDropdownMobile(false);
+  };
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+  };
+
+  const getCurrentLanguageName = () => {
+    const languages = {
+      en: "English",
+      de: "Deutsch",
+      es: "Español",
+      fr: "Français",
+      pt: "Português",
+      it: "Italiano",
+      nl: "Nederlands",
+      ar: "العربية"
+    };
+    return languages[i18n.language] || "English";
   };
 
   return (
@@ -134,11 +155,10 @@ function Navbar() {
                 onMouseEnter={() => setShowAboutDropdownDesktop(true)}
                 ref={aboutButtonRef}
               >
-                <p>About</p>
+                <p>{t('about')}</p>
                 <FaChevronDown className="text-sm" />
               </div>
               
-              {/* Dropdown Menu with increased hover area */}
               {showAboutDropdownDesktop && (
                 <div 
                   className="absolute top-full left-0 mt-2 bg-white shadow-lg rounded-md w-64 z-50 border border-gray-200"
@@ -151,12 +171,12 @@ function Navbar() {
                       to={item.path}
                       className="flex items-center gap-2 px-4 py-3 text-sm text-[#62646A] hover:bg-[#FFA500] hover:text-white transition-colors duration-200 border-b border-gray-100 last:border-b-0"
                       onClick={() => {
-                        handleSubNavClick(item.name);
+                        handleSubNavClick(item.key);
                         setShowAboutDropdownDesktop(false);
                       }}
                     >
                       <FaChevronRight className="text-xs flex-shrink-0" />
-                      <span className="truncate">{item.name}</span>
+                      <span className="truncate">{t(item.key)}</span>
                     </Link>
                   ))}
                 </div>
@@ -165,7 +185,7 @@ function Navbar() {
 
             <div className="flex items-center gap-2">
               <Link to="/ourstory" className="text-[#62646A] cursor-pointer hover:text-[#FFA500] transition-colors">
-                Our Story
+                {t('our_story')}
               </Link>
             </div>
 
@@ -174,47 +194,44 @@ function Navbar() {
 
               <div className="relative">
                 <select
-                  defaultValue="EN"
-                  onChange={(e) => {
-                    console.log("Selected language:", e.target.value);
-                  }}
+                  value={i18n.language}
+                  onChange={(e) => changeLanguage(e.target.value)}
                   className="pr-8 appearance-none bg-transparent border border-gray-300 rounded-md px-2 py-1 text-[#62646A] text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#FFA500] cursor-pointer"
                   aria-label="Select language"
                 >
-                  <option value="EN">English</option>
-                  <option value="AR">Deutich</option>
-                  <option value="ZH">Español</option>
-                  <option value="AR">Francais</option>
-                  <option value="AR">Portugues</option>
-                  <option value="ZH">Italiano</option>
-                  <option value="AR">Nederlands</option>
-                  <option value="ZH">ARABIC</option>
+                  <option value="en">English</option>
+                  <option value="de">Deutsch</option>
+                  <option value="es">Español</option>
+                  <option value="fr">Français</option>
+                  <option value="pt">Português</option>
+                  <option value="it">Italiano</option>
+                  <option value="nl">Nederlands</option>
+                  <option value="ar">العربية</option>
                 </select>
 
-                {/* Chevron icon — absolutely positioned and won't capture clicks */}
                 <FaChevronDown className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-xs text-[#62646A]" />
               </div>
             </div>
 
             <Link to="/erpconsultant" className="hover:text-[#FFA500] transition-colors">
               <p className="cursor-pointer hidden xl:block">
-                Register as ERP Consultant
+                {t('register_consultant')}
               </p>
-              <p className="cursor-pointer xl:hidden">Become a Consultant</p>
+              <p className="cursor-pointer xl:hidden">{t('become_consultant')}</p>
             </Link>
 
             <p
               onClick={() => setShowSignInModal(true)}
               className="cursor-pointer hover:text-[#FFA500] transition-colors"
             >
-              Sign in
+              {t('sign_in')}
             </p>
 
             <button
               className="text-black border border-black rounded-md px-3 md:px-5 py-1 md:py-2 hover:bg-[#FFA500] hover:text-white hover:border-[#FFA500] transition-colors duration-300"
               onClick={() => setShowSignInModal(true)}
             >
-              Join
+              {t('join')}
             </button>
           </div>
 
@@ -225,11 +242,9 @@ function Navbar() {
               <div className="border-b">
                 <div
                   className="flex items-center justify-between p-4 cursor-pointer"
-                  onClick={() =>
-                    setShowAboutDropdownMobile(!showAboutDropdownMobile)
-                  }
+                  onClick={() => setShowAboutDropdownMobile(!showAboutDropdownMobile)}
                 >
-                  <span>About</span>
+                  <span>{t('about')}</span>
                   <FaChevronDown
                     className={`transition-transform ${
                       showAboutDropdownMobile ? "rotate-180" : ""
@@ -245,12 +260,12 @@ function Navbar() {
                         to={item.path}
                         className="block py-3 px-6 text-sm text-[#62646A] border-b border-gray-100 last:border-b-0 hover:bg-[#FFA500] hover:text-white transition-colors"
                         onClick={() => {
-                          handleSubNavClick(item.name);
+                          handleSubNavClick(item.key);
                           setShowAboutDropdownMobile(false);
                           setIsMenuOpen(false);
                         }}
                       >
-                        {item.name}
+                        {t(item.key)}
                       </Link>
                     ))}
                   </div>
@@ -262,12 +277,12 @@ function Navbar() {
                 className="p-4 border-b hover:bg-gray-50 transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Our Story
+                {t('our_story')}
               </Link>
 
               <div className="flex items-center gap-2 p-4 border-b">
                 <TfiWorld className="text-md" />
-                <p>EN</p>
+                <p>{getCurrentLanguageName()}</p>
               </div>
 
               <Link
@@ -275,7 +290,7 @@ function Navbar() {
                 className="p-4 border-b hover:bg-gray-50 transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Register as ERP Consultant
+                {t('register_consultant')}
               </Link>
 
               <div
@@ -285,7 +300,7 @@ function Navbar() {
                   setIsMenuOpen(false);
                 }}
               >
-                Sign in
+                {t('sign_in')}
               </div>
 
               <button
@@ -295,7 +310,7 @@ function Navbar() {
                   setIsMenuOpen(false);
                 }}
               >
-                Join
+                {t('join')}
               </button>
             </div>
           )}
@@ -305,7 +320,6 @@ function Navbar() {
         {isSticky && (
           <div className="sub-nav border-t border-b mt-2 py-2 bg-white">
             <div className="flex items-center max-w-7xl mx-auto px-4">
-              {/* Left Arrow */}
               <button
                 onClick={handleChevronLeftClick}
                 className="mr-2 text-gray-600 hover:text-[#FFA500] transition-colors flex-shrink-0 hidden sm:block"
@@ -318,18 +332,17 @@ function Navbar() {
                 className="flex overflow-x-auto lg:gap-4 gap-2 scrollbar-hide text-[#62646A] whitespace-nowrap w-full"
                 ref={subNavRef}
               >
-                {subNavItems.map((item, index) => (
+                {subNavItems.map((itemKey, index) => (
                   <p
                     key={index}
                     className="cursor-pointer flex-shrink-0 px-3 py-1 bg-[#708238]/20 text-[#708238] rounded-lg hover:bg-[#a3b56b] hover:text-white transition-colors text-xs sm:text-sm"
-                    onClick={() => handleSubNavClick(item)}
+                    onClick={() => handleSubNavClick(itemKey)}
                   >
-                    {item}
+                    {t(itemKey)}
                   </p>
                 ))}
               </div>
 
-              {/* Right Arrow */}
               <button
                 onClick={handleChevronClick}
                 className="ml-2 text-gray-600 hover:text-[#FFA500] transition-colors flex-shrink-0 hidden sm:block"
